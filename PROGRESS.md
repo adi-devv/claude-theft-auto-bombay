@@ -3,7 +3,7 @@
 _Last updated: 2026-10-12 by the lead (Opus) session._
 
 ## Milestones (PLAN.md §9)
-- [ ] **M1** Foundations and city: in progress on `main` (core, world, roads, buildings, player, camera, UI shell, minimap, test harness)
+- [x] **M1** Foundations and city (done on `main`: 25 unit + 3 e2e tests green, 19 draw calls)
 - [ ] **M2** Wheels
 - [ ] **M3** Living city
 - [ ] **M4** Hustle
@@ -14,7 +14,7 @@ _Last updated: 2026-10-12 by the lead (Opus) session._
 ## Wave 1: parallel builders (running)
 | Work | Branch | Owns | Status |
 |---|---|---|---|
-| M1 core + city | `main` | everything in M1 not listed below | building |
+| M1 core + city | `main` | everything in M1 not listed below | done |
 | Landmarks + props | `wip/landmarks` | `src/world/landmarks/*`, `src/world/props.js` | building |
 | Audio | `wip/audio` | `src/audio/*` | done, pushed, unmerged (8 unit tests) |
 | Pure sim logic | `wip/sim` | `vehicleTypes`, `vehicleDynamics`, `Wanted`, `Economy`, `fares`, `save` | done, pushed, unmerged (31 unit tests) |
@@ -22,14 +22,23 @@ _Last updated: 2026-10-12 by the lead (Opus) session._
 If a branch above is pushed but unmerged, merge it into `main` (they own disjoint files; the only expected conflict is `src/world/landmarks/index.js`, where you take the landmarks version). Then run `npm test`, fix, and push.
 
 ## Next steps
-1. Finish M1 on `main` (npm test green), then push.
+1. ~~Finish M1 on `main`~~ done.
 2. Merge `wip/landmarks`, `wip/audio`, `wip/sim` into `main`; wire landmarks into the city builder and audio into Game; `npm test`; push.
 3. Wave 2 (parallel, disjoint files): (a) vehicle renderer + enter/exit + driving integration (M2); (b) traffic AI + signals + roundabout (M3); (c) peds (M3); (d) mission framework + taxi fares + Dabba Rush + phone + HUD (M4).
 4. Wave 3: police/wanted integration, story missions, race, collectibles, day/night (M5–M6).
 5. M7 polish, README, then `<promise>DONE</promise>`.
 
 ## Known issues
-- (none yet)
+- M1: `debug.teleport` does not resolve collisions, so teleporting into a building leaves the player inside it.
+- M1: landmarks are a stub (`src/world/landmarks/index.js`); landmark footprints are not yet collision/building-exclusion inputs.
+- M1: JS bundle is ~600 kB (three.js unsplit); fine for now.
+
+## M1 built (for later engineers)
+- `src/core/`: config, events bus, seeded rng (`?seed=`), fixed 1/60 loop with `__game.advance(sec)`, input, `Game` (ordered systems list, shared `ctx`), `testApi`.
+- `src/world/`: `mapData` (pure data), `roadGraph` (left-hand lanes: `lanePoint`, `nearestLane`, connectors, footpaths, `routeTo`), coast/sea/ground, road + marking + footpath meshes, procedural buildings with rejection rules, maidans, per-300 m chunk merging.
+- `src/physics/`: `collision` (circle/OBB/segment/SAT) and `spatialGrid`; colliders are `{x,z,hw,hd,rot}`.
+- `src/entities/Player.js`, `src/render/CameraRig.js`, UI (title, pause, HUD shell, minimap).
+- Add a system: `game.addSystem(name, sys, order)`; it gets `update(dt, ctx)` each fixed step while `playing`.
 
 ## Integration notes from builders
 - **audio**: call `audio.unlock()` in the first keydown/pointerdown; each frame `audio.update(dt,{x,z})` and `audio.engine(type|null, speed, throttle)`. Emit `horn {pos, source}` on the bus; `horn()` with no args = player horn.
