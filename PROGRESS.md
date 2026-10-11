@@ -12,7 +12,7 @@ _Last updated: 2026-10-12 by the lead (Opus) session._
 - [ ] **M7** Polish, balance, done
 
 ## Wave 1: done
-M1, `wip/audio`, `wip/sim` merged into main (64 unit + 3 e2e green). `wip/landmarks` still building; merge it when pushed (take its `src/world/landmarks/index.js` over the stub).
+M1, `wip/audio`, `wip/sim` merged into main (64 unit + 3 e2e green). `wip/landmarks` merged too (77 unit + 3 e2e green, 39 draw calls).
 
 ## Wave 2: parallel builders (see PLAN.md §12 for contracts)
 | Work | Branch | Status |
