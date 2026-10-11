@@ -247,7 +247,7 @@ Unit tests (pure modules, no `three`): lane side in 4 compass directions; no orp
 
 **M6 – Queen's Necklace**: day/night + necklace lights; RacerAI, time trial, story 4, finale 6; 25 chai + bike unlock; sports car purchase; audio, engine, radio; full map + completion %. Accept: whole story completable via scripted teleports; no audio errors.
 
-**M7 – Polish & done**: tuning (fares, timers, cop aggression), camera juice (shake, FOV 60→72), tutorial hints, settings (volume, traffic density), perf pass, README.
+**M7 – Polish & done**: tuning (fares, timers, cop aggression), camera juice (shake, FOV 60→72), tutorial hints, settings (volume, traffic density), perf pass, update the existing README.md to match what was actually built (controls, missions, how to run/test) and remove its work-in-progress note.
 
 **Definition of done:**
 - [ ] `npm test` green from clean clone; zero console errors, page errors, 4xx.
@@ -275,3 +275,34 @@ Unit tests (pure modules, no `three`): lane side in 4 compass directions; no orp
 - Raise `chunkSizeWarningLimit`.
 - **Determinism**: no `Date.now()`/`Math.random()` in simulation.
 - **AI stability**: pure-pursuit look-ahead ≥ 6 m; sea wall thick or swept check to avoid tunnelling at 40 m/s.
+
+## 11. Parallel-build contracts (authoritative; added for parallel work)
+
+Several engineers build at once in separate git worktrees. **Only touch files you own.** If you need something from another owner's module, code against the contract below; if it doesn't exist yet in your checkout, write a tiny local stub in your own test only.
+
+### `src/utils/geom.js` (exists; shared, do not edit without coordination)
+`box(w,h,d,color,x,y,z,ry)` and `cyl(rTop,rBot,h,seg,color,x,y,z,ry)` (base sits at y), `cone(r,h,seg,color,x,y,z,ry)`, `dome(r,seg,color,x,y,z)`, `flatPoly([[x,z],...],color,y)`, `place(geo,x,y,z,ry,rx,rz)`, `colorize(geo,color)`, `merge(list)` (disposes inputs), `staticMaterial()`. All outputs indexed with position/normal/color, no uv.
+
+### Landmarks — owned by the landmarks engineer: `src/world/landmarks/*.js`, `src/world/props.js`
+`src/world/landmarks/index.js` exports `buildLandmarks()` → `{ geoms: BufferGeometry[], emissive: BufferGeometry[], colliders: Collider[], instanced: THREE.Object3D[], streetlights: { material, setNight(t /*0..1*/) } }`.
+- `geoms`: world-positioned static geometry from geom.js (city builder merges into chunks).
+- `emissive`: world-positioned geometry rendered with an emissive material that brightens at night.
+- `colliders`: `{ x, z, hw, hd, rot }` oriented boxes (centre, half-width along local X, half-depth along local Z, rotation = heading radians). Same shape the city builder uses for buildings.
+- `instanced`: ready-to-add Object3Ds (tetrapods InstancedMesh, streetlight poles, trees).
+- Also exports `landmarkFootprints()` → `[{ id, x, z, hw, hd, rot }]` so the city builder can keep procedural buildings out of them, and `LANDMARK_POIS` → `[{ id, name, x, z }]` for minimap/missions.
+- Uses mapData.js coordinates from §2 (Marine Drive curve points etc.). Landmarks may import `src/world/mapData.js` read-only.
+
+### Audio — owned by the audio engineer: `src/audio/audio.js`, `src/audio/radio.js`
+`createAudio(bus)` → `{ unlock(), update(dt, listener), engine(vehicleType|null, speed, throttle), horn(pos?), siren(on), crash(intensity 0..1), coin(), fail(), success(), radioNext() → stationName, setVolume(0..1), toggleMute() → bool, get ready() }`.
+`unlock()` is called by Game inside the first keydown/pointerdown; before that every call is a silent no-op. Never construct AudioContext at import time. Never console.error. Subscribes to bus events `horn`, `vehicle:damaged`, `money:change` (positive → coin), `mission:complete`, `mission:fail` itself.
+
+### Pure sim logic — owned by the sim engineer (no `three` imports, unit-tested with node --test)
+- `src/entities/vehicleTypes.js`: `VEHICLE_TYPES` table from §4 (+ wheelbase, revMax, dmgK, radius circles offsets, colours for renderer: `paint`, `accent`).
+- `src/physics/vehicleDynamics.js`: `createVehicleState(type, x, z, heading)` → `{type, x, z, heading, speed, vx, vz, steer, health, wrecked}`; `stepVehicle(v, input{throttle,-1..1, steer -1..1, handbrake bool}, dt)` arcade bicycle model; `vehicleCircles(v)` → `[{x,z,r}]`; `resolveVehicleVsBoxes(v, colliders) → impactSpeed`; `resolveVehicleVsVehicle(a, b) → impactSpeed`; `applyDamage(v, impact)`. Collider shape = `{x,z,hw,hd,rot}` (same as above). Heading convention: forward = (sin h, cos h) in (x,z).
+- `src/gameplay/Wanted.js`: `class Wanted { constructor(bus); addHeat(n, copSees); update(dt, copHasLos); get stars; get heat; clear(); evadeProgress }` thresholds from §5.
+- `src/gameplay/Economy.js`: `class Economy { constructor(bus, money=500); add(n, reason); spend(n) → bool; get money }` emits `money:change {money, delta, reason}`.
+- `src/core/save.js`: `loadSave(storage=localStorage)`, `writeSave(data, storage)`, `defaultSave()`, `validateSave(obj)`; key `ctaBombay.save.v1`; all try/catch.
+- `src/gameplay/fares.js`: `fareFor(routeDist, elapsed, damageTaken, streak)` → `{base, bonus, tipPenalty, total, multiplier}` per §6.
+
+### Core/world/UI — owned by the M1 engineer
+Everything else in M1 (`core/*` except save.js, `world/*` except landmarks/ and props.js, `physics/spatialGrid.js`, `physics/collision.js`, `entities/Player.js`, `render/*`, `ui/*`, tests harness). City builder calls `buildLandmarks()` from `src/world/landmarks/index.js`; until the landmarks branch merges, M1 ships a stub `index.js` returning empty arrays (the merge will take the landmarks version).
