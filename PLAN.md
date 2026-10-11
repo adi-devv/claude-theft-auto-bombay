@@ -306,3 +306,47 @@ Several engineers build at once in separate git worktrees. **Only touch files yo
 
 ### Core/world/UI — owned by the M1 engineer
 Everything else in M1 (`core/*` except save.js, `world/*` except landmarks/ and props.js, `physics/spatialGrid.js`, `physics/collision.js`, `entities/Player.js`, `render/*`, `ui/*`, tests harness). City builder calls `buildLandmarks()` from `src/world/landmarks/index.js`; until the landmarks branch merges, M1 ships a stub `index.js` returning empty arrays (the merge will take the landmarks version).
+
+## 12. Wave 2 contracts (driving, traffic, peds, missions in parallel)
+
+General rules for wave 2:
+- Each builder owns the files listed for it. Shared integration files (`src/core/Game.js`, `src/core/testApi.js`, `src/main.js`, `index.html`, `src/ui/ui.css`) may get **small additive edits only**, inside a marked block `// --- <builder> ---`, so the lead can merge them.
+- Register systems with `game.addSystem(name, system, order)`. Order: driving 20, traffic 30, peds 35, missions 60.
+- Each builder writes its own e2e spec (`tests/e2e/<builder>.spec.js`) and doesn't edit the other specs.
+- Push WIP to `wip/<builder>` regularly. If you depend on another builder's API, `git fetch origin && git merge origin/wip/<other>` once it's there. Until then, code against this contract.
+
+### Driving: `wip/driving`
+Owns: `src/entities/VehicleSystem.js`, `src/entities/VehicleRenderer.js`, `src/entities/Player.js`, `src/render/CameraRig.js`, `src/ui/speedo.js`, `src/render/fx.js` (smoke, skid).
+`ctx.vehicles` (VehicleSystem):
+- `spawn(typeId, x, z, heading, opts={controller:null, color:null, parked:false})` returns `v`, a `createVehicleState` object plus `{id, controller, driver:'none'|'ai'|'player', siren:false, color, active:true}`.
+- `remove(v)`, `list` (active array), `queryRadius(x, z, r, out=[])` (dynamic hash rebuilt each step), `nearestEnterable(x, z, r)`.
+- Each step, for every vehicle:
+  1. If `v.controller`: `inp = v.controller.update(v, dt, ctx)`. A returned `{throttle, steer, handbrake}` goes through `stepVehicle`. A returned `null` means the controller moved v kinematically (it sets `x, z, heading, speed`).
+  2. Static collisions, then vehicle–vehicle collisions.
+  3. `applyDamage`, and emit `vehicle:damaged {v, impact, byPlayer}` and `vehicle:wrecked {v, byPlayer}`.
+- `ctx.player.vehicle` is null or v.
+  - Events: `vehicle:enter {v}`, `vehicle:exit {v}`.
+  - Entering a v with `driver:'ai'` emits `vehicle:carjack {v, x, z}` and `crime {type:'carjack', heat:15, pos}`, calls `v.controller?.onEjected?.(v)`, and then the player takes control.
+- Player horn (H): emit `horn {pos, source:'player'}`.
+- Audio: Game calls `audio.unlock()` on the first gesture. Driving calls `audio.engine/update`. Driving owns the audio wiring.
+- testApi: `player()` includes `inVehicle, vehicleType, speed, health`, and `debug.spawnVehicle(type, dx, dz)` works.
+
+### Traffic: `wip/traffic`
+Owns: `src/ai/TrafficSystem.js`, `src/ai/driver.js`, `src/world/signals.js` (signal state plus signal-head props), `tests/unit/traffic*.test.js`.
+- `ctx.traffic`: spawns AI vehicles via `ctx.vehicles.spawn(type, …, {controller: new DriverController(...)})` with `v.driver = 'ai'`. Controllers may drive kinematically along lanes (return null) when not near the player, and physically otherwise. Simplest robust choice: kinematic always, with collision avoidance via the forward-box gap.
+- `ctx.signals.stateFor(junctionId, incomingLaneId)` returns `'green' | 'amber' | 'red'`.
+- Implements `debug.trafficStats()` returning `{count, stuck, wrongSide}`.
+- Respects `ctx.peds.queryRadius` if present.
+
+### Peds: `wip/peds`
+Owns: `src/entities/PedSystem.js`, `src/entities/PedRenderer.js`, `tests/unit/peds*.test.js`.
+- `ctx.peds`: `list`, `queryRadius(x, z, r, out)`, `spawnFleeing(x, z)`, `spawnRole(x, z, role)` returns `ped` (with `walkTo(x, z, onArrive)` and `remove()`), and `ped = {x, z, heading, state, role}`.
+- Detects hits using `ctx.vehicles.queryRadius`. Emits `ped:hit {ped, byPlayer, speed}`, plus `crime {type:'ped', heat:25, pos}` when byPlayer.
+- Listens to `horn` (flee within 10 m) and `vehicle:carjack` (spawn the ejected driver fleeing).
+
+### Missions: `wip/missions`
+Owns: `src/gameplay/MissionManager.js`, `src/gameplay/missionKit.js`, `src/gameplay/missions/*.js`, `src/render/markers.js`, `src/ui/hud.js`, `src/ui/phone.js`, `src/ui/minimap.js` (GPS route + blips), `src/ui/toast.js`, `src/ui/menus.js` (mission passed/failed overlays).
+- `ctx.missions`: `start(id)`, `active` → `{id, step}`, `list()`, `fail(reason)`. Integrates `Economy` (`ctx.economy`) and `save.js` (Continue on title, autosave).
+- Implements: taxi fares (T in a taxi), Dabba Rush, story 1 "Pehla Din", story 2 "Dabba Rush".
+- testApi: `money()`, `mission()`, `debug.startMission(id)`.
+- Passengers come from `ctx.peds.spawnRole` when available; otherwise use a static marker-only passenger.

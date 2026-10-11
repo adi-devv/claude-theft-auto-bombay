@@ -11,15 +11,18 @@ _Last updated: 2026-10-12 by the lead (Opus) session._
 - [ ] **M6** Queen's Necklace
 - [ ] **M7** Polish, balance, done
 
-## Wave 1: parallel builders (running)
-| Work | Branch | Owns | Status |
-|---|---|---|---|
-| M1 core + city | `main` | everything in M1 not listed below | done |
-| Landmarks + props | `wip/landmarks` | `src/world/landmarks/*`, `src/world/props.js` | building |
-| Audio | `wip/audio` | `src/audio/*` | done, pushed, unmerged (8 unit tests) |
-| Pure sim logic | `wip/sim` | `vehicleTypes`, `vehicleDynamics`, `Wanted`, `Economy`, `fares`, `save` | done, pushed, unmerged (31 unit tests) |
+## Wave 1: done
+M1, `wip/audio`, `wip/sim` merged into main (64 unit + 3 e2e green). `wip/landmarks` still building; merge it when pushed (take its `src/world/landmarks/index.js` over the stub).
 
-If a branch above is pushed but unmerged, merge it into `main` (they own disjoint files; the only expected conflict is `src/world/landmarks/index.js`, where you take the landmarks version). Then run `npm test`, fix, and push.
+## Wave 2: parallel builders (see PLAN.md §12 for contracts)
+| Work | Branch | Status |
+|---|---|---|
+| Driving (M2) | `wip/driving` | building |
+| Traffic (M3) | `wip/traffic` | building |
+| Peds (M3) | `wip/peds` | building |
+| Missions (M4) | `wip/missions` | building |
+
+Lead merges each into main when green; conflicts expected only in Game.js/testApi.js marked blocks.
 
 ## Next steps
 1. ~~Finish M1 on `main`~~ done.
