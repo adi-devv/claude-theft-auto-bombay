@@ -2,6 +2,8 @@
 
 A low-poly, GTA-style open-world browser game set in South Mumbai. You can drive along Marine Drive, the Queen's Necklace, then weave through the Fort area. Pick up taxi fares from Churchgate, deliver dabbas by auto-rickshaw, and race to the Gateway of India before the cops catch you.
 
+**▶ Play it: https://adi-devv.github.io/claude-theft-auto-bombay/**
+
 Built with **Three.js + Vite**. All visuals are made in code from boxes, cylinders and planes in flat colours, with no textures, models or audio files. Sound is synthesised with WebAudio.
 
 > 🚧 **Work in progress.** The game is being built in milestones (see [PLAN.md](PLAN.md)). Some features below aren't in yet.
