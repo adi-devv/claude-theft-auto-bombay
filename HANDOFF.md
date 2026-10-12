@@ -56,6 +56,10 @@ Harness targets `GAME_URL` (default `http://localhost:8765/game/`). Headless Chr
       police, player(+HUD). Check `notes/<agent>.md` — **if a note exists, that builder finished**; if it does not,
       the builder was cut off: inspect `work/<agent>/` and relaunch it from `prompts/builders/<agent>.md`
       telling it to continue from the existing sandbox files rather than start over.
+      **2026-10-12 ~16:05 UTC: traffic, peds, police, player were PAUSED (usage limits) after ~16 min — early work only,
+      no notes yet. Their latest files are on `wip/traffic|peds|police|player`. city + vehicles kept running.**
+      Resume paused builders one or two at a time, preferably on Sonnet (cheaper), with: "continue from your sandbox".
+      To save quota: tell builders to take screenshots at 960x540 and only when checking visuals; prefer telemetry.
 - [ ] Phase 2 — Integrate: `tools/integrate.sh` (all agents) → run `node tools/smoke.js` against game/, fix
       cross-system breakage (errors show in `__game.errors`). Architect may adjust only architect-owned files.
 - [ ] Phase 3 — CRITIC round(s): see `prompts/critics.md`. One harsh critic per area runs the INTEGRATED game
