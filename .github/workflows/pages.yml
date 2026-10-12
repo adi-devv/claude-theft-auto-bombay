@@ -1,42 +1,30 @@
 name: Deploy to GitHub Pages
-
+# Static site: the playable game lives in game/ (no build step). It is published at the site root.
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - name: Build (skip if the app entry doesn't exist yet)
-        id: build
+      - name: Assemble site
         run: |
-          if [ -f index.html ]; then
-            npm run build
-          else
-            mkdir -p dist
-            echo '<!doctype html><meta charset="utf-8"><title>Claude Theft Auto Bombay</title><p>Coming soon.</p>' > dist/index.html
-          fi
+          mkdir -p dist
+          cp -R game/. dist/
+          rm -f dist/CONTRACT.md
+          touch dist/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
-
   deploy:
     needs: build
     runs-on: ubuntu-latest

@@ -1,0 +1,9 @@
+/* Global page styles. HUD-specific styles live in src/ui (owned by the player/HUD agent). */
+html, body { margin: 0; height: 100%; overflow: hidden; background: #0b0d14; color: #fff; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; }
+#app, #app canvas { position: fixed; inset: 0; display: block; }
+#hud { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+#loading { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: radial-gradient(ellipse at 50% 70%, #3a1d3a 0%, #120a18 60%, #07050a 100%); }
+#loading .title { font-size: 44px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; color: #ffd36b; text-shadow: 0 3px 0 #7a2d00; }
+#loading .title span { color: #ff5fa2; }
+#loading .msg { opacity: 0.8; font-size: 15px; }

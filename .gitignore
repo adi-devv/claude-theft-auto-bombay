@@ -1,6 +1,6 @@
-node_modules
-dist
-test-results
-playwright-report
-scratch
-.claude/
+node_modules/
+.DS_Store
+tools/shots/
+tools/*/shots/
+# agent sandboxes are copies of game/; vendor is restored from game/vendor (see HANDOFF.md)
+work/*/vendor/
