@@ -295,6 +295,11 @@ export function createPlayerModel() {
       for (const a of [armL, armR]) { a.shoulder.rotation.x -= 0.6 * e; a.elbow.rotation.x -= 1.2 * e; }
     } else if (A === 'down' || A === 'tumble' || A === 'getup' || A === 'wasted') {
       fallPose(A, T, P);
+    } else if (A === 'sit') {
+      hips.position.y = 0;
+      for (const l of [legL, legR]) { l.hip.rotation.set(-1.45, 0, l.s * 0.08); l.knee.rotation.x = 1.3; l.ankle.rotation.x = -0.2; }
+      for (const a of [armL, armR]) { a.shoulder.rotation.set(-0.95, 0, a.s * 0.15); a.elbow.rotation.x = -0.75; }
+      spine.rotation.x = -0.12; neck.rotation.x = 0.1;
     } else if (A === 'busted') {
       const u = smooth(T / 0.5);
       for (const a of [armL, armR]) {
