@@ -14,15 +14,15 @@ _Last updated: 2026-10-12 by the lead (Opus) session._
 ## Wave 1: done
 M1, `wip/audio`, `wip/sim` merged into main (64 unit + 3 e2e green). `wip/landmarks` merged too (77 unit + 3 e2e green, 39 draw calls).
 
-## Wave 2: parallel builders (see PLAN.md §12 for contracts)
+## Wave 2: NOT STARTED (builders were launched then stopped by the user before pushing anything; relaunch all four from PLAN.md §12)
 | Work | Branch | Status |
 |---|---|---|
-| Driving (M2) | `wip/driving` | building |
-| Traffic (M3) | `wip/traffic` | building |
-| Peds (M3) | `wip/peds` | building |
-| Missions (M4) | `wip/missions` | building |
+| Driving (M2) | `wip/driving` | not started |
+| Traffic (M3) | `wip/traffic` | not started |
+| Peds (M3) | `wip/peds` | not started |
+| Missions (M4) | `wip/missions` | not started |
 
-Lead merges each into main when green; conflicts expected only in Game.js/testApi.js marked blocks.
+Launch driving first or together (others depend on its VehicleSystem API and merge `origin/wip/driving` once pushed). Lead merges each into main when green; conflicts expected only in Game.js/testApi.js marked blocks.
 
 ## Next steps
 1. ~~Finish M1 on `main`~~ done.
