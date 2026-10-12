@@ -64,6 +64,15 @@ Harness targets `GAME_URL` (default `http://localhost:8765/game/`). Headless Chr
       driving feel, density and atmosphere critics all rate ≥ 8/10 with no P0/P1 issues.
 - [ ] Phase 4 — Final polish + perf pass (< 600 draw calls, 60 fps), README with controls, deliver.
 
+## Branches
+- `main` = last integrated, playable build. Every push deploys to GitHub Pages — keep it working.
+- `wip/<agent>` = automatic safety snapshots of a builder's in-progress sandbox (`work/<agent>/`, `tools/<agent>/`,
+  `notes/<agent>.md`) on top of main, made by `tools/snapshot-wip.sh` (run every ~10 min while builders work).
+  Never merged as-is: integration copies owned files into game/ via `tools/integrate.sh`, commits to main, then the
+  wip branch is deleted. To recover a cut-off builder's latest work on a new machine:
+  `git fetch && git checkout origin/wip/<agent> -- work/<agent> tools/<agent> notes/<agent>.md` (ignore missing paths),
+  restore its vendor (`cp -R game/vendor work/<agent>/`), then relaunch it from `prompts/builders/<agent>.md` + `_common.md`.
+
 ## Rules that keep parallel work safe
 - Each agent edits ONLY its owned files (table in CONTRACT.md). Architect owns main.js, core/, mapdata/roads/collision.
 - Builders work in `work/<agent>/` so a broken half-written module can't break other agents' tests.
