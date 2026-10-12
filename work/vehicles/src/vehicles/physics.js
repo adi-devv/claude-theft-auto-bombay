@@ -88,7 +88,8 @@ export function controlStep(v, dt) {
   }
   if (drive < 0) ph.gear = 0;
   let rpm = wheelRpm * s.gears[ph.gear];
-  if (ph.gear === 0 && Math.abs(drive) > 0) rpm = Math.max(rpm, s.idle + (s.launchRpm - s.idle) * Math.abs(drive));
+  if (drive < 0) rpm = Math.max(s.idle + (s.launchRpm - s.idle) * 0.45 * -drive, rpm * 1.6); // short reverse gear: revs climb with speed
+  else if (ph.gear === 0 && drive > 0) rpm = Math.max(rpm, s.idle + (s.launchRpm - s.idle) * drive);
   if (drive === 0 && brakeIn === 0 && sp < 1.5) rpm = Math.max(rpm, s.idle);
   rpm = clamp(rpm, s.idle, s.redline * 1.01);
   if (ph.shiftT > 0 && drive > 0) rpm = Math.max(s.idle, rpm * 0.82);

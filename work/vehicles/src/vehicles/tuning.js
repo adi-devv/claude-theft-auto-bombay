@@ -45,7 +45,7 @@ export const TYPES = {
     length: 3.35, width: 1.45, height: 1.4, wheelbase: 2.18, track: 1.22, wheelR: 0.27, mass: 720, cgH: 0.5, frontWeight: 0.6,
     drive: 'fwd', torque: 72, peakRpm: 3600, redline: 6200, gears: [3.5, 2.1, 1.4, 1.0], vmaxKmh: 132, launchRpm: 3000,
     mu: 1.08, muLong: 1.1, peakSlip: 7.5 * DEG, frontC: 1.22, rearC: 1.35, brakeG: 0.98,
-    maxSteer: 38 * DEG, steerRate: 4.4, steerRateFast: 2.4, counterSteer: 0.55, stability: 0.6, rearGrip: 1.12,
+    maxSteer: 38 * DEG, steerRate: 4.4, steerRateFast: 2.4, counterSteer: 0.55, stability: 0.6, rearGrip: 1.2,
     rollK: 0.045, pitchK: 0.025, suspension: 1.2, hornF: [470, 590], cylinders: 3, engineTone: 1.25,
   },
   // Generic modern sedan: the fun one.
@@ -76,7 +76,7 @@ export const TYPES = {
     length: 3.4, width: 1.42, height: 1.85, wheelbase: 1.84, track: 1.22, wheelR: 0.26, mass: 820, cgH: 0.68, frontWeight: 0.5,
     drive: 'rwd', torque: 74, peakRpm: 3200, redline: 5600, gears: [3.6, 2.2, 1.45, 1.0], vmaxKmh: 104, launchRpm: 2600,
     mu: 0.98, muLong: 1.02, peakSlip: 8.5 * DEG, frontC: 1.2, rearC: 1.36, brakeG: 0.92,
-    maxSteer: 38 * DEG, steerRate: 3.6, counterSteer: 0.6, stability: 0.7, rearGrip: 1.12,
+    maxSteer: 38 * DEG, steerRate: 3.6, counterSteer: 0.6, stability: 0.7, rearGrip: 1.17,
     rollK: 0.07, pitchK: 0.03, suspension: 1.3, hornF: [450, 560], cylinders: 3, engineTone: 1.15,
   },
   // BEST double-decker: slow, heavy, wide turning circle, deep horn.

@@ -58,6 +58,8 @@ Harness targets `GAME_URL` (default `http://localhost:8765/game/`). Headless Chr
       telling it to continue from the existing sandbox files rather than start over.
       **2026-10-12 ~16:05 UTC: traffic, peds, police, player were PAUSED (usage limits) after ~16 min — early work only,
       no notes yet. Their latest files are on `wip/traffic|peds|police|player`. city was also paused (latest on `wip/city`); only vehicles kept running.**
+      **vehicles: DONE + integrated into game/ on main** (see notes/vehicles.md — meets all handling targets; has
+      requests for player/traffic/police/city that their resumed builders must honour).
       Resume paused builders one or two at a time, preferably on Sonnet (cheaper), with: "continue from your sandbox".
       To save quota: tell builders to take screenshots at 960x540 and only when checking visuals; prefer telemetry.
 - [ ] Phase 2 — Integrate: `tools/integrate.sh` (all agents) → run `node tools/smoke.js` against game/, fix
