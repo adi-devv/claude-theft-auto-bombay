@@ -219,7 +219,7 @@ export function createWanted(game) {
     ev.emit('crime', { type, x: e.x ?? pv.position.x, z: e.z ?? pv.position.z, victim: o });
   });
 
-  game.debug && (game.debug.extra.wanted2 = () => ({
+  game.debug && (game.debug.extra.wantedDetail = () => ({
     level: w.level, heat: Math.round(w.heat), seen: w.seen, flashing: w.flashing,
     lastKnown: { x: Math.round(w.lastKnown.x), z: Math.round(w.lastKnown.z) }, searchRadius: Math.round(w.searchRadius),
     escape: +w.escapeProgress.toFixed(2),
