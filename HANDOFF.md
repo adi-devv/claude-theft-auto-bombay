@@ -57,7 +57,7 @@ Harness targets `GAME_URL` (default `http://localhost:8765/game/`). Headless Chr
       the builder was cut off: inspect `work/<agent>/` and relaunch it from `prompts/builders/<agent>.md`
       telling it to continue from the existing sandbox files rather than start over.
       **2026-10-12 ~16:05 UTC: traffic, peds, police, player were PAUSED (usage limits) after ~16 min — early work only,
-      no notes yet. Their latest files are on `wip/traffic|peds|police|player`. city was also paused (latest on `wip/city`); only vehicles kept running.**
+      no notes yet. Their latest files are on `wip/traffic|peds|police|player`. city was resumed later in ROOT/work/city and may have been cut off by limits — latest on `wip/city` (snapshots every 3 min); if notes/city.md is missing on that branch, resume it.**
       **vehicles: DONE + integrated into game/ on main** (see notes/vehicles.md — meets all handling targets; has
       requests for player/traffic/police/city that their resumed builders must honour).
       Resume paused builders one or two at a time, preferably on Sonnet (cheaper), with: "continue from your sandbox".
