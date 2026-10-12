@@ -26,14 +26,13 @@ Lead merges each into main when green; conflicts expected only in Game.js/testAp
 
 ## Next steps
 1. ~~Finish M1 on `main`~~ done.
-2. Merge `wip/landmarks`, `wip/audio`, `wip/sim` into `main`; wire landmarks into the city builder and audio into Game; `npm test`; push.
+2. ~~Merge wave 1 branches~~ done (audio still needs wiring into Game: driving builder owns that).
 3. Wave 2 (parallel, disjoint files): (a) vehicle renderer + enter/exit + driving integration (M2); (b) traffic AI + signals + roundabout (M3); (c) peds (M3); (d) mission framework + taxi fares + Dabba Rush + phone + HUD (M4).
 4. Wave 3: police/wanted integration, story missions, race, collectibles, day/night (M5–M6).
 5. M7 polish, README, then `<promise>DONE</promise>`.
 
 ## Known issues
 - M1: `debug.teleport` does not resolve collisions, so teleporting into a building leaves the player inside it.
-- M1: landmarks are a stub (`src/world/landmarks/index.js`); landmark footprints are not yet collision/building-exclusion inputs.
 - M1: JS bundle is ~600 kB (three.js unsplit); fine for now.
 
 ## M1 built (for later engineers)
