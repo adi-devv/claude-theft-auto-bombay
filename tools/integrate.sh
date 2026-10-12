@@ -3,7 +3,7 @@
 set -e
 ROOT="${0:A:h:h}"
 G="$ROOT/game"; W="$ROOT/work"
-agents=(${@:-city vehicles traffic peds police player})
+agents=("$@"); (( ${#agents} )) || agents=(city vehicles traffic peds police player)
 for a in $agents; do
   S="$W/$a"
   [[ -d "$S" ]] || { echo "skip $a (no sandbox)"; continue; }
