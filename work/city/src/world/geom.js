@@ -132,7 +132,7 @@ export class Batch {
  * whose adjacent edges turn by less than this (radians) → rounded corners look curved.
  */
 export function prism(poly, y0, y1, opts = {}) {
-  const { top = true, bottom = false, smoothAngle = 0.5, uOffset = 0 } = opts;
+  const { top = true, bottom = false, smoothAngle = 0.5, uOffset = 0, inward = false } = opts;
   // ensure CW in x/z-with-z-down sense: we want outward normals. Compute signed area in (x,z).
   let area = 0;
   for (let i = 0; i < poly.length; i++) { const a = poly[i], b = poly[(i + 1) % poly.length]; area += a[0] * b[1] - b[0] * a[1]; }
@@ -154,6 +154,7 @@ export function prism(poly, y0, y1, opts = {}) {
     const a = P[bi], b = P[(bi + 1) % n]; const mx = (a[0] + b[0]) / 2 - cx, mz = (a[1] + b[1]) / 2 - cz;
     if (mx * en[bi][0] + mz * en[bi][1] < 0) sgn = -1; }
   for (const e of en) { e[0] *= sgn; e[1] *= sgn; }
+  if (inward) { sgn = -sgn; for (const e of en) { e[0] = -e[0]; e[1] = -e[1]; } }
   // vertex normals
   const vn = [];
   for (let i = 0; i < n; i++) {
@@ -162,6 +163,23 @@ export function prism(poly, y0, y1, opts = {}) {
     if (ang < smoothAngle) { let x = ep[0] + ec[0], z = ep[1] + ec[1]; const L = Math.hypot(x, z) || 1; vn.push([x / L, z / L, true]); }
     else vn.push(null);
   }
+  // u coordinate: restart at every sharp corner, centring whole window bays on each straight/curved run
+  const bay = opts.bay || 0;
+  const ustart = new Array(n).fill(0);
+  {
+    let first = 0; for (let i = 0; i < n; i++) if (!vn[i]) { first = i; break; }
+    let run = [], runIdx = 0;
+    const flushRun = () => {
+      if (!run.length) return;
+      let L = 0; for (const i of run) L += en[i][2];
+      let u0 = runIdx * 1000 + uOffset;
+      if (bay > 0) u0 -= (L - Math.floor(L / bay) * bay) / 2;
+      for (const i of run) { ustart[i] = u0; u0 += en[i][2]; }
+      run = []; runIdx++;
+    };
+    for (let k = 0; k < n; k++) { const i = (first + k) % n; if (!vn[i] && run.length) flushRun(); run.push(i); }
+    flushRun();
+  }
   let u = uOffset;
   for (let i = 0; i < n; i++) {
     const a = P[i], b = P[(i + 1) % n], e = en[i];
@@ -169,7 +187,8 @@ export function prism(poly, y0, y1, opts = {}) {
     const base = pos.length / 3;
     pos.push(a[0], y0, a[1], b[0], y0, b[1], b[0], y1, b[1], a[0], y1, a[1]);
     nrm.push(na[0], 0, na[1], nb[0], 0, nb[1], nb[0], 0, nb[1], na[0], 0, na[1]);
-    uv.push(u, y0, u + e[2], y0, u + e[2], y1, u, y1);
+    const us = ustart[i];
+    uv.push(us, y0, us + e[2], y0, us + e[2], y1, us, y1);
     u += e[2];
     // triangle (a0,b0,b1) faces -rawNormal; sgn>0 means outward == rawNormal → flip
     if (sgn > 0) idx.push(base, base + 2, base + 1, base, base + 3, base + 2);

@@ -59,7 +59,7 @@ export function makeAsphalt() {
   const n1 = tileNoise(S, 8, 5, 101, 0.6), n2 = tileNoise(S, 64, 2, 103);
   const img = ctx.createImageData(S, S); const rnd = mulberry(7);
   for (let i = 0; i < S * S; i++) {
-    let v = 58 + (n1[i] - 0.5) * 34 + (n2[i] - 0.5) * 30 + (rnd() < 0.08 ? (rnd() - 0.5) * 50 : 0);
+    let v = 92 + (n1[i] - 0.5) * 34 + (n2[i] - 0.5) * 30 + (rnd() < 0.08 ? (rnd() - 0.5) * 50 : 0);
     img.data[i * 4] = v * 0.98; img.data[i * 4 + 1] = v * 0.97; img.data[i * 4 + 2] = v * 0.95; img.data[i * 4 + 3] = 255;
   }
   ctx.putImageData(img, 0, 0);
@@ -93,7 +93,7 @@ export function makePaving() {
   const rows = 16, cols = 8, ph = S / rows, pw = S / cols;
   for (let r = 0; r < rows; r++) for (let q = 0; q < cols; q++) {
     const off = (r % 2) * pw / 2; const x = q * pw + off, y = r * ph;
-    const t = rnd(); const base = t < 0.12 ? [150, 92, 78] : t < 0.25 ? [120, 116, 108] : [150, 144, 132];
+    const t = rnd(); const base = t < 0.06 ? [140, 108, 92] : t < 0.25 ? [128, 124, 116] : [156, 150, 138];
     const v = 0.82 + rnd() * 0.3;
     ctx.fillStyle = `rgb(${base[0] * v | 0},${base[1] * v | 0},${base[2] * v | 0})`;
     for (const dx of [-S, 0, S]) ctx.fillRect(x + 1.5 + dx, y + 1.5, pw - 3, ph - 3);
@@ -104,7 +104,7 @@ export function makePaving() {
   // stains (paan / grime)
   for (let k = 0; k < 40; k++) {
     const x = rnd() * S, y = rnd() * S, r = 3 + rnd() * 14;
-    ctx.fillStyle = rnd() < 0.2 ? 'rgba(120,30,25,0.25)' : 'rgba(30,28,24,0.18)'; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+    ctx.fillStyle = rnd() < 0.1 ? 'rgba(110,40,30,0.18)' : 'rgba(30,28,24,0.16)'; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
   }
   return tex(c, { aniso: 16 });
 }
