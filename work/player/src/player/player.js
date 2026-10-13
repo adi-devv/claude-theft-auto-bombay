@@ -344,7 +344,7 @@ export function createPlayer(game) {
       // include rotation (yawRate × r) at the contact point
       const yr = v.yawRate || 0, cx = p.position.x - v.position.x, cz = p.position.z - v.position.z;
       const cvx = vx + yr * cz, cvz = vz - yr * cx;
-      const closing = (cvx - p.velocity.x) * c.nx + (cvz - p.velocity.z) * c.nz;
+      const closing = cvx * c.nx + cvz * c.nz; // only the car's own motion into us counts (running into a car is harmless)
       const ignored = v === ignoreVehicle && game.time < ignoreUntil;
       if (!ignored && closing > HIT_MIN_CLOSING && game.time - lastHitTime > 0.6 && p.state === 'normal' && p.action !== 'tumble') {
         lastHitTime = game.time;

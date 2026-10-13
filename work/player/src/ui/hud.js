@@ -88,6 +88,9 @@ export function createHUD(game) {
     </div>
     <div class="cta-press">PRESS <span class="cta-key">ENTER</span> TO START</div>${ctrlGrid}`);
   title.addEventListener('mousedown', (e) => { e.stopPropagation(); start(); });
+  const logo = title.querySelector('.cta-logo');
+  const fitTitle = () => { logo.style.transform = `scale(${Math.min(1.15, window.innerHeight / 860, window.innerWidth / 1300).toFixed(3)})`; };
+  fitTitle(); window.addEventListener('resize', fitTitle);
 
   // ---------- pause ----------
   const pause = el('div', 'cta-overlay', root, `<div class="cta-card"><h2>PAUSED</h2><div class="where"></div>${ctrlGrid}
@@ -249,7 +252,7 @@ export function createHUD(game) {
     // area / street popups
     const area = game.roads.areaNameAt(px, pz), street = game.roads.roadNameAt(px, pz);
     if (area !== lastArea) { areaEl.textContent = area; areaEl.classList.add('show'); areaT = t + 4.5; lastArea = area; }
-    if (street !== lastStreet) { if (street) { streetEl.textContent = street; streetEl.classList.add('show'); streetT = t + 3.5; } lastStreet = street; }
+    if (street !== lastStreet) { if (street) { streetEl.textContent = street; streetEl.classList.add('show'); streetT = t + 3.5; } else { streetEl.classList.remove('show'); streetT = 0; } lastStreet = street; }
     if (areaT && t > areaT) { areaEl.classList.remove('show'); areaT = 0; }
     if (streetT && t > streetT) { streetEl.classList.remove('show'); streetT = 0; }
     if (vehT && t > vehT) { vehEl.classList.remove('show'); vehT = 0; }
@@ -403,17 +406,18 @@ export function createHUD(game) {
   function drawBigMap() {
     const M = ensureMap();
     const vw = window.innerWidth, vh = window.innerHeight;
-    const wm = M.W / M.S, hm = M.H / M.S;
-    const scale = Math.min((vw * 0.9) / wm, (vh * 0.8) / hm); // CSS px per metre
+    const B = game.roads.bounds, m = 70;
+    const x0 = B.minX - m, z0 = B.minZ - m, wm = B.maxX - B.minX + 2 * m, hm = B.maxZ - B.minZ + 2 * m;
+    const scale = Math.min((vw * 0.92) / wm, (vh * 0.8) / hm); // CSS px per metre
     const cw = Math.round(wm * scale), ch = Math.round(hm * scale);
     if (bmc.width !== Math.round(cw * dpr)) { bmc.width = Math.round(cw * dpr); bmc.height = Math.round(ch * dpr); bmc.style.width = cw + 'px'; bmc.style.height = ch + 'px'; }
     const g = bmg;
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    g.drawImage(M.canvas, 0, 0, cw, ch);
-    const P = (x, z) => [(x - M.minX) * scale, (z - M.minZ) * scale];
+    g.drawImage(M.canvas, (x0 - M.minX) * M.S, (z0 - M.minZ) * M.S, wm * M.S, hm * M.S, 0, 0, cw, ch);
+    const P = (x, z) => [(x - x0) * scale, (z - z0) * scale];
     g.textAlign = 'center'; g.textBaseline = 'middle';
-    const areas = [['MARINE DRIVE', -505, -130], ['NARIMAN POINT', -380, 455], ['CHURCHGATE', -270, 20], ['OVAL MAIDAN', -160, 250], ['CROSS MAIDAN', -150, -10],
-      ['AZAD MAIDAN', 25, -260], ['FORT', 175, -60], ['KALA GHODA', 160, 235], ['COLABA', 230, 500], ['APOLLO BUNDER', 360, 330], ['BACK BAY', -620, 250], ['BOMBAY HARBOUR', 480, -100]];
+    const areas = [['MARINE DRIVE', -585, -230], ['NARIMAN POINT', -330, 505], ['CHURCHGATE', -275, 0], ['AZAD MAIDAN', 25, -200],
+      ['FORT', 185, -90], ['KALA GHODA', 150, 205], ['COLABA', 215, 520], ['APOLLO BUNDER', 330, 300], ['BACK BAY', -560, 220], ['HARBOUR', 450, -300]];
     g.font = `italic 700 ${Math.round(clamp(scale * 30, 12, 22))}px Didot, "Bodoni 72", Georgia, serif`;
     for (const [n, x, z] of areas) {
       const [sx, sy] = P(x, z);
@@ -422,7 +426,7 @@ export function createHUD(game) {
     }
     g.font = `600 ${Math.round(clamp(scale * 14, 8, 11))}px "Avenir Next Condensed", "Arial Narrow", sans-serif`;
     for (const r of game.roads.roads) {
-      if (r.cum[r.cum.length - 1] < 220) continue;
+      if (r.cum[r.cum.length - 1] < 300) continue;
       const i = Math.floor(r.pts.length * 0.42), a = r.pts[i], b = r.pts[Math.min(r.pts.length - 1, i + 2)];
       let an = Math.atan2(b.z - a.z, b.x - a.x); if (an > Math.PI / 2) an -= Math.PI; if (an < -Math.PI / 2) an += Math.PI;
       const [sx, sy] = P(a.x, a.z);
@@ -434,7 +438,9 @@ export function createHUD(game) {
     for (const poi of POIS) {
       const [sx, sy] = P(poi.x, poi.z);
       drawBadge(g, sx, sy, 8, poi);
-      g.lineWidth = 3; g.strokeStyle = 'rgba(14,8,20,0.9)'; g.strokeText(poi.name, sx + 12, sy); g.fillStyle = '#ffd36b'; g.fillText(poi.name, sx + 12, sy);
+      const right = sx > cw - 150, lx = right ? sx - 12 : sx + 12;
+      g.textAlign = right ? 'right' : 'left';
+      g.lineWidth = 3; g.strokeStyle = 'rgba(14,8,20,0.9)'; g.strokeText(poi.name, lx, sy); g.fillStyle = '#ffd36b'; g.fillText(poi.name, lx, sy);
     }
     const t = now(), flash = Math.floor(t * 5) % 2;
     for (const v of game.vehicles) {

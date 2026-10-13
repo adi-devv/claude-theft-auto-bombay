@@ -36,6 +36,7 @@ export class FootCamera {
       if (Math.abs(diff) < 1.1) this.yaw += diff * (1 - Math.exp(-dt * 0.35 * sp / 4));
       this.pitch = damp(this.pitch, 0.18, 0.6, dt);
     }
+    if (player.state === 'wasted' || player.state === 'busted') this.pitch = damp(this.pitch, 0.62, 1.5, dt);
     // pivot: chest/head height, lower when crouched / lying
     const act = player.action;
     const lowH = act === 'down' || act === 'tumble' || act === 'wasted' ? 0.75 : act === 'getup' ? 1.1 : act === 'enter' || act === 'exit' ? 1.25 : 1.58;

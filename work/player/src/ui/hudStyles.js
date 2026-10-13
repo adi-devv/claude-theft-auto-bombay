@@ -107,7 +107,7 @@ body.cta-busted #app canvas { filter: saturate(0.35) contrast(1.08) brightness(0
   background: linear-gradient(180deg, rgba(21,11,29,0.55) 0%, rgba(21,11,29,0) 30%, rgba(21,11,29,0) 55%, rgba(21,11,29,0.85) 100%),
               linear-gradient(90deg, rgba(21,11,29,0.82) 0%, rgba(21,11,29,0.35) 45%, rgba(21,11,29,0) 70%); }
 .cta-title.gone { opacity: 0; pointer-events: none; }
-.cta-logo { position: absolute; left: 7vw; top: 13vh; width: 600px; }
+.cta-logo { position: absolute; left: 7vw; top: 11vh; width: 600px; transform-origin: 0 0; }
 .cta-sun { position: absolute; left: 180px; top: -40px; width: 420px; height: 420px; border-radius: 50%; opacity: 0.9;
   background: repeating-conic-gradient(from 0deg, rgba(255,178,63,0.0) 0deg 5deg, rgba(255,120,80,0.22) 5deg 10deg);
   -webkit-mask: radial-gradient(circle, #000 0 28%, rgba(0,0,0,0.6) 45%, transparent 70%); mask: radial-gradient(circle, #000 0 28%, rgba(0,0,0,0.6) 45%, transparent 70%);
@@ -129,7 +129,7 @@ body.cta-busted #app canvas { filter: saturate(0.35) contrast(1.08) brightness(0
 .cta-logo .sub em { font-style: normal; color: var(--cta-gold); padding: 0 6px; }
 .cta-press { position: absolute; left: 7vw; bottom: 25vh; font: 800 20px/1 var(--f-deco); letter-spacing: 6px; color: var(--cta-cream);
   animation: ctaBlink 1.4s ease-in-out infinite; text-shadow: 0 2px 0 rgba(0,0,0,0.6); }
-.cta-press .cta-key { margin: 0 6px; font-size: 13px; letter-spacing: 1px; }
+.cta-press .cta-key { margin: 0 8px; font-size: 13px; letter-spacing: 1px; padding: 0 9px; }
 @keyframes ctaBlink { 50% { opacity: 0.35; } }
 .cta-controls { position: absolute; left: 7vw; right: 7vw; bottom: 5.5vh; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px 26px;
   font-size: 13.5px; color: rgba(255,243,223,0.88); padding-top: 14px; border-top: 1px solid rgba(255,211,107,0.3); }
