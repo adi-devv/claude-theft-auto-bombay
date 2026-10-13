@@ -86,6 +86,7 @@ export function createPlayer(game) {
     if (dv > 9) damage((dv - 9) * 2.2, 'crash');
   });
   game.events.on('explosion', (e) => {
+    if (e.vehicle && e.vehicle === p.vehicle && p.state === 'normal') { wasted(); return; }
     const d = Math.hypot(p.position.x - e.x, p.position.z - e.z), r = e.radius || 8;
     if (d > r * 1.6) return;
     const k = 1 - d / (r * 1.6);
@@ -538,6 +539,7 @@ export function createPlayer(game) {
     p.position.set(q.x, 0, q.z);
     p.airborne = false; vy = 0;
     ignoreVehicle = v; ignoreUntil = game.time + 0.8;
+    try { driveCam.release?.(); } catch (_) { /* optional */ }
     footCam.alignTo(game.camera.position, p.position);
     blend.start(0.45);
     const right = { x: -Math.cos(v.heading), z: Math.sin(v.heading) };
@@ -734,7 +736,7 @@ export function createPlayer(game) {
 
   // ---- debug hooks for tests ----
   game.debug.extra = game.debug.extra || {};
-  game.debug.extra.player = () => ({
+  game.debug.extra.pl = () => ({
     action: p.action, camYaw: +footCam.yaw.toFixed(3), y: +p.position.y.toFixed(2), stamina: +p.stamina.toFixed(2),
     speed: +Math.hypot(p.velocity.x, p.velocity.z).toFixed(2), near: p.nearVehicle?.type || null, timeScale: game.timeScale,
     approach: !!approach,
