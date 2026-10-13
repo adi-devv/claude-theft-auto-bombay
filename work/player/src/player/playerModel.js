@@ -6,6 +6,7 @@
 // Knees bend with positive X, elbows bend (forearm forward/up) with negative X.
 // The character's LEFT side is +X (model faces +Z).
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const SKIN = 0x8a5638, SKIN_DARK = 0x6e4029, HAIR = 0x15100e, JEANS = 0x2c4a6f, JEANS_LIGHT = 0x5b7aa0;
 const VEST = 0xece6da, SOLE = 0xefe9dc, SHOE = 0x6b3f22;
@@ -366,6 +367,36 @@ export function createPlayerModel() {
       legR.hip.rotation.z = -0.2 * fall; legL.knee.rotation.x += 0.5 * fall;
     }
   }
+
+  // ---- draw-call diet: merge each bone's rigid child meshes (solid colours -> one vertex-coloured mesh) ----
+  const vcMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.72, metalness: 0 }); mats.push(vcMat);
+  const bones = [hips, spine, neck, head, ...[armL, armR].flatMap((a) => [a.shoulder, a.elbow, a.wrist]), ...[legL, legR].flatMap((l) => [l.hip, l.knee, l.ankle])];
+  for (const bone of bones) {
+    const meshes = bone.children.filter((c) => c.isMesh);
+    const solid = [], byMat = new Map();
+    for (const m of meshes) {
+      m.updateMatrix();
+      const geo = m.geometry.clone().applyMatrix4(m.matrix);
+      if (m.material.map || m.material.side !== THREE.FrontSide) { if (!byMat.has(m.material)) byMat.set(m.material, []); byMat.get(m.material).push(geo); }
+      else {
+        const n = geo.attributes.position.count, col = new Float32Array(n * 3), c = m.material.color;
+        for (let i = 0; i < n; i++) { col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b; }
+        geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+        solid.push(geo);
+      }
+      bone.remove(m);
+    }
+    const add = (geos, mat) => {
+      if (!geos.length) return;
+      const g = geos.length === 1 ? geos[0] : mergeGeometries(geos, false);
+      for (const x of geos) if (x !== g) x.dispose();
+      geos.push(g);
+      const mm = new THREE.Mesh(g, mat); mm.castShadow = true; bone.add(mm); geos.length = 0; G(g);
+    };
+    add(solid, vcMat);
+    for (const [mat, geos] of byMat) add(geos, mat);
+  }
+  for (const g0 of geos.slice()) if (!g0.attributes) continue;
 
   resetPose();
   return {
