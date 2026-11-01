@@ -15,7 +15,7 @@ for (const n of R.nodes.values()) { if (n.roundabout) svg += `<circle cx="${X(n.
 for (const r of R.roads) { const m = r.pts[Math.floor(r.pts.length / 2)]; svg += `<text x="${X(m.x)}" y="${Z(m.z)}" fill="#ff8" font-size="9">${r.name}</text>`; }
 svg += '</svg>';
 const out = process.argv[2] || 'map.png';
-const br = await pw.chromium.launch({ channel: 'chrome' });
+const br = await pw.chromium.launch({ channel: process.env.PW_CHANNEL || (process.platform === 'win32' ? 'msedge' : 'chrome') });
 const pg = await br.newPage({ viewport: { width: Math.ceil(W), height: Math.ceil(H) } });
 await pg.setContent(svg); await pg.screenshot({ path: out }); await br.close();
 console.log('wrote', out, Math.ceil(W), 'x', Math.ceil(H));

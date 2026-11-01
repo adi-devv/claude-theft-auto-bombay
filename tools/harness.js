@@ -18,13 +18,17 @@ const fs = require('fs');
 const path = require('path');
 
 const BASE = process.env.GAME_URL || 'http://localhost:8765/game/';
+// Browser per OS: Chrome + Metal on macOS; Edge (always present) + D3D11 on Windows. Override with PW_CHANNEL / PW_ANGLE.
+const WIN = process.platform === 'win32';
+const CHANNEL = process.env.PW_CHANNEL || (WIN ? 'msedge' : 'chrome');
+const ANGLE = process.env.PW_ANGLE || (WIN ? 'd3d11' : 'metal');
 
 async function launch(opts = {}) {
   const { width = 1280, height = 720, out = path.join(__dirname, 'shots'), query = 'test=1', headless = true, timeout = 60000 } = opts;
   fs.mkdirSync(out, { recursive: true });
   const browser = await chromium.launch({
-    channel: 'chrome', headless,
-    args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'],
+    channel: CHANNEL, headless,
+    args: [`--use-angle=${ANGLE}`, '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'],
   });
   const page = await browser.newPage({ viewport: { width, height } });
   const logs = [];
@@ -66,4 +70,4 @@ async function launch(opts = {}) {
   return g;
 }
 
-module.exports = { launch, BASE };
+module.exports = { CHANNEL, ANGLE, launch, BASE };

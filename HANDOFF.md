@@ -58,8 +58,11 @@ Harness targets `GAME_URL` (default `http://localhost:8765/game/`). Headless Chr
       telling it to continue from the existing sandbox files rather than start over.
       **2026-10-12 ~16:05 UTC: traffic, peds, police, player were PAUSED (usage limits) after ~16 min — early work only,
       no notes yet. Their latest files are on `wip/traffic|peds|police|player`. city finished later (see above).**
-      **player: resumed 2026-10-13 and stopped by usage limits — latest on `wip/player` incl. notes/player.md.
-      NOT yet integrated: test it (tools/integrate.sh player → smoke + drive test), then finish remaining HUD items.**
+      **player: DONE + integrated on main 2026-11-01** (notes/player.md; real peds/traffic/police hooks still to be
+      exercised once those systems land). wip/player is now stale and can be deleted.
+      **2026-11-01: work moved to a Windows machine (D:\Aadit\claudez\claude-theft-auto-bombay). Harness/mapview pick
+      Edge + D3D11 on Windows automatically; integrate.sh is plain bash; tools/sync-sandbox.sh replaces rsync.
+      Builders now resume ONE AT A TIME (traffic → peds → police), each integrated + pushed when verified.**
       **city: DONE + integrated on main** (notes/city.md — landmarks, necklace lamps, Malabar Hill, audio; leftovers:
       bus stops/kiosks/hoardings, bloom, harbour boats, Taj partly hidden by a filler building at the Gateway plaza).
       **vehicles: DONE + integrated into game/ on main** (see notes/vehicles.md — meets all handling targets; has
