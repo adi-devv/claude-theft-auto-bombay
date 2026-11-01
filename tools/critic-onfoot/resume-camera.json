@@ -1,0 +1,466 @@
+{
+  "samples": [
+    {
+      "t": 6.399999999999983,
+      "player": [
+        -403.1030924271502,
+        0,
+        387.84837808931826
+      ],
+      "camera": [
+        -407.09818049542383,
+        2.4284103475898884,
+        389.5383271544646
+      ],
+      "yaw": 1.8739999999999997,
+      "dist": 4.4,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 6.583333333333315,
+      "player": [
+        -403.1030912986431,
+        0,
+        387.8483704986939
+      ],
+      "camera": [
+        -406.1524382660148,
+        2.4284103475898884,
+        390.90829948518825
+      ],
+      "yaw": 2.3239999999999994,
+      "dist": 4.4,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 6.783333333333315,
+      "player": [
+        -403.10309114457766,
+        0,
+        387.84836946241074
+      ],
+      "camera": [
+        -403.31437296686045,
+        1.7149743734802096,
+        388.50481966436274
+      ],
+      "yaw": 2.7408799999999967,
+      "dist": 0.7,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 6.966666666666647,
+      "player": [
+        -403.1030911279349,
+        0,
+        387.8483693504664
+      ],
+      "camera": [
+        -403.0372481014452,
+        1.7149743734802096,
+        388.5342583807255
+      ],
+      "yaw": 3.1577599999999983,
+      "dist": 0.7,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 7.1666666666666465,
+      "player": [
+        -403.10309112566273,
+        0,
+        387.84836933518363
+      ],
+      "camera": [
+        -402.6935617096592,
+        1.7149743734802096,
+        388.41340085537274
+      ],
+      "yaw": 3.5911999999999984,
+      "dist": 0.7,
+      "contacts": [
+        {
+          "tag": "building",
+          "depth": 0.23816779195212714,
+          "height": 74.80000000000001
+        }
+      ],
+      "playerContacts": [],
+      "shot": "D:\\Aadit\\claudez\\claude-theft-auto-bombay\\tools\\critic-onfoot\\shots\\k02-camera-in-building-4.png"
+    },
+    {
+      "t": 7.5499999999999785,
+      "player": [
+        -403.10309112538386,
+        0,
+        387.84836933330735
+      ],
+      "camera": [
+        -402.3057515178207,
+        1.7149743734802096,
+        387.95986582972756
+      ],
+      "yaw": 4.024639999999999,
+      "dist": 0.7,
+      "contacts": [
+        {
+          "tag": "building",
+          "depth": 0.5550673020197795,
+          "height": 74.80000000000001
+        }
+      ],
+      "playerContacts": [],
+      "shot": "D:\\Aadit\\claudez\\claude-theft-auto-bombay\\tools\\critic-onfoot\\shots\\k02-camera-in-building-5.png"
+    },
+    {
+      "t": 7.883333333333311,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.84836933327995
+      ],
+      "camera": [
+        -402.33260037631715,
+        1.7149743734802096,
+        387.61486146593546
+      ],
+      "yaw": 4.45784,
+      "dist": 0.7,
+      "contacts": [
+        {
+          "tag": "building",
+          "depth": 0.4777757597817164,
+          "height": 74.80000000000001
+        }
+      ],
+      "playerContacts": [],
+      "shot": "D:\\Aadit\\claudez\\claude-theft-auto-bombay\\tools\\critic-onfoot\\shots\\k02-camera-in-building-6.png"
+    },
+    {
+      "t": 8.233333333333322,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.8483693332794
+      ],
+      "camera": [
+        -402.5017941469564,
+        1.7149743734802096,
+        387.31299669460407
+      ],
+      "yaw": 4.891040000000001,
+      "dist": 0.7,
+      "contacts": [
+        {
+          "tag": "building",
+          "depth": 0.26603071929612676,
+          "height": 74.80000000000001
+        }
+      ],
+      "playerContacts": [],
+      "shot": "D:\\Aadit\\claudez\\claude-theft-auto-bombay\\tools\\critic-onfoot\\shots\\k02-camera-in-building-7.png"
+    },
+    {
+      "t": 8.600000000000007,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.8483693332794
+      ],
+      "camera": [
+        -402.76989283184747,
+        1.7149743734802096,
+        387.1154567766326
+      ],
+      "yaw": 5.307679999999999,
+      "dist": 0.7,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 8.78333333333335,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.8483693332794
+      ],
+      "camera": [
+        -403.03207534185293,
+        1.7382947768084547,
+        386.94269396974244
+      ],
+      "yaw": 5.724320000000004,
+      "dist": 0.8209435680926882,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 8.98333333333336,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.8483693332794
+      ],
+      "camera": [
+        -403.2692883110368,
+        1.972736157637679,
+        385.8129145560553
+      ],
+      "yaw": 6.157520000000005,
+      "dist": 2.036796343319826,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 9.166666666666702,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.8483693332794
+      ],
+      "camera": [
+        -404.34975217554575,
+        2.1587746176661464,
+        385.1470735405192
+      ],
+      "yaw": 6.573920000000006,
+      "dist": 3.0016233594572377,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 9.333333333333377,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.8483693332794
+      ],
+      "camera": [
+        -405.7100098935004,
+        2.271610223446366,
+        385.4468612371899
+      ],
+      "yaw": 6.990800000000008,
+      "dist": 3.586807954203551,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 9.550000000000054,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.8483693332794
+      ],
+      "camera": [
+        -406.81463292384,
+        2.344472895823368,
+        386.60934761575754
+      ],
+      "yaw": 7.4242400000000055,
+      "dist": 3.9646861346966786,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 9.750000000000064,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.8483693332794
+      ],
+      "camera": [
+        -407.17768469757635,
+        2.3825513279644968,
+        388.3519917978238
+      ],
+      "yaw": 7.874480000000001,
+      "dist": 4.162167343992296,
+      "contacts": [],
+      "playerContacts": []
+    },
+    {
+      "t": 9.933333333333406,
+      "player": [
+        -403.1030911253798,
+        0,
+        387.8483693332794
+      ],
+      "camera": [
+        -406.6954614956822,
+        2.4022728257678665,
+        390.015574976817
+      ],
+      "yaw": 8.324240000000005,
+      "dist": 4.264446377459214,
+      "contacts": [],
+      "playerContacts": []
+    }
+  ],
+  "note": "Actual W/Shift and Q orbit at same registered building face discovered by interrupted followup. No fake collider or camera override.",
+  "afterPause": {
+    "pointer": true,
+    "yaw": 2.709592653589794,
+    "paused": false
+  },
+  "afterClick": {
+    "pointer": true,
+    "yaw": 2.4935926535897943,
+    "action": "punch"
+  },
+  "final": {
+    "fps": 72,
+    "time": 10.38,
+    "player": {
+      "mode": "foot",
+      "x": -418,
+      "z": 150,
+      "heading": 2.71,
+      "health": 100,
+      "state": "normal"
+    },
+    "vehicle": null,
+    "wanted": {
+      "level": 0,
+      "seen": false
+    },
+    "counts": {
+      "vehicles": 63,
+      "peds": 220
+    },
+    "road": "Marine Drive",
+    "area": "Marine Drive",
+    "render": {
+      "calls": 248,
+      "triangles": 1083382,
+      "geometries": 260,
+      "textures": 19
+    },
+    "errors": [],
+    "cityAmbient": {
+      "crowd": 0.245,
+      "surf": 0.926,
+      "rush": 1,
+      "nearTrain": 0.243,
+      "events": {
+        "honk": 2,
+        "vendor": 1,
+        "train": 1,
+        "bell": 0,
+        "crow": 1
+      },
+      "peak": 0.015399999999999999,
+      "ready": true
+    },
+    "city": {
+      "hour": 18.42,
+      "light": 0.56,
+      "night": false,
+      "tris": 863055,
+      "meshes": 167,
+      "load": 1878
+    },
+    "wantedDetail": {
+      "level": 0,
+      "heat": 0,
+      "seen": false,
+      "flashing": false,
+      "lastKnown": {
+        "x": 0,
+        "z": 0
+      },
+      "searchRadius": 0,
+      "escape": 0
+    },
+    "peds": {
+      "active": 220,
+      "visible": 1,
+      "byState": {
+        "idle": 31,
+        "walk": 189
+      },
+      "byActivity": {
+        "walk": 196,
+        "sit": 22,
+        "cross": 2
+      },
+      "drawCalls": 9,
+      "paths": 803,
+      "places": 7954,
+      "hits": 0,
+      "fatal": 0,
+      "recovered": 0,
+      "crossings": 0,
+      "dodges": 0,
+      "screams": 0,
+      "respawned": 197,
+      "updateMs": 2.522,
+      "frameMs": 0.135
+    },
+    "traffic": {
+      "active": 40,
+      "parked": 22,
+      "stuck": 0,
+      "avgSpeedKmh": 33.8,
+      "collisionsLastMin": 0,
+      "aiHitsTotal": 0,
+      "waiting": 0,
+      "buses": 1,
+      "abandoned": 0,
+      "msPerStep": 0.799,
+      "msMax": 179.2,
+      "grants": 40,
+      "forced": 0,
+      "honks": 0,
+      "recycled": 0,
+      "why": {
+        "ring": 44
+      }
+    },
+    "police": {
+      "level": 0,
+      "seen": false,
+      "flashing": false,
+      "searchRadius": 0,
+      "lastKnown": {
+        "x": 0,
+        "z": 0
+      },
+      "escape": 0,
+      "cars": 1,
+      "foot": 0,
+      "roadblocks": 0,
+      "units": [
+        "M1:patrol@156"
+      ],
+      "arrest": {
+        "foot": 0,
+        "car": 0
+      },
+      "stats": {
+        "spawned": 2,
+        "despawned": 1,
+        "rams": 0,
+        "busts": 0,
+        "roadblocks": 0,
+        "stuck": 0,
+        "recycled": 1,
+        "footSpawned": 0
+      }
+    },
+    "pl": {
+      "action": "punch",
+      "camYaw": 2.494,
+      "y": 0,
+      "stamina": 1,
+      "speed": 0,
+      "near": null,
+      "timeScale": 1,
+      "approach": false
+    }
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "before": {
+    "t": 4.033333333333324,
+    "yaw": 3.141592653589793,
+    "pointer": true,
+    "paused": false,
+    "map": false,
+    "state": "normal"
+  },
+  "open": {
+    "t": 4.033333333333324,
+    "yaw": 3.141592653589793,
+    "pointer": false,
+    "paused": true,
+    "map": true,
+    "state": "normal"
+  },
+  "closed": {
+    "t": 4.19999999999999,
+    "yaw": 3.141592653589793,
+    "pointer": false,
+    "paused": false,
+    "map": false,
+    "state": "normal"
+  },
+  "mouseAfterMap": {
+    "t": 4.466666666666656,
+    "yaw": 3.141592653589793,
+    "pointer": false,
+    "paused": false,
+    "map": false,
+    "state": "normal"
+  },
+  "clicked": {
+    "t": 4.899999999999988,
+    "yaw": 2.7335926535897928,
+    "pointer": true,
+    "paused": false,
+    "map": false,
+    "state": "normal"
+  },
+  "cops": [
+    {
+      "id": 221,
+      "pos": [
+        -418.1090872683198,
+        0,
+        152.2874993663471
+      ],
+      "state": "idle"
+    }
+  ],
+  "fonts": [
+    {
+      "class": "cta-stars",
+      "font": "16px",
+      "zoom": "1",
+      "rect": [
+        129.5625,
+        24
+      ],
+      "text": ""
+    },
+    {
+      "class": "cta-sub cta-shadow",
+      "font": "21px",
+      "zoom": "0.8",
+      "rect": [
+        25.59375,
+        11.1875
+      ],
+      "text": ""
+    },
+    {
+      "class": "cta-help show",
+      "font": "15px",
+      "zoom": "1",
+      "rect": [
+        296,
+        56.375
+      ],
+      "text": "Walk up to any car and press F to get in. If somebody's driving it… they won't be for long."
+    }
+  ],
+  "final": {
+    "fps": 67,
+    "time": 5.2,
+    "player": {
+      "mode": "foot",
+      "x": -418,
+      "z": 150,
+      "heading": 3.142,
+      "health": 100,
+      "state": "normal"
+    },
+    "vehicle": null,
+    "wanted": {
+      "level": 1,
+      "seen": true
+    },
+    "counts": {
+      "vehicles": 62,
+      "peds": 221
+    },
+    "road": "Marine Drive",
+    "area": "Marine Drive",
+    "render": {
+      "calls": 278,
+      "triangles": 1100014,
+      "geometries": 198,
+      "textures": 20
+    },
+    "errors": [],
+    "cityAmbient": {
+      "crowd": 0.912,
+      "surf": 0.912,
+      "rush": 1,
+      "nearTrain": 0.243,
+      "events": {
+        "honk": 1,
+        "vendor": 0,
+        "train": 0,
+        "bell": 0,
+        "crow": 1
+      },
+      "peak": 0.015399999999999999,
+      "ready": true
+    },
+    "city": {
+      "hour": 18.41,
+      "light": 0.57,
+      "night": false,
+      "tris": 863055,
+      "meshes": 167,
+      "load": 2256
+    },
+    "wantedDetail": {
+      "level": 1,
+      "heat": 10,
+      "seen": true,
+      "flashing": false,
+      "lastKnown": {
+        "x": -418,
+        "z": 150
+      },
+      "searchRadius": 80,
+      "escape": 0
+    },
+    "peds": {
+      "active": 221,
+      "visible": 98,
+      "byState": {
+        "walk": 191,
+        "idle": 30
+      },
+      "byActivity": {
+        "walk": 197,
+        "sit": 17,
+        "cross": 5,
+        "vendor": 1,
+        "cop": 1
+      },
+      "drawCalls": 13,
+      "paths": 803,
+      "places": 7954,
+      "hits": 0,
+      "fatal": 0,
+      "recovered": 0,
+      "crossings": 0,
+      "dodges": 0,
+      "screams": 0,
+      "respawned": 6,
+      "updateMs": 2.453,
+      "frameMs": 1.07
+    },
+    "traffic": {
+      "active": 40,
+      "parked": 21,
+      "stuck": 0,
+      "avgSpeedKmh": 29,
+      "collisionsLastMin": 0,
+      "aiHitsTotal": 0,
+      "waiting": 2,
+      "buses": 2,
+      "abandoned": 0,
+      "msPerStep": 1.584,
+      "msMax": 289.6,
+      "grants": 24,
+      "forced": 0,
+      "honks": 0,
+      "recycled": 0,
+      "why": {
+        "ring": 1
+      }
+    },
+    "police": {
+      "level": 1,
+      "seen": true,
+      "flashing": false,
+      "searchRadius": 80,
+      "lastKnown": {
+        "x": -418,
+        "z": 150
+      },
+      "escape": 0,
+      "cars": 1,
+      "foot": 1,
+      "roadblocks": 0,
+      "units": [
+        "M1:respond@190",
+        "F2:chase!@2"
+      ],
+      "arrest": {
+        "foot": 0,
+        "car": 0
+      },
+      "stats": {
+        "spawned": 1,
+        "despawned": 0,
+        "rams": 0,
+        "busts": 0,
+        "roadblocks": 0,
+        "stuck": 0,
+        "recycled": 0,
+        "footSpawned": 1
+      }
+    },
+    "pl": {
+      "action": "none",
+      "camYaw": 2.734,
+      "y": 0,
+      "stamina": 1,
+      "speed": 0,
+      "near": null,
+      "timeScale": 1,
+      "approach": false
+    }
+  }
+}

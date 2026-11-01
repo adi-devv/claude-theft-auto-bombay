@@ -1,0 +1,1627 @@
+{
+  "sites": [
+    {
+      "name": "marine",
+      "x": -418,
+      "z": 150,
+      "live": [
+        {
+          "site": "marine",
+          "t": 7.266666666666646,
+          "near20": 23,
+          "near50": 77,
+          "overlap": 5,
+          "road": 0,
+          "still": 0,
+          "state": {
+            "fps": 57,
+            "time": 7.27,
+            "player": {
+              "mode": "foot",
+              "x": -418,
+              "z": 150,
+              "heading": 3.142,
+              "health": 100,
+              "state": "normal"
+            },
+            "vehicle": null,
+            "wanted": {
+              "level": 0,
+              "seen": false
+            },
+            "counts": {
+              "vehicles": 63,
+              "peds": 220
+            },
+            "road": "Marine Drive",
+            "area": "Marine Drive",
+            "render": {
+              "calls": 230,
+              "triangles": 1004813,
+              "geometries": 184,
+              "textures": 19
+            },
+            "errors": [],
+            "cityAmbient": {
+              "crowd": 0.872,
+              "surf": 0.872,
+              "rush": 1,
+              "nearTrain": 0.246,
+              "events": {
+                "honk": 1,
+                "vendor": 0,
+                "train": 0,
+                "bell": 0,
+                "crow": 1
+              },
+              "peak": 0.015399999999999999,
+              "ready": true
+            },
+            "city": {
+              "hour": 18.42,
+              "light": 0.57,
+              "night": false,
+              "tris": 863055,
+              "meshes": 167,
+              "load": 2735
+            },
+            "wantedDetail": {
+              "level": 0,
+              "heat": 0,
+              "seen": false,
+              "flashing": false,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "searchRadius": 0,
+              "escape": 0
+            },
+            "peds": {
+              "active": 220,
+              "visible": 81,
+              "byState": {
+                "walk": 187,
+                "idle": 33
+              },
+              "byActivity": {
+                "walk": 197,
+                "sit": 17,
+                "cross": 5,
+                "vendor": 1
+              },
+              "drawCalls": 10,
+              "paths": 803,
+              "places": 7954,
+              "hits": 0,
+              "fatal": 0,
+              "recovered": 0,
+              "crossings": 0,
+              "dodges": 0,
+              "screams": 0,
+              "respawned": 6,
+              "updateMs": 2.678,
+              "frameMs": 1.024
+            },
+            "traffic": {
+              "active": 40,
+              "parked": 21,
+              "stuck": 0,
+              "avgSpeedKmh": 27.5,
+              "collisionsLastMin": 0,
+              "aiHitsTotal": 0,
+              "waiting": 2,
+              "buses": 2,
+              "abandoned": 0,
+              "msPerStep": 0.528,
+              "msMax": 2.1,
+              "grants": 30,
+              "forced": 0,
+              "honks": 0,
+              "recycled": 0,
+              "why": {
+                "ring": 2
+              }
+            },
+            "police": {
+              "level": 0,
+              "seen": false,
+              "flashing": false,
+              "searchRadius": 0,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "escape": 0,
+              "cars": 2,
+              "foot": 0,
+              "roadblocks": 0,
+              "units": [
+                "M1:patrol@174",
+                "M2:patrol@199"
+              ],
+              "arrest": {
+                "foot": 0,
+                "car": 0
+              },
+              "stats": {
+                "spawned": 2,
+                "despawned": 0,
+                "rams": 0,
+                "busts": 0,
+                "roadblocks": 0,
+                "stuck": 0,
+                "recycled": 0,
+                "footSpawned": 0
+              }
+            },
+            "pl": {
+              "action": "none",
+              "camYaw": 3.142,
+              "y": 0,
+              "stamina": 1,
+              "speed": 0,
+              "near": null,
+              "timeScale": 1,
+              "approach": false
+            }
+          }
+        },
+        {
+          "site": "marine",
+          "t": 8.31666666666666,
+          "near20": 23,
+          "near50": 77,
+          "overlap": 2,
+          "road": 0,
+          "still": 0,
+          "state": {
+            "fps": 62,
+            "time": 8.32,
+            "player": {
+              "mode": "foot",
+              "x": -418,
+              "z": 150,
+              "heading": 3.142,
+              "health": 100,
+              "state": "normal"
+            },
+            "vehicle": null,
+            "wanted": {
+              "level": 0,
+              "seen": false
+            },
+            "counts": {
+              "vehicles": 61,
+              "peds": 220
+            },
+            "road": "Marine Drive",
+            "area": "Marine Drive",
+            "render": {
+              "calls": 234,
+              "triangles": 1003915,
+              "geometries": 184,
+              "textures": 19
+            },
+            "errors": [],
+            "cityAmbient": {
+              "crowd": 0.872,
+              "surf": 0.872,
+              "rush": 1,
+              "nearTrain": 0.246,
+              "events": {
+                "honk": 1,
+                "vendor": 0,
+                "train": 1,
+                "bell": 0,
+                "crow": 1
+              },
+              "peak": 0.015399999999999999,
+              "ready": true
+            },
+            "city": {
+              "hour": 18.42,
+              "light": 0.57,
+              "night": false,
+              "tris": 863055,
+              "meshes": 167,
+              "load": 2735
+            },
+            "wantedDetail": {
+              "level": 0,
+              "heat": 0,
+              "seen": false,
+              "flashing": false,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "searchRadius": 0,
+              "escape": 0
+            },
+            "peds": {
+              "active": 220,
+              "visible": 82,
+              "byState": {
+                "walk": 189,
+                "idle": 31
+              },
+              "byActivity": {
+                "walk": 197,
+                "sit": 17,
+                "cross": 5,
+                "vendor": 1
+              },
+              "drawCalls": 10,
+              "paths": 803,
+              "places": 7954,
+              "hits": 0,
+              "fatal": 0,
+              "recovered": 0,
+              "crossings": 0,
+              "dodges": 0,
+              "screams": 0,
+              "respawned": 6,
+              "updateMs": 2.635,
+              "frameMs": 1.056
+            },
+            "traffic": {
+              "active": 38,
+              "parked": 21,
+              "stuck": 0,
+              "avgSpeedKmh": 27.7,
+              "collisionsLastMin": 0,
+              "aiHitsTotal": 0,
+              "waiting": 1,
+              "buses": 2,
+              "abandoned": 0,
+              "msPerStep": 0.517,
+              "msMax": 2.1,
+              "grants": 33,
+              "forced": 0,
+              "honks": 0,
+              "recycled": 0,
+              "why": {
+                "ring": 4
+              }
+            },
+            "police": {
+              "level": 0,
+              "seen": false,
+              "flashing": false,
+              "searchRadius": 0,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "escape": 0,
+              "cars": 2,
+              "foot": 0,
+              "roadblocks": 0,
+              "units": [
+                "M1:patrol@166",
+                "M2:patrol@203"
+              ],
+              "arrest": {
+                "foot": 0,
+                "car": 0
+              },
+              "stats": {
+                "spawned": 2,
+                "despawned": 0,
+                "rams": 0,
+                "busts": 0,
+                "roadblocks": 0,
+                "stuck": 0,
+                "recycled": 0,
+                "footSpawned": 0
+              }
+            },
+            "pl": {
+              "action": "none",
+              "camYaw": 3.142,
+              "y": 0,
+              "stamina": 1,
+              "speed": 0,
+              "near": null,
+              "timeScale": 1,
+              "approach": false
+            }
+          }
+        },
+        {
+          "site": "marine",
+          "t": 9.333333333333377,
+          "near20": 26,
+          "near50": 77,
+          "overlap": 7,
+          "road": 0,
+          "still": 1,
+          "state": {
+            "fps": 61,
+            "time": 9.33,
+            "player": {
+              "mode": "foot",
+              "x": -418,
+              "z": 150,
+              "heading": 3.142,
+              "health": 100,
+              "state": "normal"
+            },
+            "vehicle": null,
+            "wanted": {
+              "level": 0,
+              "seen": false
+            },
+            "counts": {
+              "vehicles": 62,
+              "peds": 220
+            },
+            "road": "Marine Drive",
+            "area": "Marine Drive",
+            "render": {
+              "calls": 230,
+              "triangles": 1004597,
+              "geometries": 184,
+              "textures": 19
+            },
+            "errors": [],
+            "cityAmbient": {
+              "crowd": 0.872,
+              "surf": 0.872,
+              "rush": 1,
+              "nearTrain": 0.246,
+              "events": {
+                "honk": 2,
+                "vendor": 0,
+                "train": 1,
+                "bell": 0,
+                "crow": 1
+              },
+              "peak": 0.015399999999999999,
+              "ready": true
+            },
+            "city": {
+              "hour": 18.42,
+              "light": 0.57,
+              "night": false,
+              "tris": 863055,
+              "meshes": 167,
+              "load": 2735
+            },
+            "wantedDetail": {
+              "level": 0,
+              "heat": 0,
+              "seen": false,
+              "flashing": false,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "searchRadius": 0,
+              "escape": 0
+            },
+            "peds": {
+              "active": 220,
+              "visible": 82,
+              "byState": {
+                "idle": 31,
+                "walk": 189
+              },
+              "byActivity": {
+                "walk": 197,
+                "sit": 17,
+                "cross": 5,
+                "vendor": 1
+              },
+              "drawCalls": 10,
+              "paths": 803,
+              "places": 7954,
+              "hits": 0,
+              "fatal": 0,
+              "recovered": 0,
+              "crossings": 3,
+              "dodges": 0,
+              "screams": 0,
+              "respawned": 6,
+              "updateMs": 2.922,
+              "frameMs": 1.186
+            },
+            "traffic": {
+              "active": 39,
+              "parked": 21,
+              "stuck": 0,
+              "avgSpeedKmh": 28.2,
+              "collisionsLastMin": 0,
+              "aiHitsTotal": 0,
+              "waiting": 2,
+              "buses": 2,
+              "abandoned": 0,
+              "msPerStep": 0.551,
+              "msMax": 2.1,
+              "grants": 35,
+              "forced": 0,
+              "honks": 1,
+              "recycled": 0,
+              "why": {
+                "ring": 4
+              }
+            },
+            "police": {
+              "level": 0,
+              "seen": false,
+              "flashing": false,
+              "searchRadius": 0,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "escape": 0,
+              "cars": 2,
+              "foot": 0,
+              "roadblocks": 0,
+              "units": [
+                "M1:patrol@159",
+                "M2:patrol@210"
+              ],
+              "arrest": {
+                "foot": 0,
+                "car": 0
+              },
+              "stats": {
+                "spawned": 2,
+                "despawned": 0,
+                "rams": 0,
+                "busts": 0,
+                "roadblocks": 0,
+                "stuck": 0,
+                "recycled": 0,
+                "footSpawned": 0
+              }
+            },
+            "pl": {
+              "action": "none",
+              "camYaw": 3.142,
+              "y": 0,
+              "stamina": 1,
+              "speed": 0,
+              "near": null,
+              "timeScale": 1,
+              "approach": false
+            }
+          }
+        },
+        {
+          "site": "marine",
+          "t": 10.350000000000094,
+          "near20": 25,
+          "near50": 77,
+          "overlap": 5,
+          "road": 0,
+          "still": 0,
+          "state": {
+            "fps": 65,
+            "time": 10.35,
+            "player": {
+              "mode": "foot",
+              "x": -418,
+              "z": 150,
+              "heading": 3.142,
+              "health": 100,
+              "state": "normal"
+            },
+            "vehicle": null,
+            "wanted": {
+              "level": 0,
+              "seen": false
+            },
+            "counts": {
+              "vehicles": 61,
+              "peds": 220
+            },
+            "road": "Marine Drive",
+            "area": "Marine Drive",
+            "render": {
+              "calls": 230,
+              "triangles": 1001697,
+              "geometries": 184,
+              "textures": 19
+            },
+            "errors": [],
+            "cityAmbient": {
+              "crowd": 0.872,
+              "surf": 0.872,
+              "rush": 1,
+              "nearTrain": 0.246,
+              "events": {
+                "honk": 2,
+                "vendor": 1,
+                "train": 1,
+                "bell": 0,
+                "crow": 1
+              },
+              "peak": 0.015399999999999999,
+              "ready": true
+            },
+            "city": {
+              "hour": 18.42,
+              "light": 0.56,
+              "night": false,
+              "tris": 863055,
+              "meshes": 167,
+              "load": 2735
+            },
+            "wantedDetail": {
+              "level": 0,
+              "heat": 0,
+              "seen": false,
+              "flashing": false,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "searchRadius": 0,
+              "escape": 0
+            },
+            "peds": {
+              "active": 220,
+              "visible": 81,
+              "byState": {
+                "walk": 191,
+                "idle": 29
+              },
+              "byActivity": {
+                "walk": 197,
+                "sit": 17,
+                "cross": 5,
+                "vendor": 1
+              },
+              "drawCalls": 10,
+              "paths": 803,
+              "places": 7954,
+              "hits": 0,
+              "fatal": 0,
+              "recovered": 0,
+              "crossings": 3,
+              "dodges": 0,
+              "screams": 0,
+              "respawned": 6,
+              "updateMs": 2.627,
+              "frameMs": 0.991
+            },
+            "traffic": {
+              "active": 38,
+              "parked": 21,
+              "stuck": 0,
+              "avgSpeedKmh": 28,
+              "collisionsLastMin": 0,
+              "aiHitsTotal": 0,
+              "waiting": 3,
+              "buses": 2,
+              "abandoned": 0,
+              "msPerStep": 0.548,
+              "msMax": 2.1,
+              "grants": 37,
+              "forced": 0,
+              "honks": 1,
+              "recycled": 0,
+              "why": {
+                "ring": 6
+              }
+            },
+            "police": {
+              "level": 0,
+              "seen": false,
+              "flashing": false,
+              "searchRadius": 0,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "escape": 0,
+              "cars": 2,
+              "foot": 0,
+              "roadblocks": 0,
+              "units": [
+                "M1:patrol@155",
+                "M2:patrol@218"
+              ],
+              "arrest": {
+                "foot": 0,
+                "car": 0
+              },
+              "stats": {
+                "spawned": 2,
+                "despawned": 0,
+                "rams": 0,
+                "busts": 0,
+                "roadblocks": 0,
+                "stuck": 0,
+                "recycled": 0,
+                "footSpawned": 0
+              }
+            },
+            "pl": {
+              "action": "none",
+              "camYaw": 3.142,
+              "y": 0,
+              "stamina": 1,
+              "speed": 0,
+              "near": null,
+              "timeScale": 1,
+              "approach": false
+            }
+          }
+        },
+        {
+          "site": "marine",
+          "t": 11.366666666666811,
+          "near20": 24,
+          "near50": 75,
+          "overlap": 3,
+          "road": 0,
+          "still": 0,
+          "state": {
+            "fps": 69,
+            "time": 11.37,
+            "player": {
+              "mode": "foot",
+              "x": -418,
+              "z": 150,
+              "heading": 3.142,
+              "health": 100,
+              "state": "normal"
+            },
+            "vehicle": null,
+            "wanted": {
+              "level": 0,
+              "seen": false
+            },
+            "counts": {
+              "vehicles": 63,
+              "peds": 220
+            },
+            "road": "Marine Drive",
+            "area": "Marine Drive",
+            "render": {
+              "calls": 233,
+              "triangles": 1003971,
+              "geometries": 184,
+              "textures": 19
+            },
+            "errors": [],
+            "cityAmbient": {
+              "crowd": 0.872,
+              "surf": 0.872,
+              "rush": 1,
+              "nearTrain": 0.246,
+              "events": {
+                "honk": 2,
+                "vendor": 1,
+                "train": 1,
+                "bell": 0,
+                "crow": 1
+              },
+              "peak": 0.015399999999999999,
+              "ready": true
+            },
+            "city": {
+              "hour": 18.42,
+              "light": 0.56,
+              "night": false,
+              "tris": 863055,
+              "meshes": 167,
+              "load": 2735
+            },
+            "wantedDetail": {
+              "level": 0,
+              "heat": 0,
+              "seen": false,
+              "flashing": false,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "searchRadius": 0,
+              "escape": 0
+            },
+            "peds": {
+              "active": 220,
+              "visible": 80,
+              "byState": {
+                "walk": 191,
+                "idle": 29
+              },
+              "byActivity": {
+                "walk": 197,
+                "sit": 17,
+                "cross": 5,
+                "vendor": 1
+              },
+              "drawCalls": 10,
+              "paths": 803,
+              "places": 7954,
+              "hits": 0,
+              "fatal": 0,
+              "recovered": 0,
+              "crossings": 4,
+              "dodges": 0,
+              "screams": 0,
+              "respawned": 6,
+              "updateMs": 2.445,
+              "frameMs": 0.861
+            },
+            "traffic": {
+              "active": 40,
+              "parked": 21,
+              "stuck": 0,
+              "avgSpeedKmh": 27.5,
+              "collisionsLastMin": 0,
+              "aiHitsTotal": 0,
+              "waiting": 4,
+              "buses": 3,
+              "abandoned": 0,
+              "msPerStep": 0.548,
+              "msMax": 2.1,
+              "grants": 38,
+              "forced": 0,
+              "honks": 2,
+              "recycled": 0,
+              "why": {
+                "ring": 6
+              }
+            },
+            "police": {
+              "level": 0,
+              "seen": false,
+              "flashing": false,
+              "searchRadius": 0,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "escape": 0,
+              "cars": 2,
+              "foot": 0,
+              "roadblocks": 0,
+              "units": [
+                "M1:patrol@153",
+                "M2:patrol@225"
+              ],
+              "arrest": {
+                "foot": 0,
+                "car": 0
+              },
+              "stats": {
+                "spawned": 2,
+                "despawned": 0,
+                "rams": 0,
+                "busts": 0,
+                "roadblocks": 0,
+                "stuck": 0,
+                "recycled": 0,
+                "footSpawned": 0
+              }
+            },
+            "pl": {
+              "action": "none",
+              "camYaw": 3.142,
+              "y": 0,
+              "stamina": 1,
+              "speed": 0,
+              "near": null,
+              "timeScale": 1,
+              "approach": false
+            }
+          }
+        },
+        {
+          "site": "marine",
+          "t": 12.383333333333528,
+          "near20": 24,
+          "near50": 75,
+          "overlap": 2,
+          "road": 0,
+          "still": 0,
+          "state": {
+            "fps": 68,
+            "time": 12.38,
+            "player": {
+              "mode": "foot",
+              "x": -418,
+              "z": 150,
+              "heading": 3.142,
+              "health": 100,
+              "state": "normal"
+            },
+            "vehicle": null,
+            "wanted": {
+              "level": 0,
+              "seen": false
+            },
+            "counts": {
+              "vehicles": 63,
+              "peds": 220
+            },
+            "road": "Marine Drive",
+            "area": "Marine Drive",
+            "render": {
+              "calls": 238,
+              "triangles": 1005797,
+              "geometries": 184,
+              "textures": 19
+            },
+            "errors": [],
+            "cityAmbient": {
+              "crowd": 0.872,
+              "surf": 0.872,
+              "rush": 1,
+              "nearTrain": 0.246,
+              "events": {
+                "honk": 2,
+                "vendor": 1,
+                "train": 1,
+                "bell": 0,
+                "crow": 1
+              },
+              "peak": 0.015399999999999999,
+              "ready": true
+            },
+            "city": {
+              "hour": 18.43,
+              "light": 0.56,
+              "night": false,
+              "tris": 863055,
+              "meshes": 167,
+              "load": 2735
+            },
+            "wantedDetail": {
+              "level": 0,
+              "heat": 0,
+              "seen": false,
+              "flashing": false,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "searchRadius": 0,
+              "escape": 0
+            },
+            "peds": {
+              "active": 220,
+              "visible": 81,
+              "byState": {
+                "walk": 189,
+                "idle": 31
+              },
+              "byActivity": {
+                "walk": 197,
+                "sit": 17,
+                "cross": 5,
+                "vendor": 1
+              },
+              "drawCalls": 10,
+              "paths": 803,
+              "places": 7954,
+              "hits": 0,
+              "fatal": 0,
+              "recovered": 0,
+              "crossings": 4,
+              "dodges": 0,
+              "screams": 0,
+              "respawned": 6,
+              "updateMs": 2.412,
+              "frameMs": 0.871
+            },
+            "traffic": {
+              "active": 40,
+              "parked": 21,
+              "stuck": 0,
+              "avgSpeedKmh": 26.9,
+              "collisionsLastMin": 0,
+              "aiHitsTotal": 0,
+              "waiting": 4,
+              "buses": 3,
+              "abandoned": 0,
+              "msPerStep": 0.536,
+              "msMax": 2.1,
+              "grants": 39,
+              "forced": 0,
+              "honks": 2,
+              "recycled": 0,
+              "why": {
+                "ring": 6
+              }
+            },
+            "police": {
+              "level": 0,
+              "seen": false,
+              "flashing": false,
+              "searchRadius": 0,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "escape": 0,
+              "cars": 2,
+              "foot": 0,
+              "roadblocks": 0,
+              "units": [
+                "M1:patrol@147",
+                "M2:patrol@233"
+              ],
+              "arrest": {
+                "foot": 0,
+                "car": 0
+              },
+              "stats": {
+                "spawned": 2,
+                "despawned": 0,
+                "rams": 0,
+                "busts": 0,
+                "roadblocks": 0,
+                "stuck": 0,
+                "recycled": 0,
+                "footSpawned": 0
+              }
+            },
+            "pl": {
+              "action": "none",
+              "camYaw": 3.142,
+              "y": 0,
+              "stamina": 1,
+              "speed": 0,
+              "near": null,
+              "timeScale": 1,
+              "approach": false
+            }
+          }
+        },
+        {
+          "site": "marine",
+          "t": 13.416666666666913,
+          "near20": 23,
+          "near50": 74,
+          "overlap": 3,
+          "road": 0,
+          "still": 0,
+          "state": {
+            "fps": 72,
+            "time": 13.42,
+            "player": {
+              "mode": "foot",
+              "x": -418,
+              "z": 150,
+              "heading": 3.142,
+              "health": 100,
+              "state": "normal"
+            },
+            "vehicle": null,
+            "wanted": {
+              "level": 0,
+              "seen": false
+            },
+            "counts": {
+              "vehicles": 63,
+              "peds": 220
+            },
+            "road": "Marine Drive",
+            "area": "Marine Drive",
+            "render": {
+              "calls": 236,
+              "triangles": 1004221,
+              "geometries": 184,
+              "textures": 19
+            },
+            "errors": [],
+            "cityAmbient": {
+              "crowd": 0.872,
+              "surf": 0.872,
+              "rush": 1,
+              "nearTrain": 0.246,
+              "events": {
+                "honk": 2,
+                "vendor": 1,
+                "train": 1,
+                "bell": 0,
+                "crow": 1
+              },
+              "peak": 0.015399999999999999,
+              "ready": true
+            },
+            "city": {
+              "hour": 18.43,
+              "light": 0.56,
+              "night": false,
+              "tris": 863055,
+              "meshes": 167,
+              "load": 2735
+            },
+            "wantedDetail": {
+              "level": 0,
+              "heat": 0,
+              "seen": false,
+              "flashing": false,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "searchRadius": 0,
+              "escape": 0
+            },
+            "peds": {
+              "active": 220,
+              "visible": 80,
+              "byState": {
+                "walk": 190,
+                "idle": 30
+              },
+              "byActivity": {
+                "walk": 197,
+                "sit": 17,
+                "cross": 5,
+                "vendor": 1
+              },
+              "drawCalls": 10,
+              "paths": 803,
+              "places": 7954,
+              "hits": 0,
+              "fatal": 0,
+              "recovered": 0,
+              "crossings": 4,
+              "dodges": 0,
+              "screams": 0,
+              "respawned": 6,
+              "updateMs": 2.552,
+              "frameMs": 0.925
+            },
+            "traffic": {
+              "active": 40,
+              "parked": 21,
+              "stuck": 0,
+              "avgSpeedKmh": 25.9,
+              "collisionsLastMin": 0,
+              "aiHitsTotal": 0,
+              "waiting": 4,
+              "buses": 3,
+              "abandoned": 0,
+              "msPerStep": 0.528,
+              "msMax": 2.1,
+              "grants": 42,
+              "forced": 0,
+              "honks": 2,
+              "recycled": 0,
+              "why": {
+                "ring": 6
+              }
+            },
+            "police": {
+              "level": 0,
+              "seen": false,
+              "flashing": false,
+              "searchRadius": 0,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "escape": 0,
+              "cars": 2,
+              "foot": 0,
+              "roadblocks": 0,
+              "units": [
+                "M1:patrol@139",
+                "M2:patrol@239"
+              ],
+              "arrest": {
+                "foot": 0,
+                "car": 0
+              },
+              "stats": {
+                "spawned": 2,
+                "despawned": 0,
+                "rams": 0,
+                "busts": 0,
+                "roadblocks": 0,
+                "stuck": 0,
+                "recycled": 0,
+                "footSpawned": 0
+              }
+            },
+            "pl": {
+              "action": "none",
+              "camYaw": 3.142,
+              "y": 0,
+              "stamina": 1,
+              "speed": 0,
+              "near": null,
+              "timeScale": 1,
+              "approach": false
+            }
+          }
+        },
+        {
+          "site": "marine",
+          "t": 14.43333333333363,
+          "near20": 24,
+          "near50": 74,
+          "overlap": 3,
+          "road": 0,
+          "still": 0,
+          "state": {
+            "fps": 57,
+            "time": 14.43,
+            "player": {
+              "mode": "foot",
+              "x": -418,
+              "z": 150,
+              "heading": 3.142,
+              "health": 100,
+              "state": "normal"
+            },
+            "vehicle": null,
+            "wanted": {
+              "level": 0,
+              "seen": false
+            },
+            "counts": {
+              "vehicles": 63,
+              "peds": 220
+            },
+            "road": "Marine Drive",
+            "area": "Marine Drive",
+            "render": {
+              "calls": 239,
+              "triangles": 1005405,
+              "geometries": 184,
+              "textures": 19
+            },
+            "errors": [],
+            "cityAmbient": {
+              "crowd": 0.872,
+              "surf": 0.872,
+              "rush": 1,
+              "nearTrain": 0.246,
+              "events": {
+                "honk": 2,
+                "vendor": 1,
+                "train": 1,
+                "bell": 0,
+                "crow": 1
+              },
+              "peak": 0.015399999999999999,
+              "ready": true
+            },
+            "city": {
+              "hour": 18.43,
+              "light": 0.56,
+              "night": false,
+              "tris": 863055,
+              "meshes": 167,
+              "load": 2735
+            },
+            "wantedDetail": {
+              "level": 0,
+              "heat": 0,
+              "seen": false,
+              "flashing": false,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "searchRadius": 0,
+              "escape": 0
+            },
+            "peds": {
+              "active": 220,
+              "visible": 80,
+              "byState": {
+                "walk": 191,
+                "idle": 29
+              },
+              "byActivity": {
+                "walk": 197,
+                "sit": 17,
+                "cross": 5,
+                "vendor": 1
+              },
+              "drawCalls": 10,
+              "paths": 803,
+              "places": 7954,
+              "hits": 0,
+              "fatal": 0,
+              "recovered": 0,
+              "crossings": 4,
+              "dodges": 0,
+              "screams": 0,
+              "respawned": 6,
+              "updateMs": 3.538,
+              "frameMs": 1.286
+            },
+            "traffic": {
+              "active": 40,
+              "parked": 21,
+              "stuck": 0,
+              "avgSpeedKmh": 24.8,
+              "collisionsLastMin": 0,
+              "aiHitsTotal": 0,
+              "waiting": 5,
+              "buses": 3,
+              "abandoned": 0,
+              "msPerStep": 0.556,
+              "msMax": 2.1,
+              "grants": 45,
+              "forced": 0,
+              "honks": 2,
+              "recycled": 0,
+              "why": {
+                "ring": 6
+              }
+            },
+            "police": {
+              "level": 0,
+              "seen": false,
+              "flashing": false,
+              "searchRadius": 0,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "escape": 0,
+              "cars": 2,
+              "foot": 0,
+              "roadblocks": 0,
+              "units": [
+                "M1:patrol@132",
+                "M2:patrol@241"
+              ],
+              "arrest": {
+                "foot": 0,
+                "car": 0
+              },
+              "stats": {
+                "spawned": 2,
+                "despawned": 0,
+                "rams": 0,
+                "busts": 0,
+                "roadblocks": 0,
+                "stuck": 0,
+                "recycled": 0,
+                "footSpawned": 0
+              }
+            },
+            "pl": {
+              "action": "none",
+              "camYaw": 3.142,
+              "y": 0,
+              "stamina": 1,
+              "speed": 0,
+              "near": null,
+              "timeScale": 1,
+              "approach": false
+            }
+          }
+        }
+      ],
+      "stress": {
+        "final": {
+          "fps": 57,
+          "time": 104.72,
+          "player": {
+            "mode": "foot",
+            "x": -418,
+            "z": 150,
+            "heading": 3.142,
+            "health": 100,
+            "state": "normal"
+          },
+          "vehicle": null,
+          "wanted": {
+            "level": 0,
+            "seen": false
+          },
+          "counts": {
+            "vehicles": 63,
+            "peds": 220
+          },
+          "road": "Marine Drive",
+          "area": "Marine Drive",
+          "render": {
+            "calls": 240,
+            "triangles": 1005453,
+            "geometries": 184,
+            "textures": 19
+          },
+          "errors": [],
+          "cityAmbient": {
+            "crowd": 0.872,
+            "surf": 0.872,
+            "rush": 1,
+            "nearTrain": 0.246,
+            "events": {
+              "honk": 7,
+              "vendor": 1,
+              "train": 1,
+              "bell": 0,
+              "crow": 3
+            },
+            "peak": 0.015399999999999999,
+            "ready": true
+          },
+          "city": {
+            "hour": 18.43,
+            "light": 0.55,
+            "night": false,
+            "tris": 863055,
+            "meshes": 167,
+            "load": 2735
+          },
+          "wantedDetail": {
+            "level": 0,
+            "heat": 0,
+            "seen": false,
+            "flashing": false,
+            "lastKnown": {
+              "x": 0,
+              "z": 0
+            },
+            "searchRadius": 0,
+            "escape": 0
+          },
+          "peds": {
+            "active": 220,
+            "visible": 61,
+            "byState": {
+              "walk": 185,
+              "idle": 35
+            },
+            "byActivity": {
+              "walk": 191,
+              "sit": 19,
+              "cricket": 5,
+              "cross": 4,
+              "vendor": 1
+            },
+            "drawCalls": 10,
+            "paths": 803,
+            "places": 7954,
+            "hits": 0,
+            "fatal": 0,
+            "recovered": 0,
+            "crossings": 21,
+            "dodges": 1,
+            "screams": 0,
+            "respawned": 24,
+            "updateMs": 3.425,
+            "frameMs": 1.134
+          },
+          "traffic": {
+            "active": 40,
+            "parked": 21,
+            "stuck": 0,
+            "avgSpeedKmh": 20.8,
+            "collisionsLastMin": 0,
+            "aiHitsTotal": 0,
+            "waiting": 10,
+            "buses": 0,
+            "abandoned": 0,
+            "msPerStep": 0.444,
+            "msMax": 12.8,
+            "grants": 212,
+            "forced": 0,
+            "honks": 21,
+            "recycled": 0,
+            "why": {
+              "ring": 74
+            }
+          },
+          "police": {
+            "level": 0,
+            "seen": false,
+            "flashing": false,
+            "searchRadius": 0,
+            "lastKnown": {
+              "x": 0,
+              "z": 0
+            },
+            "escape": 0,
+            "cars": 2,
+            "foot": 0,
+            "roadblocks": 0,
+            "units": [
+              "M1:patrol@140",
+              "M2:patrol@86"
+            ],
+            "arrest": {
+              "foot": 0,
+              "car": 0
+            },
+            "stats": {
+              "spawned": 2,
+              "despawned": 0,
+              "rams": 0,
+              "busts": 0,
+              "roadblocks": 0,
+              "stuck": 0,
+              "recycled": 0,
+              "footSpawned": 0
+            }
+          },
+          "pl": {
+            "action": "none",
+            "camYaw": 3.142,
+            "y": 0,
+            "stamina": 1,
+            "speed": 0,
+            "near": null,
+            "timeScale": 1,
+            "approach": false
+          }
+        },
+        "last": {
+          "site": "marine",
+          "t": 104.71666666666201,
+          "near20": 16,
+          "near50": 64,
+          "overlap": 3,
+          "road": 0,
+          "still": 0,
+          "state": {
+            "fps": 57,
+            "time": 104.72,
+            "player": {
+              "mode": "foot",
+              "x": -418,
+              "z": 150,
+              "heading": 3.142,
+              "health": 100,
+              "state": "normal"
+            },
+            "vehicle": null,
+            "wanted": {
+              "level": 0,
+              "seen": false
+            },
+            "counts": {
+              "vehicles": 63,
+              "peds": 220
+            },
+            "road": "Marine Drive",
+            "area": "Marine Drive",
+            "render": {
+              "calls": 240,
+              "triangles": 1005453,
+              "geometries": 184,
+              "textures": 19
+            },
+            "errors": [],
+            "cityAmbient": {
+              "crowd": 0.872,
+              "surf": 0.872,
+              "rush": 1,
+              "nearTrain": 0.246,
+              "events": {
+                "honk": 7,
+                "vendor": 1,
+                "train": 1,
+                "bell": 0,
+                "crow": 3
+              },
+              "peak": 0.015399999999999999,
+              "ready": true
+            },
+            "city": {
+              "hour": 18.43,
+              "light": 0.55,
+              "night": false,
+              "tris": 863055,
+              "meshes": 167,
+              "load": 2735
+            },
+            "wantedDetail": {
+              "level": 0,
+              "heat": 0,
+              "seen": false,
+              "flashing": false,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "searchRadius": 0,
+              "escape": 0
+            },
+            "peds": {
+              "active": 220,
+              "visible": 61,
+              "byState": {
+                "walk": 185,
+                "idle": 35
+              },
+              "byActivity": {
+                "walk": 191,
+                "sit": 19,
+                "cricket": 5,
+                "cross": 4,
+                "vendor": 1
+              },
+              "drawCalls": 10,
+              "paths": 803,
+              "places": 7954,
+              "hits": 0,
+              "fatal": 0,
+              "recovered": 0,
+              "crossings": 21,
+              "dodges": 1,
+              "screams": 0,
+              "respawned": 24,
+              "updateMs": 3.425,
+              "frameMs": 1.134
+            },
+            "traffic": {
+              "active": 40,
+              "parked": 21,
+              "stuck": 0,
+              "avgSpeedKmh": 20.8,
+              "collisionsLastMin": 0,
+              "aiHitsTotal": 0,
+              "waiting": 10,
+              "buses": 0,
+              "abandoned": 0,
+              "msPerStep": 0.444,
+              "msMax": 12.8,
+              "grants": 212,
+              "forced": 0,
+              "honks": 21,
+              "recycled": 0,
+              "why": {
+                "ring": 74
+              }
+            },
+            "police": {
+              "level": 0,
+              "seen": false,
+              "flashing": false,
+              "searchRadius": 0,
+              "lastKnown": {
+                "x": 0,
+                "z": 0
+              },
+              "escape": 0,
+              "cars": 2,
+              "foot": 0,
+              "roadblocks": 0,
+              "units": [
+                "M1:patrol@140",
+                "M2:patrol@86"
+              ],
+              "arrest": {
+                "foot": 0,
+                "car": 0
+              },
+              "stats": {
+                "spawned": 2,
+                "despawned": 0,
+                "rams": 0,
+                "busts": 0,
+                "roadblocks": 0,
+                "stuck": 0,
+                "recycled": 0,
+                "footSpawned": 0
+              }
+            },
+            "pl": {
+              "action": "none",
+              "camYaw": 3.142,
+              "y": 0,
+              "stamina": 1,
+              "speed": 0,
+              "near": null,
+              "timeScale": 1,
+              "approach": false
+            }
+          }
+        }
+      }
+    }
+  ],
+  "notes": "Live samples precede accelerated stress; no input.setKey, no mocked systems."
+}

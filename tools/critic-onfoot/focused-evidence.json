@@ -1,0 +1,371 @@
+{
+  "pairs": [
+    {
+      "a": 215,
+      "b": 154,
+      "d": 0.3184822401156597,
+      "ax": 10.528153914752776,
+      "az": -29.68353326372174,
+      "bx": 10.214181247943419,
+      "bz": -29.630128191250027
+    }
+  ],
+  "crossings": [
+    {
+      "id": 103,
+      "t": 11.600000000000156,
+      "pos": [
+        -78.7167659700967,
+        0,
+        -139.8882503129955
+      ],
+      "c": {
+        "x": -71.30555850978843,
+        "z": -139.47897017632755,
+        "tx": 0.05514046974306927,
+        "tz": -0.998478606979896,
+        "width": 12,
+        "node": "AZW",
+        "edge": 43
+      },
+      "signals": [
+        {
+          "key": 86,
+          "s": 0
+        }
+      ]
+    }
+  ],
+  "states": [
+    {
+      "fps": 17,
+      "time": 6.38,
+      "player": {
+        "mode": "foot",
+        "x": 5.34,
+        "z": -28.75,
+        "heading": 1.717,
+        "health": 100,
+        "state": "normal"
+      },
+      "vehicle": null,
+      "wanted": {
+        "level": 0,
+        "seen": false
+      },
+      "counts": {
+        "vehicles": 51,
+        "peds": 220
+      },
+      "road": "Bazargate Street",
+      "area": "Fort",
+      "render": {
+        "calls": 181,
+        "triangles": 629602,
+        "geometries": 257,
+        "textures": 20
+      },
+      "errors": [],
+      "cityAmbient": {
+        "crowd": 0.49,
+        "surf": 0,
+        "rush": 1,
+        "nearTrain": 0.101,
+        "events": {
+          "honk": 1,
+          "vendor": 0,
+          "train": 0,
+          "bell": 0,
+          "crow": 0
+        },
+        "peak": 0.015399999999999999,
+        "ready": true
+      },
+      "city": {
+        "hour": 18.41,
+        "light": 0.58,
+        "night": false,
+        "tris": 863055,
+        "meshes": 167,
+        "load": 2453
+      },
+      "wantedDetail": {
+        "level": 0,
+        "heat": 0,
+        "seen": false,
+        "flashing": false,
+        "lastKnown": {
+          "x": 0,
+          "z": 0
+        },
+        "searchRadius": 0,
+        "escape": 0
+      },
+      "peds": {
+        "active": 220,
+        "visible": 96,
+        "byState": {
+          "idle": 97,
+          "walk": 123
+        },
+        "byActivity": {
+          "walk": 190,
+          "cross": 12,
+          "cricket": 16,
+          "vendor": 2
+        },
+        "drawCalls": 13,
+        "paths": 803,
+        "places": 7954,
+        "hits": 0,
+        "fatal": 0,
+        "recovered": 0,
+        "crossings": 0,
+        "dodges": 0,
+        "screams": 0,
+        "respawned": 236,
+        "updateMs": 2.425,
+        "frameMs": 1.093
+      },
+      "traffic": {
+        "active": 40,
+        "parked": 11,
+        "stuck": 0,
+        "avgSpeedKmh": 26.5,
+        "collisionsLastMin": 0,
+        "aiHitsTotal": 0,
+        "waiting": 0,
+        "buses": 1,
+        "abandoned": 0,
+        "msPerStep": 1.57,
+        "msMax": 305.4,
+        "grants": 30,
+        "forced": 0,
+        "honks": 0,
+        "recycled": 0,
+        "why": {
+          "ring": 45
+        }
+      },
+      "police": {
+        "level": 0,
+        "seen": false,
+        "flashing": false,
+        "searchRadius": 0,
+        "lastKnown": {
+          "x": 0,
+          "z": 0
+        },
+        "escape": 0,
+        "cars": 0,
+        "foot": 0,
+        "roadblocks": 0,
+        "units": [],
+        "arrest": {
+          "foot": 0,
+          "car": 0
+        },
+        "stats": {
+          "spawned": 1,
+          "despawned": 1,
+          "rams": 0,
+          "busts": 0,
+          "roadblocks": 0,
+          "stuck": 0,
+          "recycled": 1,
+          "footSpawned": 0
+        }
+      },
+      "pl": {
+        "action": "none",
+        "camYaw": 1.717,
+        "y": 0,
+        "stamina": 1,
+        "speed": 0,
+        "near": null,
+        "timeScale": 1,
+        "approach": false
+      }
+    },
+    {
+      "fps": 24,
+      "time": 12.1,
+      "player": {
+        "mode": "foot",
+        "x": -78.69,
+        "z": -132.88,
+        "heading": 3.086,
+        "health": 100,
+        "state": "normal"
+      },
+      "vehicle": null,
+      "wanted": {
+        "level": 0,
+        "seen": false
+      },
+      "counts": {
+        "vehicles": 54,
+        "peds": 220
+      },
+      "road": "Vithaldas Thackersey Marg",
+      "area": "Marine Lines",
+      "render": {
+        "calls": 151,
+        "triangles": 749543,
+        "geometries": 259,
+        "textures": 20
+      },
+      "errors": [],
+      "cityAmbient": {
+        "crowd": 0.393,
+        "surf": 0,
+        "rush": 1,
+        "nearTrain": 0.118,
+        "events": {
+          "honk": 1,
+          "vendor": 0,
+          "train": 0,
+          "bell": 0,
+          "crow": 1
+        },
+        "peak": 0.015399999999999999,
+        "ready": true
+      },
+      "city": {
+        "hour": 18.42,
+        "light": 0.57,
+        "night": false,
+        "tris": 863055,
+        "meshes": 167,
+        "load": 2453
+      },
+      "wantedDetail": {
+        "level": 0,
+        "heat": 0,
+        "seen": false,
+        "flashing": false,
+        "lastKnown": {
+          "x": 0,
+          "z": 0
+        },
+        "searchRadius": 0,
+        "escape": 0
+      },
+      "peds": {
+        "active": 220,
+        "visible": 46,
+        "byState": {
+          "walk": 148,
+          "idle": 72
+        },
+        "byActivity": {
+          "walk": 160,
+          "cross": 8,
+          "cricket": 40,
+          "busStop": 11,
+          "vendor": 1
+        },
+        "drawCalls": 11,
+        "paths": 803,
+        "places": 7954,
+        "hits": 0,
+        "fatal": 0,
+        "recovered": 0,
+        "crossings": 1,
+        "dodges": 0,
+        "screams": 0,
+        "respawned": 422,
+        "updateMs": 3.007,
+        "frameMs": 0.821
+      },
+      "traffic": {
+        "active": 40,
+        "parked": 12,
+        "stuck": 0,
+        "avgSpeedKmh": 20.6,
+        "collisionsLastMin": 0,
+        "aiHitsTotal": 0,
+        "waiting": 1,
+        "buses": 0,
+        "abandoned": 0,
+        "msPerStep": 1.077,
+        "msMax": 305.4,
+        "grants": 41,
+        "forced": 0,
+        "honks": 0,
+        "recycled": 0,
+        "why": {
+          "ring": 56
+        }
+      },
+      "police": {
+        "level": 0,
+        "seen": false,
+        "flashing": false,
+        "searchRadius": 0,
+        "lastKnown": {
+          "x": 0,
+          "z": 0
+        },
+        "escape": 0,
+        "cars": 2,
+        "foot": 0,
+        "roadblocks": 0,
+        "units": [
+          "M2:patrol@137",
+          "M3:patrol@166"
+        ],
+        "arrest": {
+          "foot": 0,
+          "car": 0
+        },
+        "stats": {
+          "spawned": 3,
+          "despawned": 1,
+          "rams": 0,
+          "busts": 0,
+          "roadblocks": 0,
+          "stuck": 0,
+          "recycled": 1,
+          "footSpawned": 0
+        }
+      },
+      "pl": {
+        "action": "none",
+        "camYaw": 3.086,
+        "y": 0,
+        "stamina": 1,
+        "speed": 0,
+        "near": null,
+        "timeScale": 1,
+        "approach": false
+      }
+    }
+  ],
+  "allGreen": [
+    {
+      "id": 103,
+      "t": 11.600000000000156,
+      "pos": [
+        -78.7167659700967,
+        0,
+        -139.8882503129955
+      ],
+      "c": {
+        "x": -71.30555850978843,
+        "z": -139.47897017632755,
+        "tx": 0.05514046974306927,
+        "tz": -0.998478606979896,
+        "width": 12,
+        "node": "AZW",
+        "edge": 43
+      },
+      "signals": [
+        {
+          "key": 86,
+          "s": 0
+        }
+      ]
+    }
+  ]
+}
