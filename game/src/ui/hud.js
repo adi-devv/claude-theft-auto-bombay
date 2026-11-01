@@ -111,7 +111,7 @@ export function createHUD(game) {
 
   // ---------- state ----------
   let subT = 0, areaT = 0, streetT = 0, vehT = 0, helpT = 0, lastArea = null, lastStreet = null;
-  let lastHealth = 100, lagHealth = 100, dmgT = 0, pausedByUs = false, bigOpen = false, lockedOnce = false;
+  let lastHealth = 100, lagHealth = 100, dmgT = 0, pausedByUs = false, bigOpen = false, lockedOnce = false, mapHadLock = false, resumeLook = false;
   const helpQueue = [], helpShown = new Set();
   let starPop = 0, prevWanted = 0, miniZoom = 1.0, miniAcc = 1;
 
@@ -186,7 +186,11 @@ export function createHUD(game) {
     bigOpen = on;
     bigmap.classList.toggle('show', on);
     game.paused = on || pausedByUs;
-    if (on) { if (document.pointerLockElement) document.exitPointerLock?.(); drawBigMap(); }
+    if (on) { mapHadLock = !!document.pointerLockElement; if (mapHadLock) document.exitPointerLock?.(); drawBigMap(); }
+    else if (mapHadLock && !pausedByUs) {
+      resumeLook = true;
+      try { const r = game.renderer.domElement.requestPointerLock?.(); if (r?.catch) r.catch(() => {}); } catch (_) { /* prompt remains visible */ }
+    }
   }
 
   // Own key listeners: menus must work while the sim is paused (input edges are not polled then).
@@ -197,7 +201,7 @@ export function createHUD(game) {
     if (e.code === 'KeyM' && !pausedByUs) toggleBigMap();
   });
   document.addEventListener('pointerlockchange', () => {
-    if (document.pointerLockElement) { lockedOnce = true; return; }
+    if (document.pointerLockElement) { lockedOnce = true; resumeLook = false; return; }
     // losing pointer lock mid-game (Esc) pauses, like most PC games
     if (lockedOnce && game.started && !pausedByUs && !bigOpen && game.player?.state === 'normal') setPaused(true);
   });
@@ -255,7 +259,7 @@ export function createHUD(game) {
 
     // area / street popups
     const area = game.roads.areaNameAt(px, pz), street = game.roads.roadNameAt(px, pz);
-    if (area !== lastArea) { areaEl.textContent = area; areaEl.classList.add('show'); areaT = t + 4.5; lastArea = area; }
+    if (area !== lastArea || street !== lastStreet) { const distinct = area && (!street || area.trim().toLowerCase() !== street.trim().toLowerCase()); areaEl.textContent = area || ''; areaEl.classList.toggle('show', !!distinct); areaT = distinct ? t + 4.5 : 0; lastArea = area; }
     if (street !== lastStreet) { if (street) { streetEl.textContent = street; streetEl.classList.add('show'); streetT = t + 3.5; } else { streetEl.classList.remove('show'); streetT = 0; } lastStreet = street; }
     if (areaT && t > areaT) { areaEl.classList.remove('show'); areaT = 0; }
     if (streetT && t > streetT) { streetEl.classList.remove('show'); streetT = 0; }
@@ -270,12 +274,13 @@ export function createHUD(game) {
 
     // contextual prompt
     const near = p.mode === 'foot' && p.state === 'normal' && p.action === 'none' ? p.nearVehicle : null;
-    if (near) {
+    if (resumeLook && !document.pointerLockElement) prompt.innerHTML = '<span>Click to resume mouse look</span>';
+    else if (near) {
       const jack = near.driver && typeof near.driver === 'object';
       const html = `${keys(['F'])}<span>${jack ? 'Jack' : 'Enter'} ${VEHICLE_NAMES[near.type] || 'vehicle'}</span>`;
       if (prompt.innerHTML !== html) prompt.innerHTML = html;
     }
-    prompt.classList.toggle('show', !!near);
+    prompt.classList.toggle('show', !!near || (resumeLook && !document.pointerLockElement));
 
     // speedometer
     const v = p.mode === 'vehicle' ? p.vehicle : null;
@@ -479,6 +484,16 @@ export function createHUD(game) {
       if (!v.isPolice || v.wrecked || v === game.player?.vehicle || !(v.ai || v.sirenOn)) continue;
       const [sx, sy] = P(v.position.x, v.position.z);
       g.beginPath(); g.arc(sx, sy, 5, 0, 7); g.fillStyle = flash ? '#ff3b4a' : '#3d7bff'; g.fill();
+    }
+    for (const ped of game.peds || []) {
+      if (!ped.isCop || ped.state === 'dead' || !ped.position) continue;
+      let [sx, sy] = P(ped.position.x, ped.position.z);
+      if (game.player) {
+        const [px, py] = P(game.player.position.x, game.player.position.z);
+        if (Math.hypot(sx - px, sy - py) < 12) { sx += 12; sy -= 12; }
+      }
+      g.beginPath(); g.arc(sx, sy, 4, 0, 7); g.fillStyle = flash ? '#ff6b78' : '#6c9bff'; g.fill();
+      g.lineWidth = 1; g.strokeStyle = '#0a0610'; g.stroke();
     }
     const p = game.player;
     if (p) {

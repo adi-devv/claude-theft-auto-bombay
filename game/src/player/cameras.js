@@ -50,21 +50,26 @@ export class FootCamera {
     const want = this.dist + (player.sprinting ? 0.7 : 0) - (player.guard ? 0.6 : 0) + (act === 'down' ? 0.8 : 0) - (act === 'wasted' ? 0.3 : 0);
     const fx = Math.sin(this.yaw), fz = Math.cos(this.yaw), rx = -fz, rz = fx;
     const cp = Math.cos(this.pitch), spch = Math.sin(this.pitch);
-    // camera collision against buildings: cast from the (shoulder-offset) pivot back towards the camera
-    const sx = this.pivot.x + rx * this.shoulder, sz = this.pivot.z + rz * this.shoulder;
-    let allowed = want;
-    const col = game.collision;
-    if (col) {
-      const camY = this.pivot.y + spch * want;
-      const hit = col.raycast(sx, sz, -fx, -fz, want * cp + 0.4, Math.max(1.6, camY - 0.2));
-      if (hit) allowed = Math.max(0.7, (hit.dist - 0.35) / Math.max(0.25, cp));
-      // the shoulder offset itself must not poke into a wall
-      const side = col.raycast(this.pivot.x, this.pivot.z, rx, rz, this.shoulder + 0.25, 1.6);
-      if (side) this.shoulderCur = Math.max(0, side.dist - 0.3); else this.shoulderCur = this.shoulder;
+    // Sweep a small camera volume from the player's unobstructed position. Pull in
+    // immediately on obstruction and ease back out once the path is clear.
+    const col = game.collision, radius = 0.18;
+    const baseX = player.position.x, baseZ = player.position.z;
+    const targetX = this.pivot.x + rx * this.shoulder - fx * cp * want;
+    const targetZ = this.pivot.z + rz * this.shoulder - fz * cp * want;
+    const dx = targetX - baseX, dz = targetZ - baseZ, length = Math.hypot(dx, dz);
+    let fraction = 1;
+    if (col && length > 0.001) {
+      const steps = Math.ceil(length / 0.08);
+      for (let i = 1; i <= steps; i++) {
+        const f = i / steps, y = this.pivot.y + spch * want * f;
+        if (col.queryCircle(baseX + dx * f, baseZ + dz * f, radius).some(c => c.shape.h > y - radius)) {
+          fraction = Math.max(0, (i - 1) / steps); break;
+        }
+      }
     }
-    this.curDist = allowed < this.curDist ? allowed : damp(this.curDist, allowed, 3, dt);
-    const sh = this.shoulderCur ?? this.shoulder;
-    cam.position.set(this.pivot.x + rx * sh - fx * cp * this.curDist, Math.max(0.35, this.pivot.y + spch * this.curDist), this.pivot.z + rz * sh - fz * cp * this.curDist);
+    this.curFraction = this.curFraction === undefined ? fraction : fraction < this.curFraction ? fraction : damp(this.curFraction, fraction, 3, dt);
+    this.curDist = want * this.curFraction;
+    cam.position.set(baseX + dx * this.curFraction, Math.max(0.35, this.pivot.y + spch * this.curDist), baseZ + dz * this.curFraction);
     // aim along yaw/pitch (slightly above the pivot so the player sits in the lower-middle third)
     cam.rotation.order = 'YXZ';
     cam.rotation.set(-this.pitch * 0.92, this.yaw + Math.PI, 0);

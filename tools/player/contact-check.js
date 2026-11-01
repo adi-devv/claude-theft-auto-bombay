@@ -1,0 +1,7 @@
+const H=require('../harness'),fs=require('fs'),path=require('path');
+(async()=>{const g=await H.launch({width:960,height:540,out:path.join(__dirname,'shots')}); let result={}; try {
+await g.eval(()=>{__game.player.teleport(-418,150,0); __game.traffic.update=()=>{}; __game.pedSystem.update=()=>{}; __game.pedSystem.frameUpdate=()=>{};});
+result.ped=await g.eval(()=>{let G=__game,p=G.player; G.peds.length=0; let ped={position:p.position.clone(),radius:.29,state:'idle',isCop:false}; ped.position.z+=.5; G.peds.push(ped); p.velocity.set(0,0,4); p.update(1/60); return {distance:p.position.distanceTo(ped.position),speed:p.velocity.length(),sum:p.radius+ped.radius};}); await g.shot('ped-separation');
+result.hit=await g.eval(()=>{let G=__game,p=G.player; G.peds.length=0; p.teleport(-418,150,0); p.health=100; const v=G.createVehicle({type:'taxi',x:-418,z:148,heading:0}); let events=[]; G.events.on('playerHit',e=>{if(e.vehicle===v)events.push({t:G.time,speed:e.speed,health:p.health})}); v.velocity.set(0,0,10); for(let i=0;i<120;i++){ v.position.set(p.position.x,0,p.position.z-1.5); v.velocity.set(0,0,10); G.time+=1/60; p.update(1/60); } return {events,health:p.health,action:p.action};}); await g.shot('vehicle-contact'); result.errors=await g.eval(()=>__game.errors); fs.writeFileSync(path.join(__dirname,'contacts.json'),JSON.stringify(result,null,2)); console.log(JSON.stringify(result));
+} finally {await g.close();}})().catch(e=>{console.error(e);process.exitCode=1});
+

@@ -1,3 +1,18 @@
+# Critic follow-up � READY (2026-11-01)
+
+The seven requested fixes are in `work/player` only. The older report below describes an earlier build and its stub-system limitations are superseded by this follow-up. No integration into `game/` or git changes were made.
+
+- Vehicle contact: a per-vehicle contact edge and down-state hit set prevent repeat damage from the same sustained encounter. `tools/player/contact-check.js`, `contacts-before.json` and `contacts-after.json`: the controlled 10 m/s continuous contact yielded four hits and death before, one hit and 67.8 health during get-up after. A separate car can still strike while down; separation and recovery re-arm later encounters. The controlled test uses a held vehicle rather than native traffic.
+- Camera: a 0.18 m collision-volume sweep starts at the player, pulls in immediately and eases out. `tools/critic-onfoot/resume-camera.json` recorded 4/16 building contacts before; `tools/player/camera-check.json` recorded 0/16 after using the same real facade and W/Shift/Q orbit. Inspected the before and after `k02-camera-in-building-5.png` screenshots. At very short distances the player's body can fill or cross the view; the camera stays outside the sampled collider.
+- Civilians: optional `pushFrom` is called defensively when present and player-side circle separation removes inward velocity. The controlled fallback test measured 0.445 m separation before versus 0.64 m (combined radii) after, and speed 3.33 versus 0.50 m/s. The optional future API was not present in this sandbox and is not independently integration-tested.
+- Map close: `ui-check.json` records pointer lock true -> false -> true and yaw 3.142 -> 2.566 on mouse movement without another click; the critic's original lock stayed false. If relock is denied, a click-to-resume prompt is shown. The fallback denial path was not reproduced in Edge.
+- Foot police: the full map draws living cop peds, with an offset when close to the player marker. Inspected `u03-cop-minimap.png` and `u04-cop-fullmap.png` against the critic screenshots; the spawned officer is represented near the arrow.
+- Duplicate HUD label: `labels-before.json` shows both labels visible for Marine Drive; `labels-after.json` shows only the street, and both labels remain visible for a distinct area. Inspected `label-same.png` and `label-distinct.png` after transitions.
+- Favicon: inline SVG in `index.html`; baseline produced 404 console errors, sandbox label test and smoke produced no console errors or 404s.
+
+Final `node tools/smoke.js tools/player/shots` against `http://127.0.0.1:8765/work/player/?test=1` passed with empty `__game.errors` and no console warnings/errors. Contact, camera, UI and label checks also reported empty errors. Evidence and scripts are in `tools/player/`.
+
+
 # Player & HUD — notes (work/player)
 
 Status: DONE. Everything in the brief (A1–A6, B) is built and verified against the current integrated city and vehicles. `__game.errors` stays empty in every test. The only console error is a 404 for the favicon.
@@ -68,3 +83,4 @@ Listens: `vehicleCollision` (crash damage to the driver), `explosion` (blast dam
 - **Peds:** `ped.state`, `ped.isCop`, `knockDown(vx, vz, 'player')`, `panicAround`. Cops on the minimap are `ped.isCop`.
 - **Traffic:** `driver.eject()` must release the car immediately. The player sets `v.driver = 'player'` right afterwards.
 - **Vehicles:** none outstanding.
+

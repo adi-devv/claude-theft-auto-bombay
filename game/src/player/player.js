@@ -61,7 +61,8 @@ export function createPlayer(game) {
   let pendingVehicle = null;    // vehicle being entered (pull / enter actions)
   let jacked = false;
   let ignoreVehicle = null, ignoreUntil = 0;
-  let lastHitTime = -9, seq = null; // death / arrest sequence
+  let lastHitTime = -9, seq = null;
+  const vehicleContacts = new Set(), downHitVehicles = new Set(); // death / arrest sequence
   let steer = 0, hornOn = false, lastReset = -9;
   let carLook = { yaw: 0, pitch: 0, idle: 9 };
   let clickPunch = false, wasStarted = !!game.started, stepAcc = 0, prevHeading = p.heading, turnRate = 0, prevSpeed = 0, accel = 0;
@@ -208,6 +209,7 @@ export function createPlayer(game) {
     const ox = p.position.x, oz = p.position.z;
     p.position.x += p.velocity.x * dt; p.position.z += p.velocity.z * dt;
     collideVehicles(dt);
+    collidePeds();
     const col = game.collision;
     if (col) {
       const r = col.resolveCircle(p.position.x, p.position.z, p.radius);
@@ -330,7 +332,26 @@ export function createPlayer(game) {
   }
 
   // ---------------------------------------------------------------- vehicles (on foot)
+  function collidePeds() {
+    if (p.state !== 'normal' || p.airborne || ['down', 'tumble', 'getup'].includes(p.action)) return;
+    const push = game.peds?.pushFrom || game.pedSystem?.pushFrom;
+    if (typeof push === 'function') push.call(game.peds?.pushFrom ? game.peds : game.pedSystem, p.position, p.velocity, p.radius);
+    // Resolve the player's side as well: older crowd systems do not expose pushFrom.
+    for (const ped of game.peds || []) {
+      if (!ped?.position || ['down', 'dead', 'driver'].includes(ped.state)) continue;
+      const dx = p.position.x - ped.position.x, dz = p.position.z - ped.position.z;
+      const d = Math.hypot(dx, dz), overlap = p.radius + (ped.radius || 0.29) - d;
+      if (overlap <= 0) continue;
+      const nx = d > 1e-5 ? dx / d : -Math.sin(p.heading), nz = d > 1e-5 ? dz / d : -Math.cos(p.heading);
+      p.position.x += nx * overlap; p.position.z += nz * overlap;
+      const vn = p.velocity.x * nx + p.velocity.z * nz;
+      if (vn < 0) { p.velocity.x -= nx * vn * 0.85; p.velocity.z -= nz * vn * 0.85; }
+    }
+  }
+
   function collideVehicles(dt) {
+    if (!['down', 'tumble', 'getup'].includes(p.action)) downHitVehicles.clear();
+    const touching = new Set();
     for (const v of game.vehicles) {
       if (!v || v === pendingVehicle && (p.action === 'enter' || p.action === 'pull')) continue;
       const dx = v.position.x - p.position.x, dz = v.position.z - p.position.z;
@@ -339,6 +360,7 @@ export function createPlayer(game) {
       const o = v.getOBB?.(); if (!o) continue;
       const c = circleVsOBB(p.position.x, p.position.z, p.radius, o);
       if (!c) continue;
+      touching.add(v);
       // relative closing speed of the car into the player
       const vx = v.velocity?.x || 0, vz = v.velocity?.z || 0;
       // include rotation (yawRate × r) at the contact point
@@ -346,7 +368,8 @@ export function createPlayer(game) {
       const cvx = vx + yr * cz, cvz = vz - yr * cx;
       const closing = cvx * c.nx + cvz * c.nz; // only the car's own motion into us counts (running into a car is harmless)
       const ignored = v === ignoreVehicle && game.time < ignoreUntil;
-      if (!ignored && closing > HIT_MIN_CLOSING && game.time - lastHitTime > 0.6 && p.state === 'normal' && p.action !== 'tumble') {
+      if (!ignored && !vehicleContacts.has(v) && !downHitVehicles.has(v) && closing > HIT_MIN_CLOSING && game.time - lastHitTime > 0.2 && p.state === 'normal') {
+        downHitVehicles.add(v);
         lastHitTime = game.time;
         const dmg = (closing - HIT_MIN_CLOSING) * 4.6;
         // tangential part of the car's motion carries us along
@@ -362,6 +385,8 @@ export function createPlayer(game) {
       const vn = (p.velocity.x - cvx) * c.nx + (p.velocity.z - cvz) * c.nz;
       if (vn < 0 && !(p.action === 'down' && p.airborne)) { p.velocity.x -= c.nx * vn; p.velocity.z -= c.nz * vn; }
     }
+    vehicleContacts.clear();
+    for (const v of touching) vehicleContacts.add(v);
   }
 
   function knockDown(vx, vz, up, lieTime = 1.4) {
@@ -751,3 +776,4 @@ export function createPlayer(game) {
 
   return p;
 }
+

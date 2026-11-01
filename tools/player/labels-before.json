@@ -1,0 +1,27 @@
+{
+  "same": {
+    "area": {
+      "text": "Marine Drive",
+      "show": true
+    },
+    "street": {
+      "text": "Marine Drive",
+      "show": true
+    }
+  },
+  "distinct": {
+    "area": {
+      "text": "Fort",
+      "show": true
+    },
+    "street": {
+      "text": "Marine Drive",
+      "show": true
+    }
+  },
+  "errors": [],
+  "logs": [
+    "[error] Failed to load resource: the server responded with a status of 404 (File not found)",
+    "[error] Failed to load resource: the server responded with a status of 404 (File not found)"
+  ]
+}
