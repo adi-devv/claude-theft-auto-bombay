@@ -60,6 +60,8 @@ Harness targets `GAME_URL` (default `http://localhost:8765/game/`). Headless Chr
       no notes yet. Their latest files are on `wip/traffic|peds|police|player`. city finished later (see above).**
       **player: DONE + integrated on main 2026-11-01** (notes/player.md; real peds/traffic/police hooks still to be
       exercised once those systems land). wip/player is now stale and can be deleted.
+      **traffic: DONE + integrated on main 2026-11-01** (notes/traffic.md; 40 moving + 27 parked, 0 AI-AI hits in 300 s;
+      requests for city: clear props blocking Hazarimal Somani Marg / X1 / Esplanade Lane).
       **2026-11-01: work moved to a Windows machine (D:\Aadit\claudez\claude-theft-auto-bombay). Harness/mapview pick
       Edge + D3D11 on Windows automatically; integrate.sh is plain bash; tools/sync-sandbox.sh replaces rsync.
       Builders now resume ONE AT A TIME (traffic → peds → police), each integrated + pushed when verified.**
