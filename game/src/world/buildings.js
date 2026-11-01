@@ -7,9 +7,9 @@ import { prism, rectPoly, roundRectPoly, offsetPoly, mat, PRIM } from './geom.js
 import { mulberry } from './textures.js';
 import { STREET, SIGNALS } from './mapdata.js';
 
-const DECO_COLS = ['#e9dfc4', '#e8b9a0', '#bcd8c2', '#efe0a6', '#e7c4c0', '#bfd2dc', '#ece6da', '#e2c48e', '#d9cbb8', '#f0d2b4', '#c9dccd'];
-const FORT_COLS = ['#c9b48a', '#d8c8a2', '#9a9184', '#c49a5c', '#a87458', '#b8bcb6', '#cdb894', '#d1bf9a', '#b39a72', '#c8a679'];
-const MODERN_COLS = ['#b9b5aa', '#cfc8b8', '#a9aba6', '#d8d0bf', '#c2b8a6', '#9fa7ab'];
+const DECO_COLS = ['#e9dfc4', '#e8b9a0', '#bcd8c2', '#efe0a6', '#e7c4c0', '#bfd2dc', '#ece6da', '#e2c48e', '#d9cbb8', '#f0d2b4', '#c9dccd', '#f4d6c6', '#cfe3d6', '#f6e7b8', '#d6c8e0', '#f1c9c2', '#b9dcd8', '#f3dfc2', '#e6d0d8', '#9fd0c8', '#f2b8a2'];
+const FORT_COLS = ['#c9b48a', '#d8c8a2', '#9a9184', '#c49a5c', '#a87458', '#b8bcb6', '#cdb894', '#d1bf9a', '#b39a72', '#c8a679', '#a39478', '#c4ae8c', '#b5805f', '#9e9a8c', '#d6c19b', '#8e8a7c', '#c7a58a', '#7f8a86'];
+const MODERN_COLS = ['#b9b5aa', '#cfc8b8', '#a9aba6', '#d8d0bf', '#c2b8a6', '#9fa7ab', '#cfd6c9', '#d9c3a8', '#b6c3c9', '#e0d6c0', '#c4b0a0', '#a8b8a0', '#d4a89a'];
 const TOWER_COLS = ['#8fa3b0', '#a8b4ba', '#c7c3b8', '#7d8f9c', '#b5aa98'];
 
 // ---- obstacle index (oriented boxes) -----------------------------------------------------------
@@ -312,6 +312,7 @@ const BUILD = {
       for (let k = 0; k <= n; k++) {
         const lx = -o.hw + 0.35 + (2 * o.hw - 0.7) * (k / n);
         const [x, z] = L2W(o, lx, -o.hd - A + 0.35);
+        if (ctx.game.roads.isOnRoad(x, z, 0.8) || ctx.fields.sample(ctx.fields.dC, x, z) < 1.2) continue; // never put a pier in a carriageway / junction box
         emitBox(batch, x, fh0 / 2, z, 0.7, fh0, 0.7, o.rot, trim, facadeVec(3, 3, 6, seed));
         ctx.game.collision.addCircle(x, z, 0.4, { h: fh0, tag: 'pillar' });
       }
@@ -371,6 +372,7 @@ const BUILD = {
     if (rnd() < 0.6) for (let f = 1; f < floors; f += 1) emitPrism(batch, offsetPoly(poly, 0.45), f * fh - 0.12, f * fh + 0.08, new THREE.Color(col).multiplyScalar(1.08).getStyle(), facadeVec(3, 3, 0, seed), { top: true, bottom: true, smoothAngle: 0 });
     if (shops) shopSigns(batch, o, fh * 0.9, rnd, R, signs, 0, 2 * o.hw);
     roofClutter(batch, o, H, rnd, R, pick, '#a8a49a');
+    if (o.frontage && o.front && floors <= 9 && rnd() < 0.3) rooftopHoarding(batch, o, H, rnd, R, signs, ctx);
     acBoxes(batch, o, H, fh, rnd, R, 2 + Math.floor(rnd() * 5));
   },
 
@@ -392,7 +394,7 @@ const BUILD = {
   chawl(batch, o, rnd, R, pick, ctx, signs) {
     const floors = o.spec.floors || 3;
     const fh = 3.0, H = floors * fh; o.H = H;
-    const col = pick(['#c8b89a', '#b6a891', '#cbb08a', '#9fb0a8', '#c49c84', '#d0c4ac']);
+    const col = pick(['#c8b89a', '#b6a891', '#cbb08a', '#9fb0a8', '#c49c84', '#d0c4ac', '#d9a38a', '#8fb0b8', '#e3c477', '#b4c79a', '#c2877a']);
     const seed = rnd();
     const poly = rectPoly(o.cx, o.cz, o.hw, o.hd, o.rot);
     emitPrism(batch, poly, 0, H, col, facadeVec(2.2, fh, (o.frontage ? 10 : 0) + 5, seed), { top: false, bay: 2.2 });
@@ -402,6 +404,22 @@ const BUILD = {
     if (o.frontage) shopSigns(batch, o, fh * 0.85, rnd, R, signs, 0, 2 * o.hw);
   },
 };
+
+/** Billboard on a steel frame along the front edge of a flat roof, two-sided so it reads from both ways along the street. */
+function rooftopHoarding(batch, o, H, rnd, R, signs, ctx) {
+  const ads = signs.hoardUV; if (!ads || !ads.length) return;
+  const w = Math.min(2 * o.hw - 3, 9), h = w / 2, lx = R(-0.15, 0.15) * o.hw, lz = -o.hd + 1.4, y = H + 1.0 + 1.1 + h / 2;
+  const [x, z] = L2W(o, lx, lz), fx = o.front[0], fz = o.front[1], rx = fz, rz = -fx;
+  const fm = facadeVec(3, 3, 9, 0.5, 4);
+  (ctx.furnList ||= []).push(['hoard', x + o.front[0] * 18, z + o.front[1] * 18, x, z]);
+  emitBox(batch, x, y, z, w + 0.3, h + 0.3, 0.25, o.rot, '#3c3f43', fm);
+  for (const s of [-1, 1]) emitBox(batch, x + rx * s * (w * 0.35), H + 1.55, z + rz * s * (w * 0.35), 0.18, 2.2, 0.18, o.rot, '#4a4d52', fm);
+  for (const side of [1, -1]) {
+    const uv = ads[Math.floor(rnd() * ads.length)];
+    emitSign(batch, x + fx * side * 0.14, y, z + fz * side * 0.14, w, h, fx * side, fz * side, uv);
+  }
+  emitBox(batch, x + fx * 0.3, y + h / 2 + 0.28, z + fz * 0.3, w + 0.3, 0.08, 0.5, o.rot, '#3c3f43', fm);
+}
 
 function shopSigns(batch, o, y, rnd, R, signs, cx, width) {
   const n = Math.max(1, Math.floor(width / 7));

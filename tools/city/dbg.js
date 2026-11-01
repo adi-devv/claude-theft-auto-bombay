@@ -1,6 +1,6 @@
 const { chromium } = require('playwright-core');
 (async () => {
-  const b = await chromium.launch({ channel: 'chrome', headless: true, args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
+  const b = await chromium.launch({ channel: process.platform === 'win32' ? 'msedge' : 'chrome', headless: true, args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 960, height: 540 } });
   p.on('console', (m) => console.log('[' + m.type() + ']', m.text().slice(0, 600)));
   p.on('pageerror', (e) => console.log('[pageerror]', e.message, e.stack?.slice(0, 500)));

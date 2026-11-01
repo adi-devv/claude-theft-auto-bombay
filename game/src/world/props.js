@@ -15,11 +15,14 @@ export function buildProps(game, ctx) {
   const nodeList = [...roads.nodes.values()];
   const sig = new Set(SIGNALS);
   const nearJunction = (x, z, extra) => nodeList.some((n) => (n.edges.length >= 3 || n.roundabout) && Math.hypot(x - n.x, z - n.z) < n.radius + extra + (sig.has(n.id) ? 8 : 0));
-  const stats = { lamps: 0, trees: 0, rails: 0 };
+  const stats = { lamps: 0, trees: 0, rails: 0, culled: 0 };
+  // props belong on footpaths / medians only: never on a carriageway or junction box (with a margin)
+  const onRoad = (x, z, m = 1.0) => roads.isOnRoad(x, z, m) || fields.sample(fields.dC, x, z) < m - 0.5;
 
   function lamp(x, z, ax, az, h, reach, color, sea = false, double = false) {
     // pole + curved arm (two angled boxes) + head; arm points along (ax,az)
     const rot = Math.atan2(ax, az);
+    if ((!double && onRoad(x, z, 0.3)) || (double && nodeList.some((n) => n.edges.some((q) => q.edge.name !== 'Marine Drive') && Math.hypot(x - n.x, z - n.z) < Math.max(n.radius, 8) + 5))) { stats.culled++; return; }
     batch.add('facade', PRIM.cyl8, mat(x, h / 2, z, 0, 0.22, h, 0.22), { color: POLE, facade: fMetal });
     const arms = double ? [1, -1] : [1];
     for (const s of arms) {
@@ -74,11 +77,14 @@ export function buildProps(game, ctx) {
       const L = Math.hypot(b[0] - a[0], b[1] - a[1]), tx = (b[0] - a[0]) / L, tz = (b[1] - a[1]) / L;
       // inset 1 m toward centroid
       let nx = -tz, nz = tx; if ((cx - a[0]) * nx + (cz - a[1]) * nz < 0) { nx = -nx; nz = -nz; }
-      const inset = 1.0, gapEvery = 45, gapW = 4;
-      let s = 0;
-      while (s < L - 1) {
-        const run = Math.min(gapEvery - gapW, L - s);
-        const x0 = a[0] + tx * s + nx * inset, z0 = a[1] + tz * s + nz * inset, x1 = x0 + tx * run, z1 = z0 + tz * run;
+      const inset = 1.0, gapEvery = 45, gapW = 4, step = 1;
+      // classify 1 m pieces (gap pattern + never on a carriageway / junction box), then merge contiguous pieces into runs
+      let runStart = -1;
+      const flush = (sEnd) => {
+        if (runStart < 0) return;
+        const s0 = runStart, run = sEnd - s0; runStart = -1;
+        if (run < 1.5) return;
+        const x0 = a[0] + tx * s0 + nx * inset, z0 = a[1] + tz * s0 + nz * inset, x1 = x0 + tx * run, z1 = z0 + tz * run;
         const bI = pos.length / 3;
         pos.push(x0, 0.15, z0, x1, 0.15, z1, x1, 1.35, z1, x0, 1.35, z0);
         for (let j = 0; j < 4; j++) nrm.push(nx, 0, nz);
@@ -86,9 +92,19 @@ export function buildProps(game, ctx) {
         collision.addSegment(x0, z0, x1, z1, { tag: 'railing', h: 1.2 }, 0.1);
         stats.rails++;
         // trees just inside the railing
-        for (let t = 5; t < run - 3; t += 13) trees.push([x0 + tx * t + nx * 4.5, z0 + tz * t + nz * 4.5, rnd()]);
-        s += run + gapW;
+        for (let t = 5; t < run - 3; t += 13) {
+          const tx0 = x0 + tx * t + nx * 4.5, tz0 = z0 + tz * t + nz * 4.5, rr = rnd();
+          if (onRoad(tx0, tz0, 3.0)) { stats.culled++; continue; }
+          trees.push([tx0, tz0, rr]);
+        }
+      };
+      for (let s0 = 0; s0 < L - 0.5; s0 += step) {
+        const s1 = Math.min(L, s0 + step), isGap = (s0 % gapEvery) >= gapEvery - gapW;
+        const ex0 = a[0] + tx * s0 + nx * inset, ez0 = a[1] + tz * s0 + nz * inset, ex1 = a[0] + tx * s1 + nx * inset, ez1 = a[1] + tz * s1 + nz * inset;
+        const bad = isGap || onRoad(ex0, ez0, 1.0) || onRoad(ex1, ez1, 1.0) || onRoad((ex0 + ex1) / 2, (ez0 + ez1) / 2, 1.0);
+        if (bad) flush(s0); else if (runStart < 0) runStart = s0;
       }
+      flush(L);
     }
     batch.addRaw('railing', pos, nrm, uv, idx, { at: { x: cx, z: cz } });
     // cricket pitches (dirt strips) along the maidan's long axis
@@ -110,7 +126,7 @@ export function buildProps(game, ctx) {
       const side = rnd() < 0.5 ? 1 : -1, p = roads.sample(e, s);
       const nx = side * p.tz, nz = -side * p.tx, o = e.width / 2 + STREET.footpath - 1.1;
       const x = p.x + nx * o, z = p.z + nz * o;
-      if (nearJunction(x, z, 8)) continue;
+      if (nearJunction(x, z, 8) || onRoad(x, z, 2.0)) continue;
       if (fields.sample(fields.land, x, z) < 2 || fields.sample(fields.park, x, z) > -2) continue;
       if (ctx.obstacles && ctx.obstacles.overlaps({ cx: x, cz: z, hw: 0.6, hd: 0.6, rot: 0 }, 0)) continue;
       trees.push([x, z, rnd()]);

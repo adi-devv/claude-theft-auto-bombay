@@ -59,7 +59,7 @@ export function makeAsphalt() {
   const n1 = tileNoise(S, 8, 5, 101, 0.6), n2 = tileNoise(S, 64, 2, 103);
   const img = ctx.createImageData(S, S); const rnd = mulberry(7);
   for (let i = 0; i < S * S; i++) {
-    let v = 92 + (n1[i] - 0.5) * 34 + (n2[i] - 0.5) * 30 + (rnd() < 0.08 ? (rnd() - 0.5) * 50 : 0);
+    let v = 120 + (n1[i] - 0.5) * 34 + (n2[i] - 0.5) * 30 + (rnd() < 0.08 ? (rnd() - 0.5) * 50 : 0);
     img.data[i * 4] = v * 0.98; img.data[i * 4 + 1] = v * 0.97; img.data[i * 4 + 2] = v * 0.95; img.data[i * 4 + 3] = 255;
   }
   ctx.putImageData(img, 0, 0);

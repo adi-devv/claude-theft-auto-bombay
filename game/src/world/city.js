@@ -13,6 +13,8 @@ import { buildLandmarks } from './landmarks.js';
 import { buildProps } from './props.js';
 import { createAmbient } from './ambient.js';
 import { buildFar } from './far.js';
+import { buildFurniture } from './furniture.js';
+import { buildBoats } from './boats.js';
 
 const TIME_CYCLE = [18.4, 21.5, 7.2, 12.5];
 
@@ -25,13 +27,13 @@ export async function createCity(game) {
   const fields = new Fields(roads);
   const batch = new Batch(300, { x: -2000, z: -2000 });
   const glows = new Glows();
-  const ctx = { game, mats, sky, fields, batch, glows, reflectLights: [], farLandPolys: [] };
+  const ctx = { game, mats, sky, fields, batch, glows, reflectLights: [], farLandPolys: [], crossings: [] };
   const timings = {};
   const T = (name, t) => { timings[name] = Math.round(performance.now() - t); };
 
   let t = performance.now();
   buildGround(game, fields, mats, batch); T('ground', t);
-  t = performance.now(); const mk = buildMarkings(game, batch); T('markings', t);
+  t = performance.now(); const mk = buildMarkings(game, batch); ctx.crossings = mk.crossings; T('markings', t);
   await tick();
 
   t = performance.now(); buildLandmarks(game, ctx); T('landmarks', t);
@@ -40,8 +42,11 @@ export async function createCity(game) {
   await tick();
   t = performance.now(); const props = buildProps(game, ctx); T('props', t);
   console.log('[city] props', JSON.stringify(props));
+  t = performance.now(); const furn = buildFurniture(game, ctx); T('furniture', t);
+  console.log('[city] furniture', JSON.stringify(furn));
   t = performance.now(); buildFar(game, ctx); T('far', t);
   t = performance.now(); const sea = buildSea(game, ctx); T('sea', t);
+  t = performance.now(); const boats = buildBoats(game, ctx); T('boats', t);
 
   // ---- merge static geometry
   t = performance.now();
@@ -77,7 +82,7 @@ export async function createCity(game) {
   const city = {
     timeOfDay: hour, isNight: false, lightLevel: 1, sunDir: sky.state.sunDir,
     promenadeSeats: sea.seats, benchSpots: sea.seats,
-    roundaboutIslands: fields.islands, crossings: mk.crossings,
+    roundaboutIslands: fields.islands, crossings: mk.crossings, furniture: ctx.furnList,
     timeScale: 1 / 480, // game hours per real second (1 h = 8 min)
     stats: { tris: built.tris, meshes: built.meshes.length, timings },
     setTimeOfDay(h) { hour = ((h % 24) + 24) % 24; sky.apply(hour); sync(); },
@@ -95,6 +100,7 @@ export async function createCity(game) {
       for (const m of groundMats) m.emissive.copy(sodium).multiplyScalar(0.16 * st);
       sky.update(dt, game.camera);
       sea.update(dt, sky.state);
+      boats.update(dt);
       glows.update(game.camera, game.renderer, scene.fog.density);
       ambient.update(dt, city);
     },

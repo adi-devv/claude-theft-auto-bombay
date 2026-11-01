@@ -173,7 +173,7 @@ export function createMaterials() {
     sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\n uniform sampler2D uNoise;')
       .replace('#include <map_fragment>', `#include <map_fragment>
         { vec4 n1 = texture2D(uNoise, vMapUv * 0.06); vec4 n2 = texture2D(uNoise, vMapUv * 0.013);
-          diffuseColor.rgb *= 0.82 + n1.g * 0.25 + (n2.g - 0.5) * 0.3; }`);
+          diffuseColor.rgb *= 0.9 + n1.g * 0.25 + (n2.g - 0.5) * 0.3; }`);
   };
   const paving = new THREE.MeshStandardMaterial({ map: makePaving(), vertexColors: true, roughness: 0.95 });
   const promenade = new THREE.MeshStandardMaterial({ map: makePromenade(), vertexColors: true, roughness: 0.9 });

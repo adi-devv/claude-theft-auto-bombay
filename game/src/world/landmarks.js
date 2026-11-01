@@ -162,6 +162,7 @@ export function buildLandmarks(game, ctx) {
     });
     // gables along the front roofline
     for (let i = -3; i <= 3; i++) if (Math.abs(i) > 0) F.gable(i * 9, D / 2 - 1.4, 3.2, 4.4, 30, 3, R, fRoof(), Math.PI / 2);
+    F.keep(-13, 39, 62, 28); // forecourt: keeps the facade + red domes visible from the Gateway plaza
     F.sign(0, D / 2 + 0.05, 5, 6, 1.6, 'TAJ');
     F.lit(0, 2.2, D / 2 + 0.06, 8, 3.6, 0.1, '#ffcf8a');
   };
@@ -183,7 +184,7 @@ export function buildLandmarks(game, ctx) {
     const l = byId.university, F = frameFor(l, -Math.PI / 2), W = F.W, D = F.D;
     const o = { wall: '#c3a676', trim: '#e4d4ae', roof: '#6b6a64', pinn: true, seed: 0.62 };
     const [tx, tz] = F.L(l.tower.x, l.tower.z);
-    gblock(F, tx + 22, tz, 34, 16, 18, { ...o, dormers: 5 });                // library wing
+    gblock(F, tx + 17, tz, 24, 16, 18, { ...o, dormers: 4 });                // library wing
     gblock(F, tx - 20, tz, 26, 16, 18, { ...o, dormers: 3 });
     gblock(F, -W / 2 + 26, -D / 2 + 22, 20, 38, 21, { ...o, rh: 12 });       // convocation hall
     F.cyl(PRIM.cyl8, -W / 2 + 26, -D / 2 + 3, 5, 0, 18, o.wall, fGoth(0.4, 1, 6, 2.5)); F.cone(-W / 2 + 26, -D / 2 + 3, 5.2, 18, 9, o.roof);

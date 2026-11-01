@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 import { mat, PRIM } from './geom.js';
 import { facadeVec } from './buildings.js';
+import { pointInPoly } from './roads.js';
 
 export function buildFar(game, ctx) {
   const { batch, glows } = ctx;
@@ -56,7 +57,27 @@ export function buildFar(game, ctx) {
     if (y < 2) continue;
     glows.add(x, y + 2, z, rnd() < 0.7 ? '#ffc070' : '#fff2d8', 3, 0, 1.4);
   }
-  return { towers: n };
+  // ---- Cuffe Parade across the water to the south: a shoreline strip with a cluster of high-rises + lights
+  const cp = [[-110, 470], [-170, 540], [-260, 612], [-380, 654], [-520, 672], [-700, 700], [-700, 960], [-110, 960]];
+  ctx.farLandPolys.push(cp);
+  const cshape = new THREE.Shape(cp.map(([x, z]) => new THREE.Vector2(x, -z)));
+  batch.add('paving', new THREE.ShapeGeometry(cshape).rotateX(-Math.PI / 2), null, { color: '#6d6a64', at: { x: -400, z: 800 } });
+  const ccols = ['#d9d3c4', '#b9bcbe', '#e3d6bd', '#9eaab2', '#cdb9a3', '#e8e2d6'];
+  let nc = 0;
+  for (let k = 0; k < 900 && nc < 46; k++) {
+    const x = -560 + rnd() * 450, z = 640 + rnd() * 240;
+    if (!pointInPoly(x, z, cp) || !pointInPoly(x, z - 34, cp) || !pointInPoly(x - 20, z - 20, cp)) continue;
+    const behind = Math.min(1, Math.max(0, (z - 650) / 220)), h = 45 + rnd() * 70 + behind * 40, w = 18 + rnd() * 12, d = 16 + rnd() * 10;
+    batch.add('facade', PRIM.box, mat(x, h / 2, z, rnd() * 0.5 - 0.25, w, h, d), { color: ccols[nc % ccols.length], facade: facadeVec(3, 3.2, nc % 3 ? 3 : 4, rnd(), 4), at: { x: -400, z: 800 } });
+    if (h > 70) glows.add(x, h + 0.5, z, '#ff3b2e', 2.5, 1, 1.6);
+    nc++;
+  }
+  // shore lights along Cuffe Parade (reflected in the bay at night)
+  for (let i = 0; i < cp.length - 4; i++) {
+    const [ax, az] = cp[i], [bx, bz] = cp[i + 1];
+    for (let t = 0; t < 1; t += 0.2) { const px = ax + (bx - ax) * t, pz = az + (bz - az) * t + 6; glows.add(px, 8, pz, '#ffb45c', 4.2, 0, 2.2); ctx.reflectLights.push({ x: px, y: 8, z: pz, i: 0.7 }); }
+  }
+  return { towers: n, cuffe: nc };
 }
 
 function mulb(a) { return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }

@@ -36,6 +36,14 @@ const VIEWS = {
   azad: { p: [10, 3, -150], t: [20, 5, -300] },
   overview: { p: [-150, 1100, 60], t: [-150, 0, 0], up: [0, 0, -1] },
   overview_n: { p: [-100, 500, 650], t: [-100, 0, -50] },
+  taj_plaza: { p: [378, 2.2, 372], t: [325, 20, 440] },
+  taj_plaza2: { p: [395, 2.2, 400], t: [320, 22, 440] },
+  taj_air: { p: [420, 70, 330], t: [320, 10, 440] },
+  harbour: { p: [380, 4, 392], t: [520, 3, 380] },
+  harbour_air: { p: [330, 90, 330], t: [520, 0, 400] },
+  cuffe: { p: [-300, 40, 360], t: [-300, 20, 560] },
+  busstop: { p: [-380, 2, 60], t: [-370, 2, 120] },
+  hazarimal: { p: [-96, 2, 100], t: [-86, 2, -40] },
   exit_n: { p: [130, 2, -500], t: [140, 4, -560] },
   exit_md: { p: [-560, 2, -470], t: [-600, 4, -520] },
 };
@@ -49,7 +57,7 @@ const VIEWS = {
   await g.wait(0.5);
   await g.eval((h) => { const G = window.__game; G.city.setTimeOfDay(h); G.city.timeScale = 0; G.paused = true; G.player.updateCamera = () => {}; }, hour);
   for (const n of names) {
-    const v = VIEWS[n]; if (!v) { console.log('no view', n); continue; }
+    let v = VIEWS[n]; if (!v && n.includes(':')) { const a = n.split(':').map(Number); v = { p: a.slice(0, 3), t: a.slice(3, 6) }; } if (!v) { console.log('no view', n); continue; }
     await g.eval((v) => {
       const G = window.__game, c = G.camera;
       c.position.set(...v.p); c.up.set(...(v.up || [0, 1, 0])); c.lookAt(...v.t); c.updateMatrixWorld();
