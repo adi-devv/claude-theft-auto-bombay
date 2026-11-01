@@ -71,18 +71,19 @@ export async function createCity(game) {
   let shadowT = 0;
   const groundMats = [mats.asphalt, mats.paving, mats.promenade, mats.kerb].filter(Boolean);
   for (const m of groundMats) { if (m.map) m.emissiveMap = m.map; m.emissive = new THREE.Color(0); m.needsUpdate = true; }
-  const sodium = new THREE.Color('#ff9d4a');
+  const sodium = new THREE.Color('#aeb8c8');
 
   // ---- colliders: land boundary (sea wall + map edges)
   collision.addPolyline(roads.land, { tag: 'seawall', h: 1.2 }, true, 0.5);
 
   // ---- time of day
   const ambient = createAmbient(game, fields);
+  game.debug.extra.cityAmbient = ambient.stats;
   let hour = 18.4, cycleIdx = 0, prevT = false;
   const city = {
     timeOfDay: hour, isNight: false, lightLevel: 1, sunDir: sky.state.sunDir,
     promenadeSeats: sea.seats, benchSpots: sea.seats,
-    roundaboutIslands: fields.islands, crossings: mk.crossings, furniture: ctx.furnList,
+    monuments: {kalaGhoda:ctx.kalaGhoda}, roundaboutIslands: fields.islands, crossings: mk.crossings, furniture: ctx.furnList,
     timeScale: 1 / 480, // game hours per real second (1 h = 8 min)
     stats: { tris: built.tris, meshes: built.meshes.length, timings },
     setTimeOfDay(h) { hour = ((h % 24) + 24) % 24; sky.apply(hour); sync(); },
@@ -97,7 +98,7 @@ export async function createCity(game) {
         for (const m of casters) { const bs = m.geometry.boundingSphere; m.castShadow = bs.center.distanceTo(cp) - bs.radius < 170; }
       }
       const st = mats.U.uStreet.value;
-      for (const m of groundMats) m.emissive.copy(sodium).multiplyScalar(0.16 * st);
+      for (const m of groundMats) m.emissive.copy(sodium).multiplyScalar(0.065 * st);
       sky.update(dt, game.camera);
       sea.update(dt, sky.state);
       boats.update(dt);

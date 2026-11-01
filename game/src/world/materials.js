@@ -143,6 +143,7 @@ export function createMaterials() {
             fEmis += pal * e * win * 1.6;
           }
         }
+        fEmis += base * vec3(0.075, 0.085, 0.11) * uNight;
         diffuseColor.rgb = base;
         // street-level sodium glow on lower facades at night
         if (flags < 3.5) fEmis += base * uSodium * uStreet * (1.0 - smoothstep(0.0, 11.0, vWPos.y)) * 0.55 * wall;
@@ -170,12 +171,17 @@ export function createMaterials() {
   const asphalt = new THREE.MeshStandardMaterial({ map: tAsphalt, roughness: 0.92, metalness: 0, color: 0xffffff });
   asphalt.onBeforeCompile = (sh) => {
     Object.assign(sh.uniforms, U);
-    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\n uniform sampler2D uNoise;')
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\n uniform sampler2D uNoise; uniform float uStreet;')
+      .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+        vec2 cell = fract(vMapUv * 0.375) - 0.5;
+        float pool = exp(-dot(cell,cell)*32.0);
+        totalEmissiveRadiance += vec3(0.12,0.09,0.055)*pool*uStreet;`)
       .replace('#include <map_fragment>', `#include <map_fragment>
         { vec4 n1 = texture2D(uNoise, vMapUv * 0.06); vec4 n2 = texture2D(uNoise, vMapUv * 0.013);
           diffuseColor.rgb *= 0.9 + n1.g * 0.25 + (n2.g - 0.5) * 0.3; }`);
   };
-  const paving = new THREE.MeshStandardMaterial({ map: makePaving(), vertexColors: true, roughness: 0.95 });
+  const paving = new THREE.MeshStandardMaterial({ map: makePaving(), bumpMap: null, vertexColors: true, roughness: 0.95 });
+  paving.bumpMap = paving.map; paving.bumpScale = 0.035;
   const promenade = new THREE.MeshStandardMaterial({ map: makePromenade(), vertexColors: true, roughness: 0.9 });
   const grass = new THREE.MeshStandardMaterial({ map: makeGrass(), vertexColors: true, roughness: 1.0 });
   grass.onBeforeCompile = (sh) => {

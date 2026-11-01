@@ -61,7 +61,7 @@ export function buildFar(game, ctx) {
   const cp = [[-110, 470], [-170, 540], [-260, 612], [-380, 654], [-520, 672], [-700, 700], [-700, 960], [-110, 960]];
   ctx.farLandPolys.push(cp);
   const cshape = new THREE.Shape(cp.map(([x, z]) => new THREE.Vector2(x, -z)));
-  batch.add('paving', new THREE.ShapeGeometry(cshape).rotateX(-Math.PI / 2), null, { color: '#6d6a64', at: { x: -400, z: 800 } });
+  batch.add('facade', new THREE.ShapeGeometry(cshape).rotateX(-Math.PI / 2), null, { color: '#c4b79b', facade: [3,3,9,10.5], at: { x: -400, z: 800 } });
   const ccols = ['#d9d3c4', '#b9bcbe', '#e3d6bd', '#9eaab2', '#cdb9a3', '#e8e2d6'];
   let nc = 0;
   for (let k = 0; k < 900 && nc < 46; k++) {
@@ -71,6 +71,15 @@ export function buildFar(game, ctx) {
     batch.add('facade', PRIM.box, mat(x, h / 2, z, rnd() * 0.5 - 0.25, w, h, d), { color: ccols[nc % ccols.length], facade: facadeVec(3, 3.2, nc % 3 ? 3 : 4, rnd(), 4), at: { x: -400, z: 800 } });
     if (h > 70) glows.add(x, h + 0.5, z, '#ff3b2e', 2.5, 1, 1.6);
     nc++;
+  }
+  for(let i=1;i<6;i++) {
+    const [ax,az]=cp[i-1],[bx,bz]=cp[i];
+    for(let k=0;k<4;k++) {
+      const t=(k+.5)/4,x=ax+(bx-ax)*t,z=az+(bz-az)*t+20;
+      if(!pointInPoly(x-8,z-8,cp)||!pointInPoly(x+8,z+8,cp)) continue;
+      const h=8+(k%3)*4;
+      batch.add('facade',PRIM.box,mat(x,h/2,z,0,14,h,12),{color:['#c6b4a0','#b9c4b5','#ded0b7'][k%3],facade:facadeVec(2.8,3,15,.1+k*.17,1),at:{x:-400,z:800}});
+    }
   }
   // shore lights along Cuffe Parade (reflected in the bay at night)
   for (let i = 0; i < cp.length - 4; i++) {

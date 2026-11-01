@@ -1,3 +1,39 @@
+﻿# CITY critic-fix round - 2026-11-01 (current handoff)
+
+Only edited work/city/src/world/{ambient,buildings,city,far,furniture,glows,landmarks,materials,props,sea,sky,textures}.js, tools/city/** and this note. game/, main.js, mapdata.js, roads.js and collision.js were not edited. This section supersedes historical known-issues/performance lists below.
+
+## Changes
+
+- Dusk: fog densities at 17.6 / 18.4 / 18.9 are 0.00065 / 0.00055 / 0.0007. Lamps fade in from 18:00, sharing the street factor with water reflections. Glows preserve distant pearl coverage with a stronger dusk ramp. Explicit western sun disc plus sea glitter. The aerial Necklace camera faces east/northeast, so the west sun is behind it; sunset-west_final.png checks the sea-facing sun. Night fog keyframes and reflection strengths retained.
+- Horizon: sky horizon is the single fog-colour source. Three r169 applies fog after tone mapping/output conversion, so sky.js computes matching ACES horizon colour in that space. The dome's lowest six degrees converge to it, and water fades fully between 1400-2650 m, before the existing 3000 m far plane. Checked dawn, noon, sunset and night. No camera change needed.
+- Gateway: three real extruded semicircular archways with deep soffits, four proportioned domed turrets, solid low central cap, stone surrounds, bracketed jharokha eaves and lattice bars. Quay steps descend to the water; low rails, lamps and bollards flank the plaza. New solids stay off roads.
+- Flora: smaller paved/green island, octagonal base, water basins, peripheral carved figures, upright Flora figure, ornamental rims and falling-water strands/drops. Small ornaments use economical geometry.
+- Horniman: 28 trees, lamp ring, paths, iron railing, two-tier fountain; curved arcaded perimeter buildings retained. Existing island collider covers garden trunks, avoiding redundant colliders across the road scanner.
+- Kala Ghoda: rounded black horse with articulated legs, raised foreleg, ears, muzzle, tail, saddle, seated rider, helmet and reins. Plinth position (100.38, 206.62). Rajabai: four luminous round faces with hour marks and hands.
+- Taj: ground arched colonnade, central entrance portico, balcony slabs/balusters and harbour-wing courses; existing arched upper windows and red domes retained.
+- Colaba: dedicated smaller/lower shop lots, striped awnings, book/curio display tables and local signboards. One Leopold Cafe frontage with cups; removed conflicting generic shop signs. Blank wall behind COL_X replaced with staggered shops suggesting a continuing street beyond the traffic-safe Metro closure.
+- Audio: crowd murmur/formant beds depend on nearby peds, promenade/Fort proximity and hour. Rush-hour distant honks, syllabic vendor/chai calls, layered train horns near Churchgate/CSMT, occasional Fort bells, crows and night crickets. Stronger close surf uses seawall-segment distance. AudioContext event clocks prevent debug.step bursts; transient nodes disconnect after playback. No external files.
+- Night/surfaces: faint cool facade fill, more night hemisphere fill and occupied windows, neutral low ground emission and restrained warm asphalt pools. Removed uniform brown-orange wash. Lower-contrast rotated irregular repairs, 1024 px pavers/promenade, anisotropy and paving bump detail. Four smooth coherent lobes per street canopy at the same two instanced draws. BEST shelters have a ceiling tube, warm interior panel and small glow; reduced oversized blue advert halo.
+- Deco: additional pastel courses, fins and eyebrows, plus consistent Deco frontage on the Oval's Maharshi Karve row.
+- Nariman/Cuffe: southern parapet and tetrapods; grounded Cuffe shore with wall/rocks, brighter pavement and low waterfront buildings replacing the empty dark wedge. Foam texture includes the shore.
+
+## Final validation
+
+GAME_URL=http://localhost:8765/work/city/; Edge headless D3D11, 960x540 unless noted.
+
+- tools/city/clear.js: 0 overlaps / 92,798 samples; errors []. Saved clear-results.txt.
+- tools/city/traffic.js 120: collisions 0 and AI hits 0 in every ten-second sample. Final active 40, parked 21, average 16.6 km/h, waiting 7, stuck counter 1 (varied 0-3), 0.225 ms/step; errors []. Saved traffic-results.txt. Signal/wait counters are reported directly, not claimed zero.
+- tools/city/calls.js now warms the live simulation, then checks four overview cameras at 12.5 / 18.4 / 21.5 with traffic running. Worst 530 calls and 1,475,684 triangles; 76 vehicles present. Static city: 863,055 triangles in 167 merged meshes. City construction: 1666 ms. Errors []. Saved calls-results.json. Counts include shadows and vehicles. Recheck after future fleet/population changes.
+- tools/city/ambient-test.js: 61 real seconds across stations, Fort, seawall and late night; AudioContext running, errors []. Recorded 14 honks, 1 vendor call, 2 train horns, 1 bell sequence and 6 crow events. Near-train factor 1 at both stations. Seawall surf factor 0.919; ambient RMS about 0.0122 there vs 0.00168 late at night. Runtime/gain/analyser verification, not a listening pass. Saved ambient-results.json.
+- Read and LOOKED at critic screenshots, fresh baseline shots and final shots. tools/city/review.js captures matched views against unchanged game/ (before) or sandbox (final). tools/city/sheets.js produces shots/review-sheet-1.png through review-sheet-3.png: before left / final right. All three sheets and important full-size close-ups inspected. Latest evidence: horse_final.png, cafe_final.png, gateway-steps_final.png, clock_final.png, flora-close_final.png, bus-stop_final.png, horizon-noon_final.png, horizon-dawn_final.png, sunset-west_final.png, plus aerial_necklace_after_18h4.png and aerial_necklace_after_21h5.png. Full review telemetry in review-final.json.
+
+## Requests / limits
+
+- Architect/index owner: existing favicon/static-icon 404 still appears in console. Add the missing icon or a data favicon in index.html. __game.errors remains empty; no world-code change needed.
+- Integrator: copy only the 12 owned world files listed above. No far-plane change needed. Landmark water is stylized static geometry; monuments remain procedural approximations. Gateway tourists, seated garden crowds and fleet density remain with their owners.
+- No git state-changing commands, integration or publication performed.
+
+---
 # CITY — status notes (work/city/src/world/)
 
 Entry: `createCity(game)` in `city.js` → `{ update(dt), setTimeOfDay(h), timeOfDay, isNight, lightLevel, sunDir, promenadeSeats, benchSpots, roundaboutIslands, crossings, stats }`.
@@ -59,3 +95,4 @@ Traffic 120 s debug.step (city sandbox): active 40, parked 27, stuck 0 at the en
 
 ## How to check
 `GAME_URL=http://localhost:8765/work/city/ node tools/city/shots.js "md_street,aerial_necklace" 21.5` → tools/city/shots/*.png (+ fps/calls/tris); `node tools/city/montage.js out.png a.png b.png c.png d.png` for a 2×2 grid; `node tools/city/tris.js` for a triangle breakdown.
+

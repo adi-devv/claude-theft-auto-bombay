@@ -66,8 +66,8 @@ export function makeAsphalt() {
   // patches & oil stains
   for (let k = 0; k < 14; k++) {
     const x = rnd() * S, y = rnd() * S, w = 30 + rnd() * 110, h = 20 + rnd() * 70;
-    ctx.fillStyle = rnd() < 0.5 ? 'rgba(25,25,28,0.35)' : 'rgba(95,92,88,0.22)';
-    for (const dx of [-S, 0, S]) for (const dy of [-S, 0, S]) ctx.fillRect(x + dx, y + dy, w, h);
+    ctx.fillStyle = rnd() < 0.5 ? 'rgba(40,40,42,0.09)' : 'rgba(95,92,88,0.08)';
+    for (const dx of [-S, 0, S]) for (const dy of [-S, 0, S]) { ctx.save(); ctx.translate(x + dx, y + dy); ctx.rotate((rnd()-0.5)*1.2); ctx.beginPath(); ctx.moveTo(0,3); ctx.lineTo(w*0.8,-2); ctx.lineTo(w,h*0.7); ctx.lineTo(w*0.1,h); ctx.closePath(); ctx.fill(); ctx.restore(); }
   }
   for (let k = 0; k < 30; k++) {
     const x = rnd() * S, y = rnd() * S, r = 4 + rnd() * 18;
@@ -75,7 +75,7 @@ export function makeAsphalt() {
     ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
   }
   // cracks
-  ctx.strokeStyle = 'rgba(15,15,15,0.55)'; ctx.lineWidth = 1;
+  ctx.strokeStyle = 'rgba(35,35,35,0.22)'; ctx.lineWidth = 1;
   for (let k = 0; k < 18; k++) {
     let x = rnd() * S, y = rnd() * S; ctx.beginPath(); ctx.moveTo(x, y);
     for (let j = 0; j < 8; j++) { x += (rnd() - 0.5) * 30; y += (rnd() - 0.5) * 30; ctx.lineTo(x, y); }
@@ -86,7 +86,7 @@ export function makeAsphalt() {
 
 /** Footpath pavers (grey / buff interlocking blocks). World uv scale 1/4 m. */
 export function makePaving() {
-  const S = 512, c = canvas(S), ctx = c.getContext('2d'); const rnd = mulberry(77);
+  const S = 1024, c = canvas(S), ctx = c.getContext('2d'); const rnd = mulberry(77);
   ctx.fillStyle = '#7d776c'; ctx.fillRect(0, 0, S, S);
   const n = tileNoise(S, 16, 4, 79);
   // I-shaped / rectangular pavers in herringbone-ish rows: 8 rows x 16 cols
@@ -111,7 +111,7 @@ export function makePaving() {
 
 /** Promenade: large grey stone slabs. uv scale 1/6 m. */
 export function makePromenade() {
-  const S = 512, c = canvas(S), ctx = c.getContext('2d'); const rnd = mulberry(91);
+  const S = 1024, c = canvas(S), ctx = c.getContext('2d'); const rnd = mulberry(91);
   const n = tileNoise(S, 8, 5, 93);
   ctx.fillStyle = '#8f8a80'; ctx.fillRect(0, 0, S, S);
   const g = 4, w = S / g;
@@ -176,7 +176,7 @@ const SHOPS = [
 const DECO_NAMES = ['SOONA MAHAL', 'KELI MAHAL', 'ZAVERI MANSION', 'SHIV SHANTI BHUVAN', 'OCEANA', 'GANGA VIHAR', 'BAKHTAVAR', 'SEA FACE COURT',
   'DUNHILL HOUSE', 'MARINE VIEW', 'EVEREST', 'SHRI NIKETAN', 'KRISHNA KUNJ', 'RAJ MAHAL', 'MOTI MAHAL', 'NIRMAL', 'BOMBAY HOUSE', 'COSMOPOLITAN',
   'CHATEAU MARINE', 'SURYA MAHAL', 'JAYANT MAHAL', 'GULISTAN', 'ROSE VILLA', 'PALM SPRINGS', 'DILKUSH', 'NAVJIVAN', 'PANORAMA', 'WESTERN COURT'];
-const BIG = [['EROS', '#fff2d0', 'deco'], ['REGAL', '#ffe9a0', 'deco'], ['AIR INDIA', '#e21b23', 'sans'], ['TAJ', '#ffd98a', 'serif'],
+const BIG = [['EROS', '#fff2d0', 'deco'], ['REGAL', '#ffe9a0', 'deco'], ['AIR INDIA', '#e21b23', 'sans'], ['TAJ', '#ffd98a', 'serif'], ['LEOPOLD CAFE', '#ffe2a0', 'serif'], ['COLABA BOOKS & CURIOS', '#ffe7c0', 'serif'], ['CAUSEWAY MARKET', '#fff1aa', 'sans'],
   ['MUNICIPAL CORPORATION', '#ffe7b0', 'serif'], ['POLICE STATION', '#ffffff', 'sans'], ['CHURCHGATE', '#ffe7b0', 'serif'], ['MARINE PLAZA', '#f2f2ff', 'sans'],
   ['BEST', '#ffffff', 'sans'], ['CHAI', '#fff', 'sans'], ['JEHANGIR ART GALLERY', '#333', 'sans'], ['OBEROI', '#e8d9b0', 'serif'],
   ['METRO WORK IN PROGRESS', '#ffffff', 'sans'], ['EXPRESS TOWERS', '#e0e0ff', 'sans'], ['INOX', '#ffd54f', 'sans'], ['BOMBAY STOCK EXCHANGE', '#d0e4ff', 'sans']];

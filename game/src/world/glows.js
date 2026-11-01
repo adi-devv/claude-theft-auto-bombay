@@ -34,7 +34,7 @@ export class Glows {
           float minPx = aSize.z;
           float sizePx = max(px, minPx);
           // fade really small points by their sub-pixel coverage
-          vA = on * clamp(px / minPx, 0.35, 1.0) * exp(-d * uFogD * 0.35);
+          vA = sqrt(on) * clamp(px / minPx, 0.35, 1.0) * exp(-d * uFogD * 0.35);
           vCol = color;
           gl_PointSize = min(sizePx * 2.0, 220.0);
           gl_Position = projectionMatrix * mv;

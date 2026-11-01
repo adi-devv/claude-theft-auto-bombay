@@ -3,14 +3,14 @@ import * as THREE from 'three';
 
 // Shared GLSL: sky radiance for a world direction. Used by the dome, the env-map scene and the sea.
 export const SKY_GLSL = `
-uniform vec3 uSunDir; uniform vec3 uZenith; uniform vec3 uHorizon; uniform vec3 uGlow; uniform vec3 uSunCol;
+uniform vec3 uFogTint; uniform vec3 uSunDir; uniform vec3 uZenith; uniform vec3 uHorizon; uniform vec3 uGlow; uniform vec3 uSunCol;
 uniform float uNightK; uniform float uSkyTime; uniform sampler2D uSkyNoise; uniform vec3 uCityGlow; uniform vec3 uMoonDir;
 float sHash(vec3 p) { p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
 vec3 skyRadiance(vec3 d, bool withSun) {
   float y = d.y;
   float t = pow(clamp(y, 0.0, 1.0), 0.42);
   vec3 col = mix(uHorizon, uZenith, t);
-  if (y < 0.0) col = uHorizon * (1.0 + y * 0.6);
+  if (y < 0.0) col = uHorizon;
   float sd = max(dot(d, uSunDir), 0.0);
   float hz = 1.0 - smoothstep(0.0, 0.5, abs(y));
   col += uGlow * (pow(sd, 5.0) * 0.55 * (0.4 + 0.6 * hz) + pow(sd, 40.0) * 0.9);
@@ -47,9 +47,9 @@ const KEYS = [
   [8.0, '#5a86c2', '#d8d6cc', '#ffd8a0', '#ffe2b8', 2.6, '#a8c0de', '#6a5a44', 0.6, '#c2c6c4', 0.0011, 0.8, 0.9, '#000000'],
   [12.5, '#4a7fc4', '#c6d6e4', '#fff4dc', '#fff6e8', 3.2, '#b0cbe8', '#7a6a50', 0.65, '#bccad6', 0.0010, 0.9, 0.85, '#000000'],
   [16.0, '#4f80bf', '#d4d4cc', '#ffe0b0', '#ffe8c8', 2.9, '#acc4e0', '#7a6650', 0.6, '#c8c8c0', 0.0011, 0.85, 0.88, '#000000'],
-  [17.6, '#47689c', '#e8c098', '#ffb070', '#ffc078', 2.4, '#98a8c8', '#6a5038', 0.55, '#d0b090', 0.0012, 0.75, 0.92, '#000000'],
-  [18.4, '#2e4a7c', '#f2a466', '#ff8a3c', '#ff9040', 2.3, '#7c88b0', '#5a3c2c', 0.5, '#c28a74', 0.0013, 0.65, 1.0, '#000000'],
-  [18.9, '#1e2a52', '#b0605a', '#ff5a30', '#ff5a28', 0.6, '#5a6088', '#3a2a24', 0.45, '#7a5262', 0.0014, 0.45, 1.05, '#100806'],
+  [17.6, '#47689c', '#e8c098', '#ffb070', '#ffc078', 2.4, '#98a8c8', '#6a5038', 0.55, '#d0b090', 0.00065, 0.75, 0.92, '#000000'],
+  [18.4, '#2e4a7c', '#f2a466', '#ff8a3c', '#ff9040', 2.3, '#7c88b0', '#5a3c2c', 0.5, '#c28a74', 0.00055, 0.65, 1.0, '#000000'],
+  [18.9, '#1e2a52', '#b0605a', '#ff5a30', '#ff5a28', 0.6, '#5a6088', '#3a2a24', 0.45, '#7a5262', 0.0007, 0.45, 1.05, '#100806'],
   [19.6, '#0c1430', '#40304a', '#802818', '#000000', 0.0, '#384468', '#1a1410', 0.4, '#2e2638', 0.0015, 0.3, 1.1, '#2a1810'],
   [21.0, '#050913', '#1c1a28', '#000000', '#000000', 0.0, '#26324e', '#140e0c', 0.36, '#161824', 0.0016, 0.25, 1.1, '#2e1c12'],
   [24.0, '#03060d', '#141826', '#000000', '#000000', 0.0, '#24304a', '#100c0c', 0.35, '#121520', 0.0016, 0.25, 1.05, '#2a1a12'],
@@ -69,7 +69,7 @@ export function sunDirection(h, out = new THREE.Vector3()) {
 export function createSky(game, mats) {
   const { scene, renderer } = game;
   const uniforms = {
-    uSunDir: { value: new THREE.Vector3(-1, 0.1, 0) }, uZenith: { value: new THREE.Color() }, uHorizon: { value: new THREE.Color() },
+    uFogTint: {value: new THREE.Color()}, uSunDir: { value: new THREE.Vector3(-1, 0.1, 0) }, uZenith: { value: new THREE.Color() }, uHorizon: { value: new THREE.Color() },
     uGlow: { value: new THREE.Color() }, uSunCol: { value: new THREE.Color() }, uNightK: { value: 0 }, uSkyTime: { value: 0 },
     uSkyNoise: { value: mats.U.uNoise.value }, uCityGlow: { value: new THREE.Color() }, uMoonDir: { value: new THREE.Vector3(0.4, 0.55, 0.5).normalize() },
   };
@@ -81,6 +81,9 @@ export function createSky(game, mats) {
       void main() { vec3 d = normalize(vDir); gl_FragColor = vec4(skyRadiance(d, true), 1.0);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
+        gl_FragColor.rgb = mix(uFogTint, gl_FragColor.rgb, smoothstep(0.0, 0.105, d.y));
+        float disk = smoothstep(0.99982, 0.99994, dot(d, uSunDir)) * (1.0-uNightK);
+        gl_FragColor.rgb += vec3(1.0, 0.65, 0.24) * disk * 2.0;
       }`,
   });
   const dome = new THREE.Mesh(new THREE.SphereGeometry(100, 48, 24), skyMat);
@@ -149,17 +152,18 @@ export function createSky(game, mats) {
       sun.color.copy(sunCol); sun.intensity = sunInt;
       state.lightDir = state.sunDir.clone(); if (state.lightDir.y < 0.05) state.lightDir.y = 0.05; state.lightDir.normalize();
     }
-    hemi.color.copy(hSky); hemi.groundColor.copy(hGround); hemi.intensity = hInt;
-    scene.fog.color.copy(fog); scene.fog.density = fogD;
+    hemi.color.copy(hSky); hemi.groundColor.copy(hGround); hemi.intensity = hInt + state.nightK * 0.22;
+    scene.fog.color.copy(horizonOutput(hor, expo)); uniforms.uFogTint.value.copy(scene.fog.color).convertLinearToSRGB(); scene.fog.density = fogD;
     scene.environmentIntensity = envInt;
     renderer.toneMappingExposure = expo;
-    state.fogColor = fog;
+    state.fogColor = scene.fog.color;
     // night factors for city materials
-    const lateNight = h < 5 ? 0.35 : h < 6.5 ? 0.25 : h > 22.5 ? 0.45 : h > 18 ? 0.62 : 0.25;
+    const lateNight = h < 5 ? 0.35 : h < 6.5 ? 0.25 : h > 22.5 ? 0.45 : h > 18 ? 0.72 : 0.25;
     mats.U.uNight.value = Math.max(state.nightK, 0.25 * (1 - state.lightLevel));
     mats.U.uLit.value = lateNight;
     mats.U.uShop.value = ((h > 9.5 && h < 23.3) ? 1.0 : 0.1) * (1 - 0.75 * state.lightLevel);
-    mats.U.uStreet.value = THREE.MathUtils.clamp((0.65 - state.lightLevel) / 0.5, 0, 1);
+    const duskOn = h >= 18 && h < 20 ? THREE.MathUtils.smoothstep(h, 18, 18.8) : 0;
+    mats.U.uStreet.value = Math.max(duskOn, THREE.MathUtils.clamp((0.8 - state.lightLevel) / 0.55, 0, 1));
     if (Math.abs(state.envHour - h) > 0.08) updateEnv();
   }
 
@@ -191,4 +195,12 @@ export function createSky(game, mats) {
   }
 
   return { state, apply, update, uniforms, sun, hemi, dome, updateEnv };
+}
+
+// Three r169 applies fog AFTER ACES and output conversion. Match that space explicitly.
+function horizonOutput(c, exposure) {
+  const scale=exposure/0.6,r=c.r*scale,g=c.g*scale,b=c.b*scale;
+  const fit=v=>(v*(v+0.0245786)-0.000090537)/(v*(0.983729*v+0.432951)+0.238081);
+  const x=fit(.59719*r+.35458*g+.04823*b),y=fit(.076*r+.90834*g+.01566*b),z=fit(.0284*r+.13383*g+.83777*b);
+  return new THREE.Color().setRGB(Math.max(0,Math.min(1,1.60475*x-.53108*y-.07367*z)),Math.max(0,Math.min(1,-.10208*x+1.10813*y-.00605*z)),Math.max(0,Math.min(1,-.00327*x-.07276*y+1.07602*z)));
 }

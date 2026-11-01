@@ -84,6 +84,7 @@ export function buildSea(game, ctx) {
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
         #include <fog_fragment>
+        gl_FragColor.rgb = mix(gl_FragColor.rgb, fogColor, smoothstep(1400.0, 2650.0, dist));
       }`,
   });
   const sea = new THREE.Mesh(new THREE.PlaneGeometry(9000, 9000, 1, 1).rotateX(-Math.PI / 2), mat);
@@ -99,6 +100,12 @@ export function buildSea(game, ctx) {
   // extend along the visual coast (north) a little for continuity
   if (fields.coastExt) for (const p of fields.coastExt) parapetPts.push(p);
   buildParapet(batch, parapetPts, seats, 0.6, 0.75);
+  // Close the southern Nariman Point frontage and ground the far Cuffe shore.
+  // Both paths run south-to-north/west-to-east with the seaward normal on their left.
+  const south=[[roads.coast.southShoreSplitX,roads.coast.southShoreZ],se[0]];
+  buildParapet(batch,south,[],0.65,0.75);
+  const cuffe=ctx.farLandPolys.at(-1);
+  if(cuffe) buildParapet(batch,cuffe.slice(0,7).reverse(),[],0.65,0.7);
   // tetrapods
   const tetras = buildTetrapods(scene, parapetPts, seaY, ctx);
 
@@ -206,9 +213,9 @@ function buildTetrapods(scene, pts, seaY, ctx) {
           diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.12, 0.14, 0.1), wet * 0.35 * n.r); }`);
   };
   const items = [];
-  const N = pts.length;
-  for (let i = 0; i < N - 1; i++) {
-    const A = pts[i], B = pts[i + 1];
+  const segments = [pts, [[ctx.game.roads.coast.southShoreSplitX,ctx.game.roads.coast.southShoreZ],ctx.game.roads.seaEdge[0]], ctx.farLandPolys.at(-1).slice(0,7).reverse()];
+  for (const path of segments) for (let i = 0; i < path.length - 1; i++) {
+    const A = path[i], B = path[i + 1];
     let tx = B[0] - A[0], tz = B[1] - A[1]; const L = Math.hypot(tx, tz); if (L < 0.1) continue; tx /= L; tz /= L;
     const nx = tz, nz = -tx; // sea side
     for (let s = 0; s < L; s += 2.0) {

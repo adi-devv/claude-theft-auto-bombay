@@ -3,6 +3,7 @@
 // Run AFTER generateBuildings (uses ctx.obstacles) and BEFORE buildSea (fills ctx.reflectLights).
 import * as THREE from 'three';
 import { mat, PRIM } from './geom.js';
+import { emitSign } from './buildings.js';
 import { SIGNALS, STREET } from './mapdata.js';
 
 const POLE = '#3d4144', SODIUM = '#ffb45c', WHITE_LED = '#fff1d6';
@@ -154,7 +155,16 @@ export function buildProps(game, ctx) {
     }
     collision.addSegment(cx - px * half, cz - pz * half, cx + px * half, cz + pz * half, { tag: 'exit', h: 3.2 }, 0.4);
     // tall blank site hoarding behind for visual closure
+    if(n.id==='COL_X') {
+      for(let j=0;j<4;j++) {
+        const ox=(j-2)*10,bx=cx+px*ox+dx*(18+(j%2)*5),bz=cz+pz*ox+dz*(18+(j%2)*5),h=10+(j%3)*3;
+        batch.add('facade',PRIM.box,mat(bx,h/2,bz,rot,10,h,12),{color:['#d7c5a2','#a5bca9','#d2ad94'][j%3],facade:[2.5,3.5,15,0.13+j*.1]});
+        batch.add('facade',PRIM.box,mat(bx-dx*6.8,2.8,bz-dz*6.8,rot,9.8,.2,1.6),{color:'#9c4136',facade:fMetal});
+        emitSign(batch,bx-dx*6.1,3.8,bz-dz*6.1,9,0.65,-dx,-dz,sg.bigUV[sg.bigIndex[j%2?'COLABA BOOKS & CURIOS':'CAUSEWAY MARKET']]);
+      }
+    } else {
     batch.add('facade', PRIM.box, mat(cx + dx * 14, 5, cz + dz * 14, rot, half * 2 + 6, 10, 0.4), { color: '#7d8a7a', facade: [3, 3, 0, 0.5] });
+    }
     stats.exits = (stats.exits || 0) + 1;
   }
   buildTrees(game, ctx, trees);
@@ -167,25 +177,27 @@ export function buildProps(game, ctx) {
 function buildTrees(game, ctx, trees) {
   const n = trees.length; if (!n) return;
   const trunkG = new THREE.CylinderGeometry(0.22, 0.38, 1, 6, 1).translate(0, 0.5, 0);
-  const canG = new THREE.IcosahedronGeometry(1, 0);
+  const canG = new THREE.IcosahedronGeometry(1, 1);
   { // squash + jitter the canopy for a spreading rain-tree look
     const p = canG.attributes.position; const rr = mulberry(7);
-    for (let i = 0; i < p.count; i++) { const k = 0.85 + rr() * 0.3; p.setXYZ(i, p.getX(i) * k, p.getY(i) * 0.55 * k, p.getZ(i) * k); }
-    canG.computeVertexNormals();
+    for (let i = 0; i < p.count; i++) { const k = 0.96 + 0.10 * Math.sin(p.getX(i)*6.7+p.getY(i)*5.3+p.getZ(i)*8.1); p.setXYZ(i, p.getX(i) * k, p.getY(i) * 0.55 * k, p.getZ(i) * k); }
+    const normals=canG.attributes.normal;
+    for(let i=0;i<p.count;i++) {const x=p.getX(i),y=p.getY(i)/(.55*.55),z=p.getZ(i),l=Math.hypot(x,y,z);normals.setXYZ(i,x/l,y/l,z/l);}
+    normals.needsUpdate=true;
   }
   const tm = new THREE.MeshStandardMaterial({ color: 0x4a3d33, roughness: 1 });
-  const cm = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.95, flatShading: true });
-  const trunk = new THREE.InstancedMesh(trunkG, tm, n), can = new THREE.InstancedMesh(canG, cm, n * 2);
+  const cm = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.95, flatShading: false, emissive: 0x3c4936, emissiveIntensity: 0.3 });
+  const trunk = new THREE.InstancedMesh(trunkG, tm, n), can = new THREE.InstancedMesh(canG, cm, n * 4);
   const m = new THREE.Matrix4(), c = new THREE.Color();
   const greens = ['#3f5f2a', '#4c6d2e', '#36552a', '#56703a'];
   trees.forEach(([x, z, r], i) => {
     const h = 4 + r * 3, s = 3.2 + r * 2.4;
     trunk.setMatrixAt(i, mat(x, 0, z, 0, 1 + r * 0.4, h + 1, 1 + r * 0.4));
-    can.setMatrixAt(i * 2, mat(x, h + 1.4, z, r * 6, s, s, s));
-    can.setMatrixAt(i * 2 + 1, mat(x + (r - 0.5) * 2.5, h + 0.6, z + (0.5 - r) * 2.5, r * 3, s * 0.7, s * 0.8, s * 0.7));
-    const gul = r > 0.86; // gulmohar: flame-red canopy
-    c.set(gul ? '#b2412a' : greens[Math.floor(r * 97) % greens.length]); can.setColorAt(i * 2, c);
-    c.set(gul ? '#7c5a2a' : greens[Math.floor(r * 53) % greens.length]); can.setColorAt(i * 2 + 1, c);
+    for (let j=0;j<4;j++) { const a=j*2.4+r*5, off=j? s*0.52:0;
+      can.setMatrixAt(i*4+j, mat(x+Math.cos(a)*off,h+1.1+(j%3)*0.6,z+Math.sin(a)*off,a,s*(j?0.69:0.85),s*(j?0.8:0.95),s*(j?0.73:0.85)));
+      c.set(greens[(i+j)%greens.length]); c.multiplyScalar(0.88+j*0.055); can.setColorAt(i*4+j,c);
+    }
+
   });
   for (const im of [trunk, can]) { im.castShadow = true; im.receiveShadow = true; im.computeBoundingSphere(); game.scene.add(im); }
 }

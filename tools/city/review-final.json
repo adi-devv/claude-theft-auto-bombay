@@ -1,0 +1,86 @@
+[
+  {
+    "name": "sunset-west",
+    "h": 18.4,
+    "calls": 46,
+    "triangles": 396371,
+    "errors": []
+  },
+  {
+    "name": "flora-close",
+    "h": 12.5,
+    "calls": 87,
+    "triangles": 583080,
+    "errors": []
+  },
+  {
+    "name": "clock",
+    "h": 21.5,
+    "calls": 110,
+    "triangles": 680550,
+    "errors": []
+  },
+  {
+    "name": "deco-oval",
+    "h": 18.4,
+    "calls": 239,
+    "triangles": 719003,
+    "errors": []
+  },
+  {
+    "name": "np-coast",
+    "h": 18.4,
+    "calls": 288,
+    "triangles": 1023418,
+    "errors": []
+  },
+  {
+    "name": "cafe",
+    "h": 18.4,
+    "calls": 416,
+    "triangles": 1187832,
+    "errors": []
+  },
+  {
+    "name": "gateway-steps",
+    "h": 18.4,
+    "calls": 446,
+    "triangles": 1280535,
+    "errors": []
+  },
+  {
+    "name": "bus-stop",
+    "h": 21.5,
+    "calls": 370,
+    "triangles": 863488,
+    "errors": []
+  },
+  {
+    "name": "trees",
+    "h": 21.5,
+    "calls": 343,
+    "triangles": 904337,
+    "errors": []
+  },
+  {
+    "name": "horizon-noon",
+    "h": 12.5,
+    "calls": 420,
+    "triangles": 1137130,
+    "errors": []
+  },
+  {
+    "name": "horizon-dawn",
+    "h": 7.2,
+    "calls": 420,
+    "triangles": 1137130,
+    "errors": []
+  },
+  {
+    "name": "horse",
+    "h": 12.5,
+    "calls": 357,
+    "triangles": 1083051,
+    "errors": []
+  }
+]

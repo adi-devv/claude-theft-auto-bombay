@@ -1,0 +1,88 @@
+{
+  "samples": [
+    {
+      "name": "top",
+      "h": 12.5,
+      "calls": 493,
+      "tris": 1452942
+    },
+    {
+      "name": "overview_n",
+      "h": 12.5,
+      "calls": 476,
+      "tris": 1296869
+    },
+    {
+      "name": "necklace",
+      "h": 12.5,
+      "calls": 444,
+      "tris": 1151346
+    },
+    {
+      "name": "overview_s",
+      "h": 12.5,
+      "calls": 474,
+      "tris": 1240726
+    },
+    {
+      "name": "top",
+      "h": 18.4,
+      "calls": 509,
+      "tris": 1462124
+    },
+    {
+      "name": "overview_n",
+      "h": 18.4,
+      "calls": 488,
+      "tris": 1304235
+    },
+    {
+      "name": "necklace",
+      "h": 18.4,
+      "calls": 464,
+      "tris": 1161464
+    },
+    {
+      "name": "overview_s",
+      "h": 18.4,
+      "calls": 490,
+      "tris": 1249586
+    },
+    {
+      "name": "top",
+      "h": 21.5,
+      "calls": 530,
+      "tris": 1475684
+    },
+    {
+      "name": "overview_n",
+      "h": 21.5,
+      "calls": 508,
+      "tris": 1315979
+    },
+    {
+      "name": "necklace",
+      "h": 21.5,
+      "calls": 468,
+      "tris": 1168578
+    },
+    {
+      "name": "overview_s",
+      "h": 21.5,
+      "calls": 498,
+      "tris": 1254794
+    }
+  ],
+  "worstCalls": 530,
+  "worstTriangles": 1475684,
+  "nVeh": 76,
+  "city": {
+    "hour": 21.5,
+    "light": 0,
+    "night": true,
+    "tris": 863055,
+    "meshes": 167,
+    "load": 1666
+  },
+  "errors": []
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "cafe",
+    "h": 18.4,
+    "calls": 337,
+    "triangles": 907122,
+    "errors": []
+  },
+  {
+    "name": "gateway-steps",
+    "h": 18.4,
+    "calls": 364,
+    "triangles": 998093,
+    "errors": []
+  },
+  {
+    "name": "bus-stop",
+    "h": 21.5,
+    "calls": 56,
+    "triangles": 368689,
+    "errors": []
+  }
+]

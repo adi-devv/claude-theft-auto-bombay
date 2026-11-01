@@ -13,6 +13,7 @@ const GABLE = (() => {
   g.computeVertexNormals();
   return g;
 })();
+const DETAIL = new THREE.IcosahedronGeometry(0.5,0);
 const DISC = new THREE.CircleGeometry(1, 40).rotateX(-Math.PI / 2);
 
 const ROOF_SLATE = '#5f6266', ROOF_RED = '#9c4a32', WHITE = '#e9e5da';
@@ -34,7 +35,7 @@ class Frame {
   cone(lx, lz, r, y0, h, col, fac = fSmooth(), geo = PRIM.cone8) { this.cyl(geo, lx, lz, r, y0, h, col, fac); }
   dome(geo, lx, lz, r, y0, h, col, fac = fSmooth()) {
     const [x, z] = this.P(lx, lz); const sy = geo === PRIM.dome ? h * 2 : geo === PRIM.sphere ? h : h;
-    const yc = geo === PRIM.sphere ? y0 + h / 2 : y0;
+    const yc = (geo === PRIM.sphere || geo === DETAIL) ? y0 + h / 2 : y0;
     this.ctx.batch.add('facade', geo, mat(x, yc, z, this.rot, r * 2, sy, r * 2), { color: col, facade: fac });
   }
   col(lx, lz, w, d, h = 20, ry = 0) { const [x, z] = this.P(lx, lz); this.ctx.game.collision.addBox(x, z, w / 2, d / 2, this.rot + ry, { tag: 'landmark', id: this.tag, h }); }
@@ -104,36 +105,51 @@ export function buildLandmarks(game, ctx) {
 
   // ---------------- Gateway of India: yellow basalt triumphal arch facing the harbour (east)
   B.gateway = () => {
-    const F = frameFor(byId.gateway, Math.PI / 2), C = '#c9a46a', T = '#d9bb84', fa = fAsh(0.7, 1);
-    F.box(0, 0, 34, 24, 0, 0.35, '#a99a86', fAsh(0.1, 0));               // plinth
-    for (const s of [-1, 1]) {
-      F.box(s * 9.5, 0, 10, 16, 0, 19, C, fa);                              // piers / side halls
-      F.box(s * 5.2, 0, 1.4, 17, 0, 18, T, fa);                              // arch jambs
-      F.box(s * 9.5, 0, 10.6, 16.6, 18.4, 0.8, T, fa);                       // cornice
-      F.col(s * 9.5, 0, 10, 16, 20); F.col(s * 5.2, 0, 1.4, 17, 20);
-      // perforated jali screens + small arches on side halls (dark recess)
-      F.box(s * 9.5, 8.01, 5, 0.2, 3, 9, '#5d4a33', fSmooth(0.1));
-      F.box(s * 9.5, -8.01, 5, 0.2, 3, 9, '#5d4a33', fSmooth(0.1));
-      // corner turrets with domed caps
-      for (const zz of [-1, 1]) {
-        F.cyl(PRIM.cyl8, s * 13.4, zz * 7.0, 1.6, 0, 23.5, T, fa);
-        F.dome(PRIM.dome, s * 13.4, zz * 7.0, 1.9, 23.5, 1.9, T);
-        F.cone(s * 13.4, zz * 7.0, 0.25, 25.3, 2, T);
+    const F = frameFor(byId.gateway, Math.PI / 2), C = '#b9a17a', T = '#deca9e', fa = fAsh(0.7, 0);
+    F.box(0,0,33,23,0,0.28,'#aaa18f',fSmooth());
+    archWall(F,0,0,11.5,15,0.28,21,4.5,10.8,C,fa);
+    for (const side of [-1,1]) {
+      archWall(F,side*9.8,0,8.1,15,0.28,20,2.35,6.8,C,fa);
+      for (const face of [-1,1]) {
+        archTrim(F,side*9.8,face*7.65,2.35,7.08,0.32,T);
+        F.box(side*9.8,face*7.65,7.5,0.45,14.9,0.42,T,fa);
+        F.box(side*9.8,face*7.65,7.5,0.45,18.5,0.55,T,fa);
+        // recessed jharokha gallery, stone lattice and bracketed overhanging eave
+        F.box(side*9.8,face*7.57,6.8,0.08,15.45,2.7,'#514b3e',fSmooth());
+        for(let j=0;j<14;j++) F.box(side*9.8-3.1+j*0.48,face*7.73,0.09,0.12,15.5,2.6,T,fSmooth());
+        for(let j=0;j<5;j++) F.box(side*9.8,face*7.76,6.8,0.12,15.6+j*0.51,0.09,T,fSmooth());
+        F.box(side*9.8,face*7.9,8.2,1.0,18.2,0.25,T,fa);
+        for(const xx of [-2.8,0,2.8]) F.box(side*9.8+xx,face*7.75,0.35,0.65,17.7,0.5,T,fa);
+      }
+      F.col(side*9.8,0,8.1,15,21);
+      F.col(side*5.25,0,1.5,15,21);
+    }
+    for(const face of [-1,1]) archTrim(F,0,face*7.65,4.5,11.08,0.5,T);
+    F.box(0,0,29.8,16.5,20.1,0.65,T,fa);
+    F.box(0,0,20,16,20.75,3.3,C,fa);
+    F.box(0,0,30.4,17.3,23.7,0.6,T,fa);
+    F.cyl(PRIM.cyl8,0,0,6.8,24.2,1.5,C,fa);
+    F.dome(PRIM.dome,0,0,7.3,25.7,3.3,T);
+    for(const sx of [-1,1]) for(const sz of [-1,1]) {
+      F.cyl(PRIM.cyl12,sx*13.2,sz*6.7,1.35,0.3,24.0,C,fa);
+      F.cyl(PRIM.cyl12,sx*13.2,sz*6.7,1.75,23.5,0.55,T,fa);
+      F.cyl(PRIM.cyl8,sx*13.2,sz*6.7,1.3,24.1,1.5,T,fa);
+      F.dome(PRIM.ribDome,sx*13.2,sz*6.7,1.7,25.6,2.1,T);
+      F.cone(sx*13.2,sz*6.7,0.16,27.65,1.2,T);
+    }
+    F.keep(-22,0,50,64);
+    // Broad quay stairs descend east to the water; low railings flank the opening.
+    for(let j=0;j<8;j++) F.box(0,18+j*0.8,20,1.2,-j*0.22,0.28,'#a69e8c',fa);
+    for(const side of [-1,1]) {
+      for(let j=0;j<10;j++) {
+        const lx=side*20,lz=-18+j*4,[x,z]=F.P(lx,lz);
+        if(game.roads.isOnRoad(x,z,1) || fields.sample(fields.land,x,z)<0.5) continue;
+        F.cyl(PRIM.cyl8,lx,lz,0.16,0,0.85,'#424647',fSmooth());
+        collision.addCircle(x,z,0.18,{tag:'prop',h:0.85});
+        if(j%3===0) {F.cyl(PRIM.cyl8,lx,lz,0.08,0,3.6,'#3d4140',fSmooth());F.glow(lx,3.7,lz,'#ffe2ac',2.3,2);F.lit(lx,3.6,lz,0.35,0.3,0.35,'#ffe4b5');}
+        if(j<9) F.box(lx,lz+1.7,0.08,3.4,0.65,0.08,'#454747',fSmooth());
       }
     }
-    F.box(0, 0, 9.0, 16, 15.5, 5.5, C, fa);                                  // arch head
-    F.box(0, 0, 21, 17, 21, 3.5, T, fa);                                     // attic over the arch
-    F.box(0, 0, 29.5, 17.5, 24.3, 0.8, T, fa);
-    for (const sx of [-1, 1]) for (const sz of [-1, 1]) {                    // four crowning turrets
-      F.cyl(PRIM.cyl8, sx * 8.5, sz * 6.6, 1.9, 24.5, 6, C, fa);
-      F.dome(PRIM.ribDome, sx * 8.5, sz * 6.6, 2.1, 30.5, 3.4, T);
-      F.cone(sx * 8.5, sz * 6.6, 0.22, 33.6, 1.8, T);
-    }
-    F.dome(PRIM.dome, 0, 0, 7.5, 24.8, 3.2, T);                               // low central dome
-    // arch soffit (curved) as half-cylinder across the passage
-    for (const s of [-1, 1]) { const [x, z] = F.P(s * 4.5, 0); batch.add('facade', PRIM.box, mat(x, 15.5, z, F.rot, 3.2, 3.2, 16.2, 0, Math.PI / 4), { color: C, facade: fa }); }
-    F.keep(-22, 0, 50, 64);                                                  // plaza (landward)
-    for (const sx of [-1, 1]) for (const sz of [-1, 1]) F.glow(sx * 14, 1.2, sz * 11, '#ffd9a0', 2.6, 2);
   };
 
   // ---------------- Taj Mahal Palace: red domes, corner towers, central great dome
@@ -162,6 +178,23 @@ export function buildLandmarks(game, ctx) {
     });
     // gables along the front roofline
     for (let i = -3; i <= 3; i++) if (Math.abs(i) > 0) F.gable(i * 9, D / 2 - 1.4, 3.2, 4.4, 30, 3, R, fRoof(), Math.PI / 2);
+    for(let i=-4;i<=4;i++) {
+      const x=i*7.2;
+      archWall(F,x,D/2+0.25,7.2,1.2,0,5.2,2.3,2.6,T,fAsh(0.3,1));
+      for(const y of [9.2,18.4,27.4]) {
+        F.box(x,D/2+0.7,6.5,1.9,y,0.22,T,fSmooth());
+        F.box(x,D/2+1.5,6.4,0.08,y+0.3,0.65,'#988b73',fSmooth());
+        for(let k=0;k<8;k++) F.box(x-2.8+k*0.8,D/2+1.5,0.07,0.09,y+0.22,0.72,T,fSmooth());
+      }
+    }
+    F.box(0,D/2+2.4,12,5,4.6,0.55,T,fAsh());
+    for(const x of [-5,5]) F.cyl(PRIM.cyl12,x,D/2+4,0.4,0,4.6,T);
+    // The eastern wing is the main elevation seen from Apollo Bunder.
+    for(let j=0;j<8;j++) for(const y of [6,11,16,21]) {
+      const z=-D/2+7+j*(D-14)/8;
+      F.box(-W/2+0.7,z,1.8,3.6,y+3,0.2,T,fSmooth());
+      F.box(-W/2+0.7,z,1.8,3.6,y,0.18,T,fSmooth());
+    }
     F.keep(-13, 39, 62, 28); // forecourt: keeps the facade + red domes visible from the Gateway plaza
     F.sign(0, D / 2 + 0.05, 5, 6, 1.6, 'TAJ');
     F.lit(0, 2.2, D / 2 + 0.06, 8, 3.6, 0.1, '#ffcf8a');
@@ -199,7 +232,20 @@ export function buildLandmarks(game, ctx) {
     }
     F.box(tx, tz, 11, 11, 51.5, 1, t, fAsh(0.2));
     F.cyl(PRIM.cyl8, tx, tz, 4.2, 52.5, 13, c, fGoth(0.3, 1, 6.5, 2));
-    for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2; F.lit(tx + Math.sin(a) * 5.05, 46, tz + Math.cos(a) * 5.05, i % 2 ? 0.1 : 3.4, 3.4, i % 2 ? 3.4 : 0.1, '#f4ecd2'); }
+    for(let face=0;face<4;face++) {
+      const a=F.rot+face*Math.PI/2,[cx,cz]=F.P(tx,tz),nx=Math.sin(a),nz=Math.cos(a),rx=Math.cos(a),rz=-Math.sin(a);
+      const px=cx+nx*5.08,pz=cz+nz*5.08;
+      const clockGeo=new THREE.CircleGeometry(1.72,40);
+      batch.add('glow',clockGeo,mat(px,46,pz,a,1,1,1),{color:'#e5dab7'});
+      for(let j=0;j<12;j++) {
+        const t=j*Math.PI/6,dx=Math.sin(t)*1.39,dy=Math.cos(t)*1.39;
+        batch.add('facade',PRIM.box,mat(px+rx*dx+nx*0.035,46+dy,pz+rz*dx+nz*0.035,a,0.12,0.24,0.045,0,-t),{color:'#292e34',facade:fSmooth()});
+      }
+      for(const [angle,len] of [[-0.9,0.92],[1.05,1.29]]) {
+        const dx=Math.sin(angle)*len/2,dy=Math.cos(angle)*len/2;
+        batch.add('facade',PRIM.box,mat(px+rx*dx+nx*0.07,46+dy,pz+rz*dx+nz*0.07,a,0.13,len,0.06,0,-angle),{color:'#171b22',facade:fSmooth()});
+      }
+    }
     F.cyl(PRIM.cyl8, tx, tz, 4.6, 65.5, 1, t, fAsh(0.2));
     for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4 + Math.PI / 8; F.cone(tx + Math.sin(a) * 4.3, tz + Math.cos(a) * 4.3, 0.4, 66.5, 3.5, t, fSmooth(), PRIM.cone4); }
     F.cyl(PRIM.cyl8, tx, tz, 2.6, 66.5, 6, c, fGoth(0.5, 1, 6, 1.5));
@@ -390,15 +436,26 @@ export function buildLandmarks(game, ctx) {
   for (const i of fields.islands) collision.addCircle(i.x, i.z, i.r - 0.3, { tag: 'island', id: i.id, h: 1 });
   if (isl.FLORA) { // Flora Fountain: ornate stone fountain, painted white figure
     const I = isl.FLORA, F = new Frame(ctx, I.x, I.z, 0, 'flora'), St = '#cfc6b2', Wt = '#f0eee6';
-    F.cyl(PRIM.cyl16, 0, 0, I.r - 0.6, 0, 0.9, St, fAsh(0.3, 1));
-    batch.add('facade', DISC, mat(I.x, 0.75, I.z, 0, I.r - 1.2, 1, I.r - 1.2), { color: '#3e5a60', facade: fSmooth(0.9) });
-    F.cyl(PRIM.cyl8, 0, 0, 2.6, 0, 3.6, St, fAsh(0.5, 1));
-    F.cyl(PRIM.cyl16, 0, 0, 3.4, 3.6, 0.6, Wt);
-    F.cyl(PRIM.cyl8, 0, 0, 1.2, 4.2, 3.4, St, fAsh(0.6, 1));
-    F.cyl(PRIM.cyl12, 0, 0, 1.9, 7.6, 0.45, Wt);
-    F.cyl(PRIM.cyl8, 0, 0, 0.55, 8.0, 2.0, Wt); F.dome(PRIM.sphere, 0, 0, 0.36, 9.95, 0.72, Wt);
-    for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2 + Math.PI / 4; F.cyl(PRIM.cyl8, Math.sin(a) * 2.9, Math.cos(a) * 2.9, 0.6, 0.9, 1.4, St); F.cyl(PRIM.cyl8, Math.sin(a) * 2.9, Math.cos(a) * 2.9, 0.38, 2.3, 1.7, Wt); }
-    F.glow(0, 0.5, 0, '#ffe8b0', 3, 2);
+    const r=Math.min(I.r-1.3,5.6);
+    grassDisc(I.x,I.z,I.r-0.45);
+    batch.add('paving',DISC,mat(I.x,0.22,I.z,0,r+1,1,r+1));
+    F.cyl(PRIM.cyl8,0,0,r,0.22,0.4,St,fAsh(0.3,1));
+    basin(F,0,0,r-0.4,0.62,0.46,St);
+    F.cyl(PRIM.cyl8,0,0,1.3,0.6,2.2,St,fAsh(0.5,1));
+    for(let k=0;k<4;k++) {
+      const a=k*Math.PI/2,x=Math.sin(a)*1.8,z=Math.cos(a)*1.8;
+      figure(F,x,z,1.0,0.68,Wt); F.dome(PRIM.sphere,x,z,0.28,1.1,0.42,St);
+    }
+    basin(F,0,0,2.3,3.05,0.36,Wt);
+    F.cyl(PRIM.cyl8,0,0,0.65,3.4,1.65,St,fAsh(0.6,1));
+    for(let k=0;k<8;k++) {const a=k*Math.PI/4; F.cone(Math.sin(a)*0.7,Math.cos(a)*0.7,0.2,3.6,1.0,Wt);}
+    basin(F,0,0,1.35,5.0,0.28,Wt);
+    F.cyl(PRIM.cyl8,0,0,0.48,5.25,0.65,Wt);
+    figure(F,0,0,5.9,1.0,Wt);
+    F.box(0.72,0,0.22,0.35,7.1,0.3,Wt,fSmooth());
+    for(let j=0;j<12;j++){ const a=j*Math.PI/6; waterJet(F,Math.sin(a)*1.8,Math.cos(a)*1.8,0.9,2.9); }
+    for(let j=0;j<4;j++) {const a=j*Math.PI/2+Math.PI/4;F.glow(Math.sin(a)*4,0.7,Math.cos(a)*4,'#ffe8b0',1.6,2);}
+
   }
   if (isl.REGAL) { // Wellington Fountain: domed stone canopy in a garden
     const I = isl.REGAL, F = new Frame(ctx, I.x, I.z, 0, 'wellington'), St = '#d6cdb8';
@@ -414,7 +471,17 @@ export function buildLandmarks(game, ctx) {
     const I = isl.HORN, F = new Frame(ctx, I.x, I.z, 0, 'horniman');
     grassDisc(I.x, I.z, I.r - 1.5);
     railRing(ctx, I.x, I.z, I.r - 1.0, 1.25, 4);
-    F.cyl(PRIM.cyl16, 0, 0, 3.4, 0, 0.7, '#cfc6b2', fAsh(0.4, 1)); F.cyl(PRIM.cyl8, 0, 0, 0.7, 0.7, 2.6, '#cfc6b2'); F.cyl(PRIM.cyl12, 0, 0, 1.5, 3.2, 0.4, '#cfc6b2');
+    basin(F,0,0,3.8,0.25,0.6,'#cfc6b2');
+    F.cyl(PRIM.cyl8,0,0,0.48,0.6,1.5,'#cfc6b2');
+    basin(F,0,0,1.6,2.1,0.3,'#d9d0ba');
+    waterJet(F,0,0,2.4,4.3);
+    for(let j=0;j<28;j++) {
+      const a=j*Math.PI*2/28, rr=I.r-(j%2?8:12),x=Math.sin(a)*rr,z=Math.cos(a)*rr;
+      F.cyl(PRIM.cyl8,x,z,0.18,0,4.8+(j%3)*0.5,'#655742',fSmooth());
+      for(let k=0;k<3;k++) F.dome(PRIM.sphere,x+Math.cos(k*2.4)*1.1,z+Math.sin(k*2.4)*1.1,2.25,3.7+(k%2)*0.8,3.2,['#537548','#46663b','#638251'][j%3],fSmooth(0.5));
+      // The existing garden island collider already covers these trunks.
+      if(j%4===0){F.cyl(PRIM.cyl8,x*0.82,z*0.82,0.06,0,3,'#363f39');F.glow(x*0.82,3.1,z*0.82,'#ffe0aa',1.7,2);}
+    }
     // paths to the gates (paving strips)
     for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2 + Math.PI / 4; batch.add('paving', PRIM.box, mat(I.x + Math.sin(a) * (I.r / 2), 0.2, I.z + Math.cos(a) * (I.r / 2), a, 2.4, 0.04, I.r - 2)); }
     hornimanRing(game, ctx, I);
@@ -509,16 +576,69 @@ function kalaGhoda(game, ctx) {
   ctx.keepOut.push({ cx: best.x, cz: best.z, hw: 8, hd: 8, rot });
   ctx.batch.add('paving', DISC, mat(best.x, 0.17, best.z, 0, 7.5, 1, 7.5));
   F.box(0, 0, 2.6, 5.4, 0, 2.2, St, fAsh(0.3, 1)); F.box(0, 0, 3, 5.8, 2.2, 0.25, '#a8a399', fSmooth());
-  const y = 2.45, s = 1.5; // horse (scaled ~1.5x life size)
-  F.box(0, 0, 0.75 * s, 0.85 * s, y + 1.25 * s, 1.0 * s, K, fSmooth(0.95), 0);                     // body (along local z)
-  F.box(0, 0, 0.75 * s, 2.0 * s, y + 1.3 * s, 0.8 * s, K, fSmooth(0.95));
-  { const [x, z] = F.P(0, 1.15 * s); ctx.batch.add('facade', PRIM.box, mat(x, y + 2.0 * s, z, rot, 0.45 * s, 1.1 * s, 0.5 * s, -0.55), { color: K, facade: fSmooth(0.95) }); }
-  { const [x, z] = F.P(0, 1.6 * s); ctx.batch.add('facade', PRIM.box, mat(x, y + 2.45 * s, z, rot, 0.36 * s, 0.38 * s, 0.85 * s, 0.35), { color: K, facade: fSmooth(0.95) }); }
-  for (const [lx, lz, rx] of [[-0.25, 0.75, -0.5], [0.25, 0.8, 0], [-0.25, -0.75, 0], [0.25, -0.75, 0.15]]) {
-    const [x, z] = F.P(lx * s, lz * s); ctx.batch.add('facade', PRIM.box, mat(x, y + 0.5 * s + (rx < 0 ? 0.25 * s : 0), z, rot, 0.17 * s, (rx < 0 ? 0.7 : 1.0) * s, 0.17 * s, rx), { color: K, facade: fSmooth(0.95) });
+  const y=2.45;
+  const mass=(x,yy,z,w,h,d,rx=0)=>{const [px,pz]=F.P(x,z);ctx.batch.add('facade',PRIM.sphere,mat(px,yy,pz,rot,w,h,d,rx),{color:K,facade:fSmooth(.95)});};
+  const limb=(a,b,r)=>{
+    const [ax,az]=F.P(a[0],a[2]),[bx,bz]=F.P(b[0],b[2]);
+    const A=new THREE.Vector3(ax,a[1],az),B=new THREE.Vector3(bx,b[1],bz),v=B.clone().sub(A),q=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),v.clone().normalize());
+    ctx.batch.add('facade',PRIM.cyl8,new THREE.Matrix4().compose(A.add(B).multiplyScalar(.5),q,new THREE.Vector3(r*2,v.length(),r*2)),{color:K,facade:fSmooth(.95)});
+  };
+  mass(0,y+1.9,0,1.18,1.35,2.9); // barrel and rounded hindquarters
+  mass(0,y+1.85,-1.05,1.25,1.4,1.25);
+  mass(0,y+2.65,1.15,.72,1.75,.9,-.4); // rising neck
+  mass(0,y+3.25,1.75,.57,.65,1.05,.2);mass(0,y+3.08,2.15,.48,.42,.55);
+  for(const side of [-1,1]) {
+    F.cone(side*.19,1.52,.11,y+3.5,.4,K);
+    const hip=[side*.43,y+1.8,-.95],knee=[side*.46,y+.9,-1.15],hoof=[side*.46,y+.08,-.93];
+    limb(hip,knee,.15);limb(knee,hoof,.09);mass(...[hoof[0],hoof[1],hoof[2],.26,.17,.4]);
+    const shoulder=[side*.42,y+1.9,.86],joint=[side*.43,y+1,.95],foot=[side*.43,y+.08,1.07];
+    if(side<0){joint[1]+=.55;joint[2]+=.35;foot[1]+=.72;foot[2]+=.7;}
+    limb(shoulder,joint,.13);limb(joint,foot,.08);mass(foot[0],foot[1],foot[2],.24,.17,.36);
   }
-  { const [x, z] = F.P(0, -1.05 * s); ctx.batch.add('facade', PRIM.box, mat(x, y + 1.0 * s, z, rot, 0.12 * s, 0.9 * s, 0.14 * s, 0.4), { color: K, facade: fSmooth(0.95) }); }
+  limb([0,y+2.1,-1.4],[.12,y+.65,-1.9],.12); // tail
+  // Saddle, seated rider, bent legs, arms to the reins and a helmet.
+  mass(0,y+2.5,-.1,1.0,.25,1.1);mass(0,y+3.1,-.2,.65,1.15,.45);
+  mass(0,y+3.95,-.1,.48,.55,.5);F.cone(0,-.1,.3,y+4.15,.23,K);
+  for(const side of [-1,1]) {
+    limb([side*.2,y+2.6,-.15],[side*.65,y+2.0,.2],.13);
+    limb([side*.65,y+2,.2],[side*.54,y+1.4,.05],.09);
+    limb([side*.27,y+3.5,-.1],[side*.4,y+3.1,.5],.095);
+    limb([side*.4,y+3.1,.5],[side*.25,y+3.1,.95],.07);
+    limb([side*.25,y+3.1,.95],[side*.24,y+3.15,1.8],.025);
+  }
   F.col(0, 0, 3, 5.8, 3);
   F.glow(-1.8, 0.3, 0, '#ffe2b0', 2.2, 2); F.glow(1.8, 0.3, 0, '#ffe2b0', 2.2, 2);
   ctx.kalaGhoda = { x: best.x, z: best.z };
+}
+
+function archWall(F,x,z,w,d,y,h,r,spring,color,fac) {
+  const shape=new THREE.Shape(); shape.moveTo(-w/2,0); shape.lineTo(-r,0); shape.lineTo(-r,spring);
+  for(let j=0;j<=24;j++){const a=Math.PI-j*Math.PI/24;shape.lineTo(Math.cos(a)*r,spring+Math.sin(a)*r);}
+  shape.lineTo(r,0);shape.lineTo(w/2,0);shape.lineTo(w/2,h);shape.lineTo(-w/2,h);shape.closePath();
+  const g=new THREE.ExtrudeGeometry(shape,{depth:d,bevelEnabled:false,curveSegments:24});g.translate(0,0,-d/2);
+  const [px,pz]=F.P(x,z);F.ctx.batch.add('facade',g,mat(px,y,pz,F.rot,1,1,1),{color,facade:fac});g.dispose();
+}
+function archTrim(F,x,z,r,spring,t,color) {
+  for(const side of [-1,1]) F.box(x+side*(r+t/2),z,t,0.32,0,spring,color,fSmooth());
+  for(let j=0;j<24;j++) {
+    const a=(j+0.5)*Math.PI/24,[px,pz]=F.P(x+Math.cos(a)*(r+t/2),z);
+    F.ctx.batch.add('facade',PRIM.box,mat(px,spring+Math.sin(a)*(r+t/2),pz,F.rot,t,(r+t/2)*Math.PI/24+0.04,0.32,0,a),{color,facade:fSmooth()});
+  }
+}
+function basin(F,x,z,r,y,h,color) {
+  F.cyl(PRIM.cyl16,x,z,r,y,h,color,fSmooth());
+  const [px,pz]=F.P(x,z);
+  F.ctx.batch.add('facade',DISC,mat(px,y+h+0.01,pz,0,r*0.86,1,r*0.86),{color:'#679092',facade:fSmooth()});
+  if(r<3) for(let j=0;j<8;j++) {const a=j*Math.PI/4;waterJet(F,x+Math.sin(a)*r*.75,z+Math.cos(a)*r*.75,Math.max(.8,y-1.1),y+h);}
+  for(let j=0;j<32;j++) {const a=j*Math.PI/16;F.dome(DETAIL,x+Math.sin(a)*r*0.95,z+Math.cos(a)*r*0.95,0.12,y+h-0.02,0.18,color);}
+}
+function figure(F,x,z,y,s,color) {
+  F.cone(x,z,0.32*s,y,1.15*s,color,fSmooth(),PRIM.cyl12);
+  F.dome(PRIM.sphere,x,z,0.28*s,y+1.45*s,0.56*s,color);
+  F.box(x,z,0.54*s,0.3*s,y+0.95*s,0.6*s,color,fSmooth());
+  for(const side of [-1,1]) F.box(x+side*0.35*s,z+0.08*s,0.16*s,0.2*s,y+0.8*s,0.65*s,color,fSmooth());
+}
+function waterJet(F,x,z,y0,y1) {
+  F.cyl(PRIM.cyl8,x,z,0.045,y0,y1-y0,'#98bdbe',fSmooth());
+  for(let j=0;j<5;j++){const a=j*2.4;F.dome(DETAIL,x+Math.sin(a)*0.2,z+Math.cos(a)*0.2,0.075,y1-j*0.22,0.12,'#bad5ce');}
 }

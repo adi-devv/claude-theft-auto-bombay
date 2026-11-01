@@ -1,0 +1,97 @@
+[
+  {
+    "name": "station",
+    "context": "running",
+    "crowd": 0.109,
+    "surf": 0.019,
+    "rush": 1,
+    "nearTrain": 1,
+    "events": {
+      "honk": 3,
+      "vendor": 1,
+      "train": 1,
+      "bell": 0,
+      "crow": 1
+    },
+    "peak": 0.015399999999999999,
+    "ready": true,
+    "rms": 0.00391592389473841,
+    "errors": []
+  },
+  {
+    "name": "fort",
+    "context": "running",
+    "crowd": 0.119,
+    "surf": 0,
+    "rush": 1,
+    "nearTrain": 0.026,
+    "events": {
+      "honk": 5,
+      "vendor": 1,
+      "train": 1,
+      "bell": 1,
+      "crow": 2
+    },
+    "peak": 0.015399999999999999,
+    "ready": true,
+    "rms": 0.0035896118832354175,
+    "errors": []
+  },
+  {
+    "name": "seawall",
+    "context": "running",
+    "crowd": 0.919,
+    "surf": 0.919,
+    "rush": 1,
+    "nearTrain": 0.237,
+    "events": {
+      "honk": 8,
+      "vendor": 1,
+      "train": 1,
+      "bell": 1,
+      "crow": 3
+    },
+    "peak": 0.015399999999999999,
+    "ready": true,
+    "rms": 0.012156146307671124,
+    "errors": []
+  },
+  {
+    "name": "station-return",
+    "context": "running",
+    "crowd": 0.03,
+    "surf": 0,
+    "rush": 1,
+    "nearTrain": 1,
+    "events": {
+      "honk": 13,
+      "vendor": 1,
+      "train": 2,
+      "bell": 1,
+      "crow": 6
+    },
+    "peak": 0.015399999999999999,
+    "ready": true,
+    "rms": 0.0042577545145435205,
+    "errors": []
+  },
+  {
+    "name": "late-night",
+    "context": "running",
+    "crowd": 0.03,
+    "surf": 0,
+    "rush": 0.35,
+    "nearTrain": 0.026,
+    "events": {
+      "honk": 14,
+      "vendor": 1,
+      "train": 2,
+      "bell": 1,
+      "crow": 6
+    },
+    "peak": 0.015399999999999999,
+    "ready": true,
+    "rms": 0.0016759070222957377,
+    "errors": []
+  }
+]

@@ -165,6 +165,7 @@ export function generateBuildings(game, ctx) {
     const kind = o.spec.kind;
     stats[kind]++;
     const info = BUILD[kind](batch, o, rnd, R, pick, ctx, signs, fields);
+    if (o.road?.name === 'Colaba Causeway') causewayFront(batch,o,ctx,signs);
     if (!outer) {
       const hw = info?.collHw ?? o.hw, hd = info?.collHd ?? o.hd, cx = info?.collCx ?? o.cx, cz = info?.collCz ?? o.cz;
       collision.addBox(cx, cz, hw, hd, o.rot, { h: o.H || 12, tag: 'building' });
@@ -177,11 +178,12 @@ export function generateBuildings(game, ctx) {
 function lotSpec(reg, road, rnd, R, back = false) {
   const r = rnd();
   const isMD = road && road.name === 'Marine Drive';
+  if (road?.name === 'Colaba Causeway') return {kind:'fort',w:R(12,19),d:R(12,19),floors:Math.round(R(2,4)),arcade:false};
   const major = road && (road.kind === 'arterial' || road.kind === 'boulevard');
   if (reg === 'np') return { kind: r < 0.75 ? 'tower' : 'modern', w: R(24, 36), d: R(22, 32), floors: Math.round(R(16, 28)) };
   if (reg === 'deco') {
     if (back) return { kind: r < 0.6 ? 'deco' : 'modern', w: 0, d: 0, floors: Math.round(R(3, 6)) };
-    if (r < (isMD ? 0.9 : 0.75)) return { kind: 'deco', w: R(18, 28), d: R(18, 26), floors: Math.round(isMD ? R(5, 8) : R(4, 7)) };
+    if (road?.name === 'Maharshi Karve Rd' || r < (isMD ? 0.9 : 0.75)) return { kind: 'deco', w: R(18, 28), d: R(18, 26), floors: Math.round(isMD ? R(5, 8) : R(4, 7)) };
     return { kind: 'modern', w: R(16, 26), d: R(16, 24), floors: Math.round(R(7, 12)) };
   }
   if (reg === 'marinelines') {
@@ -276,6 +278,15 @@ const BUILD = {
       for (let k = 8; k >= 0; k--) { const a = a0 + (a1 - a0) * k / 8; ring.push(L2W(o, ocx + Math.cos(a) * (rc - 0.2), ocz + Math.sin(a) * (rc - 0.2))); }
       for (let f = 1; f < floors; f++) emitPrism(batch, ring, f * fh - 0.15, f * fh + 1.0, trim, facadeVec(3, 3, 0, seed), { top: true, bottom: true, smoothAngle: 0.6 });
     }
+    if (o.frontage) {
+      const accent = ['#88b6b2','#c78875','#a6b6c9','#d1ba87'][Math.floor(seed*4)];
+      for (let f=1; f<floors; f++) {
+        const [px,pz]=L2W(o,fcx,-o.hd-0.12);
+        emitBox(batch,px,f*fh+0.35,pz,Math.max(2,frontW-0.6),0.26,0.18,o.rot,accent,facadeVec(3,3,9,seed));
+      }
+      for (const sx of [-1,1]) { const [px,pz]=L2W(o,fcx+sx*frontW*0.24,-o.hd-0.28);
+        emitBox(batch,px,H*0.55,pz,0.24,H*0.75,0.48,o.rot,trim,facadeVec(3,3,9,seed)); }
+    }
     // central vertical fin + name plaque
     if (o.frontage && rnd() < 0.75 && frontW > 10) {
       const [x, z] = L2W(o, fcx, -o.hd - 0.35);
@@ -332,7 +343,7 @@ const BUILD = {
     } else {
       const shops = o.frontage && rnd() < 0.85;
       emitPrism(batch, poly, 0, H + 1.0, col, facadeVec(gothic ? 3.2 : 2.6, fh, (shops ? 10 : 0) + style, seed), { top: false, bay: gothic ? 3.2 : 2.6 });
-      if (shops) shopSigns(batch, o, fh * 0.85, rnd, R, signs, 0, 2 * o.hw);
+      if (shops && o.road?.name !== 'Colaba Causeway') shopSigns(batch, o, fh * 0.85, rnd, R, signs, 0, 2 * o.hw);
       const hip = rnd() < 0.45;
       if (hip) hipRoof(batch, o, poly, H, rnd() < 0.6 ? '#9a5236' : '#6e6a64', seed);
       else parapetAndRoof(batch, poly, H, 1.0, '#7d776c', col, seed);
@@ -458,3 +469,28 @@ function hipRoof(batch, o, poly, H, color, seed) {
 }
 
 export { facadeVec, L2W };
+
+function causewayFront(batch,o,ctx,signs) {
+  const facade=facadeVec(3,3,9,0.4),w=2*o.hw-0.5;
+  const leopold=o.cx<120 && o.cz>405 && o.cz<435 && !ctx.leopoldPlaced;
+  if(leopold) ctx.leopoldPlaced=true;
+  const name=leopold?'LEOPOLD CAFE':Math.floor(o.cz/18)%2?'COLABA BOOKS & CURIOS':'CAUSEWAY MARKET';
+  const [sx,sz]=L2W(o,0,-o.hd-0.08);
+  emitSign(batch,sx,3.3,sz,w,0.85,o.front[0],o.front[1],signs.bigUV[signs.bigIndex[name]]);
+  // Cotton striped canvas awnings at a pedestrian scale, below the upper-storey balconies.
+  const n=Math.ceil(w/0.55);
+  for(let j=0;j<n;j++) {
+    const [x,z]=L2W(o,-w/2+(j+0.5)*w/n,-o.hd-0.85);
+    emitBox(batch,x,2.75,z,w/n,0.09,1.65,o.rot,j%2?'#efe2c5':leopold?'#6a2d24':'#35736b',facade,0.12);
+  }
+  for(let j=0;j<Math.floor(w/3);j++) {
+    const [x,z]=L2W(o,-w/2+1.4+j*3,-o.hd-1.0);
+    // Recessed display tables, clear of the carriageway and all junction mouths.
+    if(ctx.game.roads.isOnRoad(x,z,1.2) || ctx.fields.sample(ctx.fields.dC,x,z)<1.2) continue;
+    if(ctx.game.collision.queryOBB(x,z,0.7,0.45,o.rot).length) continue;
+    emitBox(batch,x,0.8,z,1.4,0.1,0.75,o.rot,'#9b744d',facade);
+    ctx.game.collision.addBox(x,z,0.7,0.4,o.rot,{tag:'prop',h:0.9});
+    if(leopold) for(const side of [-1,1]) emitCyl(batch,PRIM.cyl12,x+Math.cos(o.rot)*side*.3,0.96,z-Math.sin(o.rot)*side*.3,.075,.15,'#e8dcc0',facade);
+    else for(let k=0;k<5;k++) emitBox(batch,x+Math.cos(o.rot)*(k-2)*0.23,0.92+(k%3)*0.045,z-Math.sin(o.rot)*(k-2)*0.23,0.2,0.15,0.42,o.rot,['#c09739','#794d7c','#c27952','#507b6a','#dfd6bd'][k],facade);
+  }
+}
