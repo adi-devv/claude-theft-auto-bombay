@@ -64,6 +64,11 @@ Harness targets `GAME_URL` (default `http://localhost:8765/game/`). Headless Chr
       requests for city: clear props blocking Hazarimal Somani Marg / X1 / Esplanade Lane).
       **police: DONE (built by Codex gpt-6.1-terra) + integrated on main 2026-11-01** (notes/police.md; uses fallback
       foot-cop mesh until peds lands; traffic msPerStep rose to ~1 ms with police active — check in critic round).
+      **peds: DONE (built by Codex gpt-6.1-sol) + integrated on main 2026-11-01** (notes/peds.md; 220 active, 13-15 draw
+      calls; peds updateMs ~2-2.5 ms and traffic ~0.8 ms with police active — perf item for critics).
+      **NEXT (2026-11-01 plan):** city fix-up round (Sonnet, work/city: clear road-blocking props, unhide Taj, street
+      furniture, boats) → integrate city → Phase 3 critics on Sonnet/Codex (no Opus subagents), Claude subagents serial,
+      Codex runs may be parallel; usage watcher pauses at 90% of the 5-hour limit.
       **2026-11-01: work moved to a Windows machine (D:\Aadit\claudez\claude-theft-auto-bombay). Harness/mapview pick
       Edge + D3D11 on Windows automatically; integrate.sh is plain bash; tools/sync-sandbox.sh replaces rsync.
       Builders now resume ONE AT A TIME (traffic → peds → police), each integrated + pushed when verified.**

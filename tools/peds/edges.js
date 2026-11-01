@@ -1,0 +1,5 @@
+const H=require('../harness'), assert=require('assert/strict');
+(async()=>{const g=await H.launch({width:960,height:540});try{
+await g.eval(()=>{__game.paused=true;});
+const out=await g.eval(()=>{const g=__game;g.debug.teleport(-417,190);g.debug.step(1);const cop=g.pedSystem.spawnPed({x:-417,z:190,kind:'cop',controller(p,dt){p.position.z+=1.2*dt;p.velocity.z=1.2;p.state='walk';}});const z=cop.position.z;g.debug.step(1);const direct=cop.position.z-z;cop.remove();const driver=g.pedSystem.spawnPed({x:-401,z:210,kind:'driver',heading:0});const started=g.roads.isOnRoad(driver.position.x,driver.position.z);g.debug.step(6);const ended=g.roads.isOnRoad(driver.position.x,driver.position.z);const finite=Number.isFinite(driver.position.x+driver.position.z);driver.remove();return {direct,started,ended,finite};});console.log(out);assert.ok(Math.abs(out.direct-1.2)<.05);assert.equal(out.started,true);assert.equal(out.ended,false);assert.equal(out.finite,true);assert.deepEqual(await g.eval(()=>__game.errors),[]);
+}finally{await g.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

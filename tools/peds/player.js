@@ -1,0 +1,7 @@
+const H=require('../harness'),path=require('path'),assert=require('assert/strict');
+(async()=>{const g=await H.launch({width:960,height:540,out:path.join(__dirname,'shots')});try{
+ await g.eval(()=>{const g=__game;g.paused=true;g.debug.teleport(-417,180,0);g.debug.step(1);for(const q of [...g.peds])if(q.position.distanceTo(g.player.position)<3)q.remove();g.pedSystem.spawnPed({x:-417,z:200,kind:'cop',controller(p){p.velocity.set(0,0,0);}});g.events.on('crime',e=>(g.debug.punchEvents??=[]).push(e.type));const p=g.pedSystem.spawnPed({x:-417,z:180.9,heading:Math.PI,kind:'cop',controller(p){p.velocity.set(0,0,0);}});g.debug.punchPed=p;g.player.updateCamera=()=>{};g.camera.position.set(-412,3,185);g.camera.lookAt(-417,1,180);g.pedSystem.frameUpdate();});await g.wait(.1);await g.shot('14-cop-minimap');
+ const punch=await g.eval(()=>{const g=__game;g.input.setKey('KeyJ',true);g.debug.step(.55);g.input.setKey('KeyJ',false);return{state:g.debug.punchPed.state,isCop:g.debug.punchPed.isCop,events:g.debug.punchEvents,panic:g.peds.filter(p=>p.state==='flee').length};});console.log('punch',punch);assert.equal(punch.state,'down');assert.ok(punch.events.includes('copAssault'));assert.ok(punch.panic>0);await g.wait(.1);await g.shot('15-player-punch');
+ console.log('errors',await g.eval(()=>__game.errors));assert.deepEqual(await g.eval(()=>__game.errors),[]);
+}finally{await g.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
+
