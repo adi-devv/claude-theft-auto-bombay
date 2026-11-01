@@ -109,3 +109,13 @@ Harness targets `GAME_URL` (default `http://localhost:8765/game/`). Headless Chr
   `/Users/air/Library/Application Support/Claude/scratch-workspaces/dc37d11d-e944-49bb-8c36-f75de693d08a/23cb327e-2e33-4d7e-aa81-c3bd44618a8d/scratch-2026-10-12-84bbbd`
   If it still exists and has newer files in work/ or notes/, rsync them over:
   `rsync -a "<that path>/work/" work/ && rsync -a "<that path>/notes/" notes/ && rsync -a "<that path>/tools/" tools/`
+
+## Phase 3 status (2026-11-01 ~20:25 IST)
+- City fix-up integrated (c09d6fa) and city critic round integrated (444c2dd, built with Codex sol).
+- notes/critic-world.md (Sonnet): density 6/10, atmosphere 6.5/10. City items fixed in 444c2dd. OPEN for other owners:
+  peds — night crowd renders black (characters/crowd.js material needs night fill keyed to city.lightLevel); off-promenade streets empty, lift ring ~220→320, visible cricketers/bus-stop queues;
+  traffic — Marine Drive far too sparse (scale density by road kind + rush hour, more buses);
+  vehicles+traffic — add two-wheelers (scooter/bike ~15-20% of traffic); HUD — duplicate "Marine Drive" label; index — favicon 404.
+- Driving/chase critic: re-running on Sonnet (Codex hit its 5h limit on aaditsingal7859, resets 22:43 IST). Partial Codex scripts in tools/critic-driving/.
+- On-foot/peds/traffic critic (Codex): not done; relaunch brief in scratchpad codex-critic-onfoot.md (prompts/critics.md areas 5+6) once Codex is available.
+- Codex gotcha: always run `codex exec ... < /dev/null` in background; its log may not flush for a long time, so judge progress by files written (tools/critic-*/), not log size.
