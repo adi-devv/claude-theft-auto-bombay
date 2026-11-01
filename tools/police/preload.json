@@ -1,0 +1,14 @@
+{
+  "tries": 53,
+  "playerRoad": "Marine Drive",
+  "roadblockRoad": "Madame Cama Rd",
+  "routeSample": 85,
+  "dir": -1,
+  "fov": 25,
+  "distance": 254.80869999283786,
+  "inFrustumAtCreation": 0,
+  "carsAfter5s": 2,
+  "officersAfter5s": 2,
+  "formationsAfter5s": 1,
+  "errors": []
+}

@@ -1,0 +1,2367 @@
+{
+  "mdLength": 969.7050284387658,
+  "carArrest": {
+    "bustAt": 2.5166666666666666
+  },
+  "footArrest": {
+    "bustAt": 2.5166666666666666
+  },
+  "movingFootArrest": {
+    "state": "normal",
+    "progress": 0
+  },
+  "arrestMoveOff": {
+    "accumulated": 1.4,
+    "drained": 0,
+    "state": "normal"
+  },
+  "noOfficerArrest": {
+    "state": "normal"
+  },
+  "hiddenInsideCircle": {
+    "level": 0,
+    "progress": 0
+  },
+  "continuousSight": {
+    "level": 1,
+    "progress": 0
+  },
+  "reacquired": {
+    "before": 0.9099999999999999,
+    "after": 0
+  },
+  "higherStarDecay": [
+    {
+      "stars": 2,
+      "clearAt": 15,
+      "level": 0
+    },
+    {
+      "stars": 3,
+      "clearAt": 22,
+      "level": 0
+    },
+    {
+      "stars": 4,
+      "clearAt": 28.016666666666666,
+      "level": 0
+    },
+    {
+      "stars": 5,
+      "clearAt": 35.016666666666666,
+      "level": 0
+    }
+  ],
+  "sight120m": {
+    "clearLOS": true,
+    "seen": true
+  },
+  "realOcclusion": {
+    "distance": 70.35156657439285,
+    "playerRoad": "Madame Cama Rd",
+    "copRoad": "Jamshedji Tata Rd",
+    "clearLOS": false,
+    "clearAt": 15,
+    "level": 0
+  },
+  "sight350m": {
+    "distance": 348.48067775664333,
+    "clearLOS": true,
+    "level": 1,
+    "seen": true,
+    "retained": true,
+    "retainedOffscreen": true
+  },
+  "pinned": {
+    "recoveryAt": 3.0166666666666666,
+    "reverseAt": 3.0166666666666666,
+    "removedAt": 6.033333333333333,
+    "trace": [
+      {
+        "t": 0,
+        "mode": "search",
+        "reverse": 0,
+        "noProgress": 0.016666666666666666
+      },
+      {
+        "t": 1,
+        "mode": "respond",
+        "reverse": 0,
+        "noProgress": 1.016666666666668
+      },
+      {
+        "t": 2,
+        "mode": "respond",
+        "reverse": 0,
+        "noProgress": 2.0166666666666644
+      },
+      {
+        "t": 3,
+        "mode": "respond",
+        "reverse": 1.3333333333333335,
+        "noProgress": 3.016666666666661
+      },
+      {
+        "t": 4,
+        "mode": "respond",
+        "reverse": 0.3333333333333332,
+        "noProgress": 4.016666666666658
+      },
+      {
+        "t": 5,
+        "mode": "respond",
+        "reverse": -6.245004513516506e-17,
+        "noProgress": 5.016666666666654
+      },
+      {
+        "t": 6,
+        "mode": "respond",
+        "reverse": -6.245004513516506e-17,
+        "noProgress": 6.016666666666651
+      }
+    ]
+  },
+  "forcedContact": {
+    "contacts": [
+      0,
+      4,
+      8.033333333333333
+    ],
+    "minGap": 4,
+    "backOffPeak": 1.5,
+    "cooldown": 2.0333333333333403
+  },
+  "rubberband": [
+    {
+      "level": 3,
+      "rows": [
+        {
+          "gap": 15,
+          "capKmh": 100.8
+        },
+        {
+          "gap": 60,
+          "capKmh": 106.09025955646017
+        },
+        {
+          "gap": 140,
+          "capKmh": 118.8
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "rows": [
+        {
+          "gap": 15,
+          "capKmh": 129.6
+        },
+        {
+          "gap": 60,
+          "capKmh": 134.8902595564602
+        },
+        {
+          "gap": 140,
+          "capKmh": 147.6
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "rows": [
+        {
+          "gap": 15,
+          "capKmh": 158.4
+        },
+        {
+          "gap": 60,
+          "capKmh": 163.69025955646018
+        },
+        {
+          "gap": 140,
+          "capKmh": 172.8
+        }
+      ]
+    }
+  ],
+  "viewpoints": [
+    {
+      "scene": "Marine Drive:0.00",
+      "spawns": 20,
+      "inFrustum": 0,
+      "roadblocks": 0
+    },
+    {
+      "scene": "Marine Drive:1.57",
+      "spawns": 22,
+      "inFrustum": 0,
+      "roadblocks": 1
+    },
+    {
+      "scene": "Marine Drive:3.14",
+      "spawns": 22,
+      "inFrustum": 0,
+      "roadblocks": 1
+    },
+    {
+      "scene": "Marine Drive:-1.57",
+      "spawns": 22,
+      "inFrustum": 0,
+      "roadblocks": 1
+    },
+    {
+      "scene": "Veer Nariman Rd:0.00",
+      "spawns": 20,
+      "inFrustum": 0,
+      "roadblocks": 0
+    },
+    {
+      "scene": "Veer Nariman Rd:1.57",
+      "spawns": 22,
+      "inFrustum": 0,
+      "roadblocks": 1
+    },
+    {
+      "scene": "Veer Nariman Rd:3.14",
+      "spawns": 22,
+      "inFrustum": 0,
+      "roadblocks": 1
+    },
+    {
+      "scene": "Veer Nariman Rd:-1.57",
+      "spawns": 22,
+      "inFrustum": 0,
+      "roadblocks": 1
+    },
+    {
+      "scene": "Bazargate Street:0.00",
+      "spawns": 20,
+      "inFrustum": 0,
+      "roadblocks": 0
+    },
+    {
+      "scene": "Bazargate Street:1.57",
+      "spawns": 22,
+      "inFrustum": 0,
+      "roadblocks": 1
+    },
+    {
+      "scene": "Bazargate Street:3.14",
+      "spawns": 22,
+      "inFrustum": 0,
+      "roadblocks": 1
+    },
+    {
+      "scene": "Bazargate Street:-1.57",
+      "spawns": 22,
+      "inFrustum": 0,
+      "roadblocks": 1
+    }
+  ],
+  "spawns": {
+    "count": 258,
+    "inFrustum": 0,
+    "records": [
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -302.3832853259153,
+        "z": 405.8817759153582,
+        "d": 131.79166104855688,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -278.4929584182377,
+        "z": 404.3423551034951,
+        "d": 152.26333732202795,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -254.54327478284264,
+        "z": 403.257915331958,
+        "d": 173.84553277293745,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -214.480975694308,
+        "z": 401.85437878400455,
+        "d": 211.22509681895832,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -231.75,
+        "z": 384.5,
+        "d": 189.96308650238373,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -231.75,
+        "z": 348.5,
+        "d": 184.81567824810534,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -302.3832853259153,
+        "z": 405.8817759153582,
+        "d": 131.79166104855688,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -228.25,
+        "z": 300.5,
+        "d": 192.14875407085367,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -278.4929584182377,
+        "z": 404.3423551034951,
+        "d": 152.26333732202795,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -254.54327478284264,
+        "z": 403.257915331958,
+        "d": 173.84553277293745,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -214.480975694308,
+        "z": 401.85437878400455,
+        "d": 211.22509681895832,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -231.75,
+        "z": 384.5,
+        "d": 189.96308650238373,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -302.3832853259153,
+        "z": 405.8817759153582,
+        "d": 131.79166104855688,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -228.25,
+        "z": 324.5,
+        "d": 188.71999513154762,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -278.4929584182377,
+        "z": 404.3423551034951,
+        "d": 152.26333732202795,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -231.75,
+        "z": 360.5,
+        "d": 185.77373700833544,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -254.54327478284264,
+        "z": 403.257915331958,
+        "d": 173.84553277293745,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -228.25,
+        "z": 276.5,
+        "d": 198.44155517308226,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -302.3832853259153,
+        "z": 405.8817759153582,
+        "d": 131.79166104855688,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:0.00",
+        "x": -214.480975694308,
+        "z": 401.85437878400455,
+        "d": 211.22509681895832,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -313.3898775400719,
+        "z": 233.53869035774835,
+        "d": 147.89752668761471,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -312.0560806097297,
+        "z": 149.54141793845426,
+        "d": 216.8899899671749,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -398.37061375377874,
+        "z": 204.14210701309585,
+        "d": 136.75219973998728,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -397.95121880116403,
+        "z": 180.10490992478407,
+        "d": 160.65921796263723,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -397.8428666852899,
+        "z": 132.06036891278947,
+        "d": 208.4697171704237,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -290.4488064569823,
+        "z": 405.03496374575644,
+        "d": 141.84686471420423,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -404.8977348347961,
+        "z": 190.7112264617984,
+        "d": 149.43514092779677,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -410.4561827598983,
+        "z": 188.12015396880884,
+        "d": 151.70102704003958,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -254.54327478284264,
+        "z": 403.257915331958,
+        "d": 173.84553277293745,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -397.80636186030927,
+        "z": 156.0768413853231,
+        "d": 184.56412602541496,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -313.3898775400719,
+        "z": 233.53869035774835,
+        "d": 147.89752668761471,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -312.58618740770356,
+        "z": 185.5461837186722,
+        "d": 185.8322366475758,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -398.71371326079685,
+        "z": 216.16271450805735,
+        "d": 124.79705436651781,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -290.4488064569823,
+        "z": 405.03496374575644,
+        "d": 141.84686471420423,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -266.5236553478734,
+        "z": 403.76526340681704,
+        "d": 162.95206971645146,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -312.99038966472983,
+        "z": 209.54427050737425,
+        "d": 166.2128244871663,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -397.80636186030927,
+        "z": 156.0768413853231,
+        "d": 184.56412602541496,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -313.3898775400719,
+        "z": 233.53869035774835,
+        "d": 147.89752668761471,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -312.2158103249749,
+        "z": 161.5443531518829,
+        "d": 206.36610216952008,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -397.8428666852899,
+        "z": 132.06036891278947,
+        "d": 208.4697171704237,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -228.25,
+        "z": 300.5,
+        "d": 192.14875407085367,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:1.57",
+        "x": -302.3832853259153,
+        "z": 405.8817759153582,
+        "d": 131.79166104855688,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -303.48855074525926,
+        "z": 260.14606943222117,
+        "d": 138.0905062981371,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -398.1206712524192,
+        "z": 192.1226016303575,
+        "d": 148.70614439654165,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -397.8078402461717,
+        "z": 144.06706220569527,
+        "d": 196.51665941953888,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -313.19315490615173,
+        "z": 221.5419087320797,
+        "d": 156.86138200615798,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -302.3832853259153,
+        "z": 405.8817759153582,
+        "d": 131.79166104855688,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -312.58618740770356,
+        "z": 185.5461837186722,
+        "d": 185.8322366475758,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -404.6428295260987,
+        "z": 166.75537680414124,
+        "d": 173.34723148689736,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -410.2300200010721,
+        "z": 164.22687871310643,
+        "d": 175.58642854337202,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -312.2158103249749,
+        "z": 161.5443531518829,
+        "d": 206.36610216952008,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -398.37061375377874,
+        "z": 204.14210701309585,
+        "d": 136.75219973998728,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -278.4929584182377,
+        "z": 404.3423551034951,
+        "d": 152.26333732202795,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -214.480975694308,
+        "z": 401.85437878400455,
+        "d": 211.22509681895832,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -313.5753021448905,
+        "z": 245.534644907241,
+        "d": 139.39965805878666,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -302.3832853259153,
+        "z": 405.8817759153582,
+        "d": 131.79166104855688,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -397.8428666852899,
+        "z": 132.06036891278947,
+        "d": 208.4697171704237,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -398.37061375377874,
+        "z": 204.14210701309585,
+        "d": 136.75219973998728,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -312.58618740770356,
+        "z": 185.5461837186722,
+        "d": 185.8322366475758,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -291.4981879652529,
+        "z": 260.10701963964823,
+        "d": 148.07303535323192,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -214.480975694308,
+        "z": 401.85437878400455,
+        "d": 211.22509681895832,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -302.3832853259153,
+        "z": 405.8817759153582,
+        "d": 131.79166104855688,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -313.5753021448905,
+        "z": 245.534644907241,
+        "d": 139.39965805878666,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:3.14",
+        "x": -398.37061375377874,
+        "z": 204.14210701309585,
+        "d": 136.75219973998728,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -398.37061375377874,
+        "z": 204.14210701309585,
+        "d": 136.75219973998728,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -312.58618740770356,
+        "z": 185.5461837186722,
+        "d": 185.8322366475758,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -312.0560806097297,
+        "z": 149.54141793845426,
+        "d": 216.8899899671749,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -397.80636186030927,
+        "z": 156.0768413853231,
+        "d": 184.56412602541496,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -397.8428666852899,
+        "z": 132.06036891278947,
+        "d": 208.4697171704237,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -397.95121880116403,
+        "z": 180.10490992478407,
+        "d": 160.65921796263723,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -404.8977348347961,
+        "z": 190.7112264617984,
+        "d": 149.43514092779677,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -410.4561827598983,
+        "z": 188.12015396880884,
+        "d": 151.70102704003958,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -398.71371326079685,
+        "z": 216.16271450805735,
+        "d": 124.79705436651781,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -312.7864844920874,
+        "z": 197.54572068787013,
+        "d": 175.8873988247965,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -312.3943001963904,
+        "z": 173.54599179765876,
+        "d": 196.0035465747067,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -312.0560806097297,
+        "z": 149.54141793845426,
+        "d": 216.8899899671749,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -397.8428666852899,
+        "z": 132.06036891278947,
+        "d": 208.4697171704237,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -397.80636186030927,
+        "z": 156.0768413853231,
+        "d": 184.56412602541496,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -398.71371326079685,
+        "z": 216.16271450805735,
+        "d": 124.79705436651781,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -312.7864844920874,
+        "z": 197.54572068787013,
+        "d": 175.8873988247965,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -312.3943001963904,
+        "z": 173.54599179765876,
+        "d": 196.0035465747067,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -312.0560806097297,
+        "z": 149.54141793845426,
+        "d": 216.8899899671749,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -397.8428666852899,
+        "z": 132.06036891278947,
+        "d": 208.4697171704237,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -397.80636186030927,
+        "z": 156.0768413853231,
+        "d": 184.56412602541496,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -398.71371326079685,
+        "z": 216.16271450805735,
+        "d": 124.79705436651781,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Marine Drive:-1.57",
+        "x": -312.7864844920874,
+        "z": 197.54572068787013,
+        "d": 175.8873988247965,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -402.81763020898114,
+        "z": -42.12639170155289,
+        "d": 146.61311634978262,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -255.50909939210484,
+        "z": 260.1890760957011,
+        "d": 192.18784206182758,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -404.4390027437484,
+        "z": -66.12732385959147,
+        "d": 170.0427745533056,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -231.75,
+        "z": 276.5,
+        "d": 218.92455142196067,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -405.72745772281706,
+        "z": 239.88419096282163,
+        "d": 150.49033465669444,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -402.13215017985686,
+        "z": -30.13541155022887,
+        "d": 135.03114904479267,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -403.5702659417962,
+        "z": -54.125039473976365,
+        "d": 158.2858438334889,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -255.50909939210484,
+        "z": 260.1890760957011,
+        "d": 192.18784206182758,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -405.72745772281706,
+        "z": 239.88419096282163,
+        "d": 150.49033465669444,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -405.4709232778122,
+        "z": -78.12776545596394,
+        "d": 181.87708019720705,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -402.13215017985686,
+        "z": -30.13541155022887,
+        "d": 135.03114904479267,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -403.5702659417962,
+        "z": -54.125039473976365,
+        "d": 158.2858438334889,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -405.72745772281706,
+        "z": 239.88419096282163,
+        "d": 150.49033465669444,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:0.00",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -214.978150587122,
+        "z": 96.38130379665658,
+        "d": 142.5606550692613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -405.72745772281706,
+        "z": 239.88419096282163,
+        "d": 150.49033465669444,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -231.73894582698043,
+        "z": 242.99765086075604,
+        "d": 192.47639802400298,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -228.59168389026257,
+        "z": 67.9749840113109,
+        "d": 132.24077816397045,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -183.577876990785,
+        "z": 92.62088863870395,
+        "d": 174.02127000985388,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -180.5914728082401,
+        "z": 89.00960215623287,
+        "d": 177.13923938274715,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -231.6897860459401,
+        "z": 218.9956322187969,
+        "d": 175.04987076305463,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -231.55342056584874,
+        "z": 135.00258055643508,
+        "d": 131.49756543138997,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -405.72745772281706,
+        "z": 239.88419096282163,
+        "d": 150.49033465669444,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -317.6925253391798,
+        "z": 221.4666378453272,
+        "d": 130.38470779617333,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -166.98758370511018,
+        "z": 96.06394517105102,
+        "d": 190.5522712518342,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -318.5604111858809,
+        "z": 281.4815137726904,
+        "d": 188.24183632951883,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -214.978150587122,
+        "z": 96.38130379665658,
+        "d": 142.5606550692613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -405.72745772281706,
+        "z": 239.88419096282163,
+        "d": 150.49033465669444,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -228.59168389026257,
+        "z": 67.9749840113109,
+        "d": 132.24077816397045,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:1.57",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -228.41912791821815,
+        "z": 79.97778601485325,
+        "d": 130.275880803782,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -405.72745772281706,
+        "z": 239.88419096282163,
+        "d": 150.49033465669444,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -231.59504521240433,
+        "z": 182.9960778067506,
+        "d": 152.32089295740622,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -402.13215017985686,
+        "z": -30.13541155022887,
+        "d": 135.03114904479267,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -207.02205599299663,
+        "z": 92.73600340873678,
+        "d": 150.58341818224983,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -204.0555412976555,
+        "z": 89.10836084609019,
+        "d": 153.699632935465,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -403.5702659417962,
+        "z": -54.125039473976365,
+        "d": 158.2858438334889,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -228.7955306077698,
+        "z": 55.972344191302305,
+        "d": 135.21673202258842,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -405.72745772281706,
+        "z": 239.88419096282163,
+        "d": 150.49033465669444,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -406.709817989043,
+        "z": -90.11910953693548,
+        "d": 193.78093951096693,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -229.55222678915425,
+        "z": 19.971692380037354,
+        "d": 149.54045172681984,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -166.98758370511018,
+        "z": 96.06394517105102,
+        "d": 190.5522712518342,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -405.72745772281706,
+        "z": 239.88419096282163,
+        "d": 150.49033465669444,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -402.13215017985686,
+        "z": -30.13541155022887,
+        "d": 135.03114904479267,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -404.7103795959451,
+        "z": 215.96273234660364,
+        "d": 127.67864577719293,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -411.34285057677346,
+        "z": 302.81572962265324,
+        "d": 212.42458641465257,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:3.14",
+        "x": -403.5702659417962,
+        "z": -54.125039473976365,
+        "d": 158.2858438334889,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -402.13215017985686,
+        "z": -30.13541155022887,
+        "d": 135.03114904479267,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -406.709817989043,
+        "z": -90.11910953693548,
+        "d": 193.78093951096693,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -403.5702659417962,
+        "z": -54.125039473976365,
+        "d": 158.2858438334889,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -231.55342056584874,
+        "z": 135.00258055643508,
+        "d": 131.49756543138997,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -166.98758370511018,
+        "z": 96.06394517105102,
+        "d": 190.5522712518342,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -190.9994834105637,
+        "z": 96.19753080798499,
+        "d": 166.5400143091641,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -207.02205599299663,
+        "z": 92.73600340873678,
+        "d": 150.58341818224983,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -204.0555412976555,
+        "z": 89.10836084609019,
+        "d": 153.699632935465,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -228.59168389026257,
+        "z": 67.9749840113109,
+        "d": 132.24077816397045,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -231.63195667376317,
+        "z": 111.01014100055185,
+        "d": 126.64601024557446,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -402.13215017985686,
+        "z": -30.13541155022887,
+        "d": 135.03114904479267,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -403.5702659417962,
+        "z": -54.125039473976365,
+        "d": 158.2858438334889,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -142.95311419028425,
+        "z": 95.58547812671563,
+        "d": 214.589609316299,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -229.55222678915425,
+        "z": 19.971692380037354,
+        "d": 149.54045172681984,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -228.41912791821815,
+        "z": 79.97778601485325,
+        "d": 130.275880803782,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -231.58054767417394,
+        "z": 123.00562784243527,
+        "d": 128.5477366977309,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -228.7955306077698,
+        "z": 55.972344191302305,
+        "d": 135.21673202258842,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -402.13215017985686,
+        "z": -30.13541155022887,
+        "d": 135.03114904479267,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -154.9724264601764,
+        "z": 95.89017903103372,
+        "d": 202.56833437172006,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -403.5702659417962,
+        "z": -54.125039473976365,
+        "d": 158.2858438334889,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -231.5452710290964,
+        "z": 147.00016593453714,
+        "d": 135.43202928527307,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Veer Nariman Rd:-1.57",
+        "x": -228.41912791821815,
+        "z": 79.97778601485325,
+        "d": 130.275880803782,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -155.04229472347646,
+        "z": 92.39087646826734,
+        "d": 197.65811519792283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -131.10385416696963,
+        "z": 91.60903291484297,
+        "d": 179.42589315732909,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -107.2438879893297,
+        "z": 89.94721505585893,
+        "d": 162.05588107977613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -77.58645413402614,
+        "z": 85.71503554275503,
+        "d": 141.2727901931781,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -148.10961293498178,
+        "z": -126.52762742241289,
+        "d": 171.24054862401607,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -155.04229472347646,
+        "z": 92.39087646826734,
+        "d": 197.65811519792283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -131.10385416696963,
+        "z": 91.60903291484297,
+        "d": 179.42589315732909,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -88.15772063795997,
+        "z": -128.85710335760365,
+        "d": 126.59003810771674,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -107.2438879893297,
+        "z": 89.94721505585893,
+        "d": 162.05588107977613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -196.07327940749215,
+        "z": -124.7779731326235,
+        "d": 212.5248544946887,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -77.58645413402614,
+        "z": 85.71503554275503,
+        "d": 141.2727901931781,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -160.1002984442057,
+        "z": -126.0778933265869,
+        "d": 181.24555645656932,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -155.04229472347646,
+        "z": 92.39087646826734,
+        "d": 197.65811519792283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -131.10385416696963,
+        "z": 91.60903291484297,
+        "d": 179.42589315732909,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -107.2438879893297,
+        "z": 89.94721505585893,
+        "d": 162.05588107977613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -100.1479120346812,
+        "z": -128.3827151520547,
+        "d": 134.56270607517212,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:0.00",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -155.04229472347646,
+        "z": 92.39087646826734,
+        "d": 197.65811519792283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -131.10385416696963,
+        "z": 91.60903291484297,
+        "d": 179.42589315732909,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -107.2438879893297,
+        "z": 89.94721505585893,
+        "d": 162.05588107977613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -77.58645413402614,
+        "z": 85.71503554275503,
+        "d": 141.2727901931781,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -54.49189210571459,
+        "z": 79.73701955201156,
+        "d": 125.18472826512858,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": 146.23991503589724,
+        "z": -35.85821336119114,
+        "d": 149.85494457416544,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": 153.71786902676706,
+        "z": -31.725393003320043,
+        "d": 157.3549601755212,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -196.07327940749215,
+        "z": -124.7779731326235,
+        "d": 212.5248544946887,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -155.04229472347646,
+        "z": 92.39087646826734,
+        "d": 197.65811519792283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -131.10385416696963,
+        "z": 91.60903291484297,
+        "d": 179.42589315732909,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -107.2438879893297,
+        "z": 89.94721505585893,
+        "d": 162.05588107977613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -77.58645413402614,
+        "z": 85.71503554275503,
+        "d": 141.2727901931781,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": 88.58907044004904,
+        "z": 59.340255173327364,
+        "d": 131.6552307732191,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -155.04229472347646,
+        "z": 92.39087646826734,
+        "d": 197.65811519792283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -184.08211369594562,
+        "z": -125.20170461182519,
+        "d": 201.9194226565569,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -131.10385416696963,
+        "z": 91.60903291484297,
+        "d": 179.42589315732909,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -107.2438879893297,
+        "z": 89.94721505585893,
+        "d": 162.05588107977613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:1.57",
+        "x": -77.58645413402614,
+        "z": 85.71503554275503,
+        "d": 141.2727901931781,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 169.32119662327986,
+        "z": 81.07263482130503,
+        "d": 208.07402143586896,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": -65.99169914001908,
+        "z": 82.95567005288447,
+        "d": 133.11786918272637,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 100.32858743038656,
+        "z": 61.44634495043745,
+        "d": 141.548448576079,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 123.5628101366568,
+        "z": 66.94862299515987,
+        "d": 162.7677208418476,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 146.53137371859245,
+        "z": 73.65831022233913,
+        "d": 185.1246283371553,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": -100.1479120346812,
+        "z": -128.3827151520547,
+        "d": 134.56270607517212,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 146.23991503589724,
+        "z": -35.85821336119114,
+        "d": 149.85494457416544,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 153.71786902676706,
+        "z": -31.725393003320043,
+        "d": 157.3549601755212,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": -94.25296317715156,
+        "z": 158.49164809745915,
+        "d": 213.34532359487403,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": -65.99169914001908,
+        "z": 82.95567005288447,
+        "d": 133.11786918272637,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 180.68352369971893,
+        "z": 84.90994300058236,
+        "d": 219.67358653631592,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 111.97924741122172,
+        "z": 64.00944901262719,
+        "d": 151.96295922951472,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 146.53137371859245,
+        "z": 73.65831022233913,
+        "d": 185.1246283371553,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": -94.03437099049818,
+        "z": 134.49259503922136,
+        "d": 191.78794511116973,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": -69.6708513297202,
+        "z": -141.89460089413657,
+        "d": 125.96598353956261,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": -54.49189210571459,
+        "z": 79.73701955201156,
+        "d": 125.18472826512858,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 88.58907044004904,
+        "z": 59.340255173327364,
+        "d": 131.6552307732191,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 169.32119662327986,
+        "z": 81.07263482130503,
+        "d": 208.07402143586896,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 123.5628101366568,
+        "z": 66.94862299515987,
+        "d": 162.7677208418476,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": -100.1479120346812,
+        "z": -128.3827151520547,
+        "d": 134.56270607517212,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": 146.53137371859245,
+        "z": 73.65831022233913,
+        "d": 185.1246283371553,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:3.14",
+        "x": -93.92468669422388,
+        "z": 122.49304374334139,
+        "d": 181.23943866718275,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -160.1002984442057,
+        "z": -126.0778933265869,
+        "d": 181.24555645656932,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -155.04229472347646,
+        "z": 92.39087646826734,
+        "d": 197.65811519792283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -131.10385416696963,
+        "z": 91.60903291484297,
+        "d": 179.42589315732909,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -107.2438879893297,
+        "z": 89.94721505585893,
+        "d": 162.05588107977613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -89.97034353501974,
+        "z": 51.024105252766645,
+        "d": 121.64106893130142,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": 146.23991503589724,
+        "z": -35.85821336119114,
+        "d": 149.85494457416544,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": 153.71786902676706,
+        "z": -31.725393003320043,
+        "d": 157.3549601755212,
+        "inFrustum": false,
+        "mode": "roadblock"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -196.07327940749215,
+        "z": -124.7779731326235,
+        "d": 212.5248544946887,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -155.04229472347646,
+        "z": 92.39087646826734,
+        "d": 197.65811519792283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -172.09112630727617,
+        "z": -125.63551623698446,
+        "d": 191.48347811184283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -107.2438879893297,
+        "z": 89.94721505585893,
+        "d": 162.05588107977613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -131.10385416696963,
+        "z": 91.60903291484297,
+        "d": 179.42589315732909,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -196.07327940749215,
+        "z": -124.7779731326235,
+        "d": 212.5248544946887,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -124.12850333985692,
+        "z": -127.44544400349406,
+        "d": 152.1098751527236,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -155.04229472347646,
+        "z": 92.39087646826734,
+        "d": 197.65811519792283,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -107.2438879893297,
+        "z": 89.94721505585893,
+        "d": 162.05588107977613,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -131.10385416696963,
+        "z": 91.60903291484297,
+        "d": 179.42589315732909,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": 73.92957752667013,
+        "z": -132.79955191794014,
+        "d": 125.09022148842838,
+        "inFrustum": false,
+        "mode": "respond"
+      },
+      {
+        "scene": "Bazargate Street:-1.57",
+        "x": -179.01455893064272,
+        "z": 92.65101337412354,
+        "d": 216.7254133168959,
+        "inFrustum": false,
+        "mode": "respond"
+      }
+    ]
+  },
+  "roadblockCrewSpawns": {
+    "count": 18,
+    "inFrustum": 0
+  },
+  "roadblockCarSpawns": {
+    "count": 18,
+    "inFrustum": 0
+  },
+  "controller": [
+    {
+      "level": 1,
+      "configured": 75.60000000000001,
+      "steadyKmh": 75.6027741354815
+    },
+    {
+      "level": 2,
+      "configured": 90,
+      "steadyKmh": 90.03604438761333
+    },
+    {
+      "level": 3,
+      "configured": 100.8,
+      "steadyKmh": 100.86137602134892
+    },
+    {
+      "level": 4,
+      "configured": 129.6,
+      "steadyKmh": 129.65277153312485
+    },
+    {
+      "level": 5,
+      "configured": 158.4,
+      "steadyKmh": 158.44413365120118
+    }
+  ],
+  "errors": []
+}

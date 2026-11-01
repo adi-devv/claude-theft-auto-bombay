@@ -1,0 +1,36 @@
+// Assertions over the measured sandbox outputs (run audit.js, perf.js and speed.mjs first).
+const fs = require('fs'), assert = require('assert/strict');
+const read = name => JSON.parse(fs.readFileSync(__dirname + '/' + name + '.json', 'utf8'));
+const a = read('fixed-audit'), b = read('baseline-audit'), p = read('final-perf'), s = read('physical-speed');
+assert.equal(a.spawns.inFrustum, 0);
+assert.ok(a.spawns.count >= 100);
+assert.equal(a.roadblockCarSpawns.inFrustum, 0);
+assert.ok(a.roadblockCarSpawns.count >= 10);
+assert.equal(a.roadblockCrewSpawns.inFrustum, 0);
+assert.ok(b.spawns.inFrustum > 0);
+assert.ok(a.carArrest.bustAt >= 2.5 && a.carArrest.bustAt < 2.55);
+assert.ok(a.footArrest.bustAt >= 2.5 && a.footArrest.bustAt < 2.55);
+assert.equal(a.movingFootArrest.state, 'normal');
+assert.equal(a.arrestMoveOff.drained, 0);
+assert.equal(a.noOfficerArrest.state, 'normal');
+assert.equal(a.realOcclusion.level, 0);
+assert.ok(a.realOcclusion.clearAt >= 14.9 && a.realOcclusion.clearAt <= 15.1);
+assert.equal(a.continuousSight.level, 1);
+assert.equal(a.reacquired.after, 0);
+assert.equal(a.sight350m.seen, true);
+assert.equal(a.sight350m.retainedOffscreen, true);
+for (const decay of a.higherStarDecay) assert.equal(decay.level, 0);
+assert.ok(a.pinned.reverseAt >= 3 && a.pinned.reverseAt < 3.1);
+assert.ok(a.pinned.removedAt >= 6 && a.pinned.removedAt < 6.1);
+assert.ok(a.forcedContact.minGap >= 3.99);
+assert.ok(a.forcedContact.backOffPeak >= 1.49);
+for (const row of a.rubberband) assert.ok(row.rows[2].capKmh > row.rows[0].capKmh);
+for (const [stars, min] of [[3, 100], [4, 125], [5, 150]])
+  assert.ok(s.after.find(r => r.stars === stars).physicalSteadyKmh >= min);
+assert.deepEqual(a.errors, []);
+assert.deepEqual(p.errors, []);
+assert.ok(p.policePlusWantedPerFrame.max < 20);
+assert.equal(p.policePlusWantedPerFrame.over20, 0);
+assert.ok(p.stats.roadblocks > 0 && p.stats.footSpawned > 0);
+assert.equal(p.audioReady, true);
+console.log('PASS: spawn frustum, roadblocks/crew, LOS escape, 2–5 star decay, arrests, recovery, ram cooldown/back-off, physical speed, sirens/effects, errors, police CPU budget.');

@@ -16,16 +16,16 @@ export const TUNE = {
   spawnEvery:    [5, 3.2, 2.4, 2.0, 1.5, 1.1],// s between car spawns
   spawnMin:      [120, 120, 120, 125, 125, 120],
   spawnMax:      [220, 200, 210, 220, 220, 220],
-  vmax:          [11, 17, 21, 25, 28, 31],    // m/s cap on target speed
+  vmax:          [11, 21, 25, 28, 36, 44],    // m/s; 3/4/5 stars ~100/130/160 km/h
   aLat:          [4.5, 5.5, 6.0, 6.5, 7.0, 7.5],
-  rammers:       [0, 0, 0, 2, 3, 7],
-  ramCooldown:   [0, 0, 0, 3.2, 2.0, 1.3],
+  rammers:       [0, 0, 0, 2, 3, 5],
+  ramCooldown:   [4, 4, 4, 4, 4, 4],
   roadblocks:    [0, 0, 0, 1, 2, 2],
   roadblockEvery:[0, 0, 0, 28, 20, 15],
   baton:         [0, 0, 5, 7, 9, 11],         // damage per lathi hit (0 = arrest only)
   footSpeed:     [4.5, 4.9, 5.1, 5.3, 5.5, 5.7],// m/s (player sprint should be ~6+)
   followDist:    [12, 10, 9, 7, 6, 5],
-  sight: 60, sightPursuit: 85, sightClose: 14,
+  sight: 60, sightPursuit: 240, sightClose: 14,
 };
 
 const DESPAWN_FAR = 290;      // active units further than this and unseen get recycled
@@ -38,7 +38,7 @@ export function createPolice(game) {
   const bars = new Map();          // vehicle -> fallback light bar
   const siren = new SirenAudio(game);
   const frustum = new THREE.Frustum(), projM = new THREE.Matrix4(), sphere = new THREE.Sphere(new THREE.Vector3(), 3);
-  let idSeq = 1, t = 0, spawnT = 2, roadblockT = 8, sightT = 0, frustumT = 0, boxT = 0;
+  let idSeq = 1, t = 0, spawnT = 2, roadblockT = 8, sightT = 0, boxT = 0;
   let standDown = false, busting = false, lastLevel = 0;
   const pvel = { x: 0, z: 0, lx: null, lz: null };
   let slowT = 0;
@@ -65,12 +65,14 @@ export function createPolice(game) {
     const h = p.vehicle ? p.vehicle.heading : (p.heading || 0);
     return { x: Math.sin(h), z: Math.cos(h) };
   }
+  function inFrustum(x, z, r = 8) {
+    sphere.center.set(x, 1.5, z); sphere.radius = r;
+    return frustum.intersectsSphere(sphere);
+  }
   function isVisible(x, z, r = 3) {
     const c = game.camera.position;
     const d = Math.hypot(x - c.x, z - c.z);
-    if (d > 380) return false;
-    sphere.center.set(x, 1.2, z); sphere.radius = r;
-    if (!frustum.intersectsSphere(sphere)) return false;
+    if (!inFrustum(x, z, r)) return false;
     if (d < 25) return true;
     return collision.lineOfSight(c.x, c.z, x, z, 6);
   }
@@ -96,6 +98,7 @@ export function createPolice(game) {
 
   // ------------------------------------------------------------------ spawning
   function pickSpawn(minR, maxR, preferAhead, anchor) {
+    refreshFrustum(); // camera may have orbited since the last sight/lifecycle tick
     const P = anchor || ppos();
     const sp = Math.hypot(pvel.x, pvel.z);
     const mvx = sp > 4 ? pvel.x / sp : 0, mvz = sp > 4 ? pvel.z / sp : 0;
@@ -106,9 +109,12 @@ export function createPolice(game) {
       if (d2 < minR * minR || d2 > maxR * maxR) continue;
       const d = Math.sqrt(d2);
       let score = rng() * 0.8;
-      if (preferAhead && sp > 4) score += ((dx * mvx + dz * mvz) / d) * 1.2;
+      // Dispatch may intercept ahead around a corner; otherwise favour a hidden approach behind.
+      const ahead = sp > 4 ? (dx * mvx + dz * mvz) / d : 0;
+      score += ahead < 0 ? -ahead * 0.6 : (preferAhead ? ahead * 0.3 : 0);
       if (score <= bestScore) continue;
-      if (isVisible(c.x, c.z, 4)) continue;
+      if (inFrustum(c.x, c.z, c.e.width / 2 + 8)) continue;
+      if (!collision.lineOfSight(game.camera.position.x, game.camera.position.z, c.x, c.z, 2)) score += 0.4;
       let clear = true;
       for (const v of game.vehicles) { if ((v.position.x - c.x) ** 2 + (v.position.z - c.z) ** 2 < 14 * 14) { clear = false; break; } }
       if (!clear) continue;
@@ -128,6 +134,10 @@ export function createPolice(game) {
     if (mode === 'patrol' && rng() < 0.4) dir = -dir;
     const lane = Math.max(0, c.e.lanes - 1);
     const lp = roads.lanePoint(c.e, c.s, dir, lane);
+    // Validate the actual lane position, not only the centreline. No distance exception.
+    if (inFrustum(lp.x, lp.z, 8)) return null;
+    if (collision.queryOBB(lp.x, lp.z, 1.05, 2.4, Math.atan2(lp.hx, lp.hz)).some(h => h.depth > 0.15)) return null;
+    if (game.vehicles.some(v => Math.hypot(v.position.x - lp.x, v.position.z - lp.z) < 12)) return null;
     const v = game.createVehicle({ type: 'police', x: lp.x, z: lp.z, heading: Math.atan2(lp.hx, lp.hz) });
     const u = newCarUnit(v, mode);
     stats.spawned++;
@@ -137,7 +147,8 @@ export function createPolice(game) {
   function newCarUnit(v, mode) {
     const u = {
       id: idSeq++, kind: 'car', vehicle: v, position: v.position, mode, crew: 2, crewOut: [],
-      path: null, pathT: 0, ctl: {}, ramCD: 0, sees: false, seeT: -99, bornT: t, modeT: t, waitT: 0,
+      path: null, pathT: 0, ctl: {}, ramCD: 0, backOffT: 0, touching: false, sees: false, seeT: -99, bornT: t, modeT: t, waitT: 0,
+      progressX: v.position.x, progressZ: v.position.z, noProgressT: 0, recoveryT: null,
       slot: null, rammer: false, searchPt: null, vis: false, visT: 0,
     };
     v.ai = u;
@@ -232,11 +243,19 @@ export function createPolice(game) {
   // ------------------------------------------------------------------ roadblocks (nakabandi)
   const roadblocks = [];
   function placeRoadblock() {
+    refreshFrustum();
+    // Retry along the likely route, including beyond its next bend. Waiting for a hidden
+    // site is preferable to creating a blockade on screen on a long open straight.
+    for (let ahead = 150; ahead <= 390; ahead += 24) if (tryRoadblock(ahead)) return true;
+    return false;
+  }
+  function tryRoadblock(ahead) {
+    if (carUnits().length + 2 > MAX_POLICE_VEHICLES || footUnits().length + 2 > MAX_FOOT) return false;
     const P = ppos(); const sp = Math.hypot(pvel.x, pvel.z);
     if (sp < 7) return false;
     const n = roads.nearest(P.x, P.z, 25); if (!n) return false;
     let edge = n.edge, s = n.s, dir = (pvel.x * n.tx + pvel.z * n.tz) >= 0 ? 1 : -1;
-    let remaining = 150 + rng() * 60, sPlace = null;
+    let remaining = ahead, sPlace = null;
     for (let k = 0; k < 10; k++) { // follow the most likely (straightest) route ahead
       const avail = dir > 0 ? edge.length - s : s;
       if (avail >= remaining) { sPlace = s + dir * remaining; break; }
@@ -263,7 +282,7 @@ export function createPolice(game) {
     const c = roads.sample(edge, sPlace);
     const dP = Math.hypot(c.x - P.x, c.z - P.z);
     if (dP < 110) return false;
-    if (dP < 150 && isVisible(c.x, c.z, 4)) return false;
+    if (inFrustum(c.x, c.z, edge.width / 2 + 12)) return false;
     for (const rb of roadblocks) if (Math.hypot(rb.x - c.x, rb.z - c.z) < 60) return false;
     const tdx = c.tx * dir, tdz = c.tz * dir;           // player's travel direction
     const lx = tdz, lz = -tdx;                          // left of travel = the player's carriageway (LHT)
@@ -276,6 +295,16 @@ export function createPolice(game) {
         ? [{ lat: inner + 1.8, along: 0, ang: 1.2 }, { lat: half - 1.6, along: 3, ang: -1.2 }]
         : [{ lat: inner + span / 2, along: 0, ang: 1.25 }, { lat: -inner - span * 0.25, along: 8, ang: -1.1 }];
     const ht = Math.atan2(tdx, tdz);
+    // Check the entire formation before creating anything (including the roadside crew).
+    for (const pl of placements) {
+      const x = c.x + lx * pl.lat + tdx * pl.along, z = c.z + lz * pl.lat + tdz * pl.along;
+      if (inFrustum(x, z, 8) || game.vehicles.some(v => Math.hypot(v.position.x - x, v.position.z - z) < 12)) return false;
+      if (collision.queryOBB(x, z, 1.05, 2.4, ht + pl.ang).some(h => h.depth > 0.15)) return false;
+    }
+    for (let i = 0; i < 2; i++) {
+      const x = c.x + lx * (half + 1.2) + tdx * (-3 + i * 6), z = c.z + lz * (half + 1.2) + tdz * (-3 + i * 6);
+      if (inFrustum(x, z, 8)) return false;
+    }
     const cars = [];
     for (const pl of placements) {
       const x = c.x + lx * pl.lat + tdx * pl.along, z = c.z + lz * pl.lat + tdz * pl.along;
@@ -293,7 +322,7 @@ export function createPolice(game) {
       const f = spawnFoot(x, z, ht + Math.PI, 'guard', null);
       f.post = { x, z }; cops.push(f);
     }
-    roadblocks.push({ x: c.x, z: c.z, cars, cops, t, edge: edge.name });
+    roadblocks.push({ x: c.x, z: c.z, cars, cops, t, edge: edge.name, approached: dP < 210 });
     stats.roadblocks++;
     radio(`Control: nakabandi set up on ${edge.name}. All mobiles, push him into it.`, 2);
     return true;
@@ -307,6 +336,7 @@ export function createPolice(game) {
       rb.cops = rb.cops.filter((u) => units.includes(u));
       const d = Math.hypot(rb.x - P.x, rb.z - P.z);
       const visible = isVisible(rb.x, rb.z, 8);
+      if (d < 210) rb.approached = true;
       // at 4-5 stars, a roadblock the suspect got past joins the chase
       if (lvl() >= 4 && d < 45 && !rb.joined) {
         const toP = { x: P.x - rb.x, z: P.z - rb.z };
@@ -315,7 +345,9 @@ export function createPolice(game) {
           for (const u of rb.cars) { u.crew = 1; setMode(u, 'respond'); }
         }
       }
-      if ((!rb.cars.length && !rb.cops.length) || (!visible && (d > 230 || t - rb.t > 80 || lvl() === 0))) {
+      // A formation preloaded beyond a bend may start 230–390 m away. Keep it
+      // until approached/passed, timed out, or the suspect leaves the area entirely.
+      if ((!rb.cars.length && !rb.cops.length) || (!visible && (d > 450 || (rb.approached && d > 230) || t - rb.t > 80 || lvl() === 0))) {
         for (const u of rb.cars) removeUnit(u);
         for (const f of rb.cops) if (f.mode === 'guard') removeUnit(f);
         roadblocks.splice(i, 1);
@@ -350,10 +382,18 @@ export function createPolice(game) {
   function driveDirect(u, dt, aim, vT, ignore) {
     const v = u.vehicle;
     // straight line blocked by buildings -> use the road graph instead
-    if (!collision.lineOfSight(v.position.x, v.position.z, aim.x, aim.z, 1.0)) return followPath(u, dt, aim.x, aim.z, vT, 1.2);
+    if (u.recoveryT != null || u.ctl.justReversed || !collision.lineOfSight(v.position.x, v.position.z, aim.x, aim.z, 1.0)) return followPath(u, dt, aim.x, aim.z, vT, 1.2);
     const res = driveCar(v, u.ctl, dt, aim, vT, { game, ignore, aggressive: lvl() >= 3 });
     if (res.stuck) stats.stuck++;
     return 0;
+  }
+
+  function pursuitCap(u) {
+    const base = TUNE.vmax[lvl()], P = ppos(), pf = pfwd();
+    const behind = (P.x - u.position.x) * pf.x + (P.z - u.position.z) * pf.z;
+    // Mild catch-up (at most 18 km/h), fading smoothly to the base cap near the suspect.
+    const boost = Math.max(0, Math.min(1, (behind - 35) / 85)) * 5;
+    return Math.min(48, base + boost);
   }
 
   function pursuitTarget(u) {
@@ -362,10 +402,19 @@ export function createPolice(game) {
     const pSp = Math.hypot(pvel.x, pvel.z);
     const d = dist(v.position, P);
     const mySp = Math.abs(v.speed || 0);
-    const vmax = TUNE.vmax[L];
+    const vmax = pursuitCap(u);
     if (p.mode !== 'vehicle' || !p.vehicle) {
       // suspect on foot: pull up ~9 m away and stop; the crew gets out
       return { aim: P, vT: d > 30 ? vmax : Math.max(0, (d - 9) * 0.9), ignore: null };
+    }
+    if (u.backOffT > 0 || u.ramCD > 0) {
+      const ahead = (v.position.x - P.x) * pf.x + (v.position.z - P.z) * pf.z > 0;
+      const side = ((v.position.x - P.x) * pr.x + (v.position.z - P.z) * pr.z) >= 0 ? 1 : -1;
+      // Drop back after a rear hit; a cop already ahead carries on and opens a gap.
+      // A universal rear target made front/side contacts turn back through the suspect.
+      const gap = ahead ? 24 : -19;
+      const aim = { x: P.x + pf.x * gap + pr.x * side * 3, z: P.z + pf.z * gap + pr.z * side * 3 };
+      return { aim, vT: Math.min(vmax, Math.max(0, pSp + (ahead ? 3 : d < 15 ? -5 : 0))), ignore: null };
     }
     if (u.slot) { // boxing in a slow/stopped suspect
       const ds = dist(v.position, u.slot);
@@ -412,17 +461,38 @@ export function createPolice(game) {
       u.crew = 0;
     }
     u.ramCD -= dt;
+    u.backOffT = Math.max(0, u.backOffT - dt);
     const L = ctx.L, P = ctx.P, d = ctx.dP(u);
     if ((u.visT -= dt) <= 0) { u.visT = 0.3; u.vis = isVisible(v.position.x, v.position.z); }
     const visible = u.vis;
+
+    // Progress is independent of throttle/obstacle speed limits: a wall or queue can force
+    // vTarget to zero, which used to suppress the low-level stuck watchdog indefinitely.
+    if (L > 0 && ['pursue', 'respond', 'search'].includes(u.mode) && d > 12) {
+      const moved = Math.hypot(v.position.x - u.progressX, v.position.z - u.progressZ);
+      if (moved >= 2) {
+        u.progressX = v.position.x; u.progressZ = v.position.z; u.noProgressT = 0; u.recoveryT = null;
+      } else u.noProgressT += dt;
+      if (u.noProgressT >= 3 && u.recoveryT == null) {
+        u.recoveryT = t; u.ctl.reverseT = 1.35; u.ctl.justReversed = true;
+        u.path = null; u.searchPt = null; stats.stuck++;
+      }
+      if (u.recoveryT != null && t - u.recoveryT >= 3 && !inFrustum(v.position.x, v.position.z, 8)) {
+        stats.recycled++; removeUnit(u); spawnT = Math.min(spawnT, 0.1); return;
+      }
+    } else {
+      u.noProgressT = 0; u.recoveryT = null; u.progressX = v.position.x; u.progressZ = v.position.z;
+    }
 
     // ---------------- lifecycle
     if (u.mode === 'wrecked') { if (!visible && d > 60) removeUnit(u); return; }
     if (u.mode === 'leave') {
       if ((!visible && d > 90) || (t - u.modeT > 45 && !visible)) { removeUnit(u); return; }
     } else if (u.mode !== 'roadblock' && u.mode !== 'deployed') {
-      if (!visible && d > DESPAWN_FAR) { stats.recycled++; removeUnit(u); return; }
-      if ((u.ctl.stuckCount || 0) >= 4 && !visible && d > 40) { stats.recycled++; removeUnit(u); return; }
+      // At one star an open-road sighting must survive a growing gap. Otherwise the
+      // distance recycler itself grants an escape without the suspect breaking LOS.
+      if (!visible && d > DESPAWN_FAR && !(L === 1 && u.sees)) { stats.recycled++; removeUnit(u); return; }
+      if ((u.ctl.stuckCount || 0) >= 4 && !inFrustum(v.position.x, v.position.z, 8) && d > 40) { stats.recycled++; removeUnit(u); return; }
       if (u.ctl.lastStuck && t - u.ctl.lastStuck > 25) u.ctl.stuckCount = 0;
     }
 
@@ -447,7 +517,7 @@ export function createPolice(game) {
     v.sirenOn = !['patrol', 'leave', 'wrecked'].includes(u.mode);
 
     // ---------------- behaviour
-    const vmax = TUNE.vmax[L];
+    const vmax = pursuitCap(u);
     switch (u.mode) {
       case 'patrol': {
         if (!u.searchPt || (u.path && remainingLength(u.path) < 12) || t - u.modeT > 60) {
@@ -491,13 +561,9 @@ export function createPolice(game) {
         driveDirect(u, dt, tg.aim, tg.vT, tg.ignore);
         // contact bookkeeping (rams); Vehicles resolves the physics
         const pv = player().vehicle;
-        if (pv && u.ramCD <= 0 && d < 6) {
-          if (obbOverlap(v.getOBB(), pv.getOBB()) || d < 3.0) {
-            u.ramCD = u.rammer && L >= 3 ? TUNE.ramCooldown[L] : 2.5;
-            stats.rams++;
-            if (u.rammer) radio(`Mobile ${u.id}: contact! Ramming the suspect.`, 12);
-          }
-        }
+        const touching = !!pv && d < 6 && (obbOverlap(v.getOBB(), pv.getOBB()) || d < 3.0);
+        if (touching && !u.touching) recordContact(u);
+        u.touching = touching;
         break;
       }
       case 'deployed': {
@@ -615,7 +681,7 @@ export function createPolice(game) {
     if (u.ped && game.peds && !game.peds.includes(u.ped)) { u.ped = null; removeUnit(u); return; }
     if ((u.visT = (u.visT || 0) - dt) <= 0) { u.visT = 0.3; u.vis = isVisible(u.position.x, u.position.z, 1.5); }
     const visible = u.vis;
-    if (!visible && d > (u.mode === 'guard' ? 260 : 110)) { removeUnit(u); return; }
+    if (!visible && d > (u.mode === 'guard' ? 450 : 110)) { removeUnit(u); return; }
     if (ctx.L === 0 && !['return', 'leave', 'guard'].includes(u.mode)) u.mode = u.car ? 'return' : 'leave';
     if (u.mode === 'leave' && !visible && d > 40) { removeUnit(u); return; }
     const pSp = Math.hypot(pvel.x, pvel.z);
@@ -642,12 +708,10 @@ export function createPolice(game) {
       if (onFoot) {
         const d = dist(u.position, p.position);
         if (d < 1.6) adjacent = u;
-        if (d < 1.3) {
-          // "not sprinting away": the suspect's speed directly away from this cop
-          const ax = p.position.x - u.position.x, az = p.position.z - u.position.z, al = Math.hypot(ax, az) || 1;
-          if ((pvel.x * ax + pvel.z * az) / al < 3.2) nearFoot = true;
-        }
-      } else if (door && dist(u.position, door) < 1.6 && Math.abs(p.vehicle.speed || 0) < 1) atDoor = true;
+        if (d < 1.3 && Math.hypot(pvel.x, pvel.z) < 1 &&
+            collision.lineOfSight(u.position.x, u.position.z, p.position.x, p.position.z, 1)) nearFoot = true;
+      } else if (door && dist(u.position, door) < 1.6 && Math.hypot(pvel.x, pvel.z) < 1 &&
+                 collision.lineOfSight(u.position.x, u.position.z, door.x, door.z, 1)) atDoor = true;
     }
     arrest.foot = nearFoot ? arrest.foot + dt : Math.max(0, arrest.foot - dt * 2);
     arrest.car = atDoor ? arrest.car + dt : Math.max(0, arrest.car - dt * 2);
@@ -656,7 +720,7 @@ export function createPolice(game) {
       p.damage?.(TUNE.baton[ctx.L], { kind: 'cop', x: adjacent.position.x, z: adjacent.position.z });
       adjacent.swingT = 0.35;
     }
-    if (arrest.foot >= 1.0 || arrest.car >= 1.5) doBust();
+    if (arrest.foot >= 2.5 || arrest.car >= 2.5) doBust();
   }
 
   function doBust() {
@@ -681,6 +745,19 @@ export function createPolice(game) {
   }
 
   // ------------------------------------------------------------------ events
+  function recordContact(u) {
+    if (u.ramCD > 0) return;
+    u.ramCD = TUNE.ramCooldown[lvl()]; u.backOffT = 1.5;
+    stats.rams++;
+    if (u.rammer) radio(`Mobile ${u.id}: contact! Backing off.`, 12);
+  }
+  events.on('vehicleCollision', e => {
+    const pv = player()?.vehicle;
+    if (!pv) return;
+    const v = e.a === pv ? e.b : e.b === pv ? e.a : null;
+    const u = v?.ai;
+    if (u && units.includes(u) && u.kind === 'car' && lvl() > 0) recordContact(u);
+  });
   events.on('busted', () => { standDown = true; standDownAll(); siren.silence(); });
   events.on('wasted', () => { standDown = true; standDownAll(); siren.silence(); });
   events.on('respawn', () => { police.clearAll(); });
@@ -727,7 +804,8 @@ export function createPolice(game) {
       const pSp = Math.hypot(pvel.x, pvel.z);
       slowT = p.mode === 'vehicle' && pSp < 2 ? slowT + dt : 0;
 
-      if ((frustumT -= dt) <= 0) { frustumT = 0.1; refreshFrustum(); }
+      // Lifecycle decisions use the latest rendered camera, including abrupt orbit input.
+      refreshFrustum();
       const L = playerActive() ? lvl() : 0;
       if (L !== lastLevel) {
         if (L > 0 && lastLevel === 0) for (const u of units) if (u.kind === 'car' && u.mode === 'patrol') setMode(u, 'respond');
@@ -739,7 +817,10 @@ export function createPolice(game) {
         sightT = 0.1;
         let any = false;
         for (const u of units) {
-          u.sees = L > 0 && unitCanSee(u, P.x, P.z, u.mode === 'pursue' ? TUNE.sightPursuit : TUNE.sight);
+          // Dispatch can acquire a moving suspect on an open road before reaching the
+          // old 60 m crime-witness radius. Otherwise hidden spawns enter search while
+          // the suspect is still plainly in their LOS, defeating the higher speed caps.
+          u.sees = L > 0 && unitCanSee(u, P.x, P.z, L === 1 ? Infinity : TUNE.sightPursuit);
           if (u.sees) { u.seeT = t; any = true; }
         }
         if (any) game.wanted?.reportSighting?.(P.x, P.z, true);
@@ -863,6 +944,7 @@ export function createPolice(game) {
     spawnPatrolAt(x, z, heading = 0) { const v = game.createVehicle({ type: 'police', x, z, heading }); return newCarUnit(v, 'patrol').id; },
     spawnFootAt(x, z) { return spawnFoot(x, z, 0, 'chase', null).id; },
     roadblock: () => placeRoadblock(),
+    pursuitCap: (id) => { const u = units.find(u => u.id === id && u.kind === 'car'); return u ? pursuitCap(u) : null; },
     unitInfo: () => units.map((u) => ({ id: u.id, kind: u.kind, mode: u.mode, x: +u.position.x.toFixed(1), z: +u.position.z.toFixed(1),
       h: u.vehicle ? +u.vehicle.heading.toFixed(2) : +u.heading.toFixed(2),
       speed: u.vehicle ? +(u.vehicle.speed || 0).toFixed(1) : +Math.hypot(u.vel.x, u.vel.z).toFixed(1),

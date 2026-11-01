@@ -1,0 +1,140 @@
+{
+  "arrest": {
+    "bustAt": 1.5166666666666666,
+    "errors": []
+  },
+  "escapeHiddenInsideCircle": {
+    "level": 1,
+    "progress": 0
+  },
+  "escapeWithSight": {
+    "level": 1,
+    "progress": 0
+  },
+  "sight120m": {
+    "clearLOS": true,
+    "seen": false
+  },
+  "pinned": {
+    "firstReverse": null,
+    "removed": null,
+    "trace": [
+      {
+        "t": 0,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 1,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 2,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 3,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 4,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 5,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 6,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 7,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 8,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 9,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      },
+      {
+        "t": 10,
+        "mode": "respond",
+        "reverse": 0,
+        "stuck": 0,
+        "progress": 0
+      }
+    ]
+  },
+  "forcedContact": {
+    "contacts": [
+      0.08333333333333333,
+      3.0166666666666666,
+      4.316666666666666,
+      6.016666666666667,
+      7.316666666666666,
+      9.016666666666667
+    ],
+    "minGap": 1.2999999999999998
+  },
+  "controller": [
+    {
+      "level": 1,
+      "configured": 61.2,
+      "steadyKmh": 61.24476712791728
+    },
+    {
+      "level": 2,
+      "configured": 75.60000000000001,
+      "steadyKmh": 75.6027741354815
+    },
+    {
+      "level": 3,
+      "configured": 90,
+      "steadyKmh": 90.03604438761333
+    },
+    {
+      "level": 4,
+      "configured": 100.8,
+      "steadyKmh": 100.86137602134892
+    },
+    {
+      "level": 5,
+      "configured": 111.60000000000001,
+      "steadyKmh": 108.0024800328235
+    }
+  ],
+  "errors": []
+}

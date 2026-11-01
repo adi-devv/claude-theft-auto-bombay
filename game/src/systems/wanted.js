@@ -7,7 +7,8 @@
 //   +1 star, minimum 2 (3 s cooldown so one long scrape doesn't count three times).
 // While any cop sees the player: seen = true, lastKnown follows the player.
 // Unseen: stars flash, a search circle (radius grows slowly) sits on lastKnown. Being OUTSIDE the circle and unseen
-// for CLEAR_TIME[level] seconds clears the level. Re-sighting resets the countdown.
+// for CLEAR_TIME[level] seconds clears the level. One star only needs continuous LOS loss,
+// so hiding around a corner works without first driving out of a distance circle.
 const THRESH = [0, 10, 30, 60, 100, 160];
 export const CLEAR_TIME = [0, 10, 15, 22, 28, 35];
 export const SEARCH_R0 = [0, 80, 100, 120, 140, 160];
@@ -58,7 +59,7 @@ export function createWanted(game) {
         w.flashing = true; unseenT += dt;
         w.searchRadius = Math.min(R0 * SEARCH_MAX_K, R0 + SEARCH_GROWTH * unseenT);
         const out = Math.hypot(px - w.lastKnown.x, pz - w.lastKnown.z) > w.searchRadius;
-        if (out) escapeT += dt;
+        if (w.level === 1 || out) escapeT += dt;
         else escapeT = 0;
         if (unseenT > 2 && !lostAnnounced) {
           lostAnnounced = true;

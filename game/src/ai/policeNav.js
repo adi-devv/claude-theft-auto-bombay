@@ -309,7 +309,9 @@ export function driveCar(v, ctl, dt, aim, vTarget, opts) {
   steerLeft = clamp(steerLeft, -maxSteerAtSpeed, maxSteerAtSpeed);
 
   // turning hard: slow down for the turn implied by the aim angle itself
-  const turnLimit = 4 + 26 * Math.max(0, Math.cos(Math.min(Math.PI / 2, Math.abs(err) * 1.25)));
+  // Keep the pursuit cap on a straight. The old fixed 30 m/s ceiling silently capped
+  // every star level even when dispatch requested a faster response.
+  const turnLimit = 4 + Math.max(0, vTarget - 4) * Math.pow(Math.max(0, Math.cos(Math.min(Math.PI / 2, Math.abs(err) * 1.25))), 2);
   vMax = Math.min(vMax, turnLimit);
   if (Math.abs(err) > 1.4) vMax = Math.min(vMax, 6);
 

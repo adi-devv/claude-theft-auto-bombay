@@ -1,35 +1,25 @@
-# Police handoff
+ï»¿# Police critic-fix handoff
 
-Status: implemented in `work/police/` and tested with the integrated city, vehicles, player and HUD. The sandbox still has stub traffic and peds. Police is ready for integration, with the limitations below.
+Changes are in `work/police/src/ai/police.js`, `policeNav.js`, and `src/systems/wanted.js`. Do not integrate the other sandbox files: several non-owned player, HUD and vehicle files differ from the current `game/`. These differences predate this handoff and mean the measurements below characterize this sandbox, not a fresh integration against the current game.
 
-## Owned files
+- Dispatch rejects the camera frustum at every distance with an 8 m margin, scores hidden/behind candidates preferentially, and validates the actual lane. Roadblocks follow the likely route ahead and test the whole formation and crew before creation. An open straight can delay placement until a hidden site is available; a distant preloaded formation persists until approached or timed out.
+- Pursuit caps at 3/4/5 stars are 28/36/44 m/s. A gap-dependent catch-up boost adds up to 5 m/s behind the player and fades near them. At one star, escape requires 10 seconds without a strong sighting after the initial five-second known period, regardless of search-circle distance; reacquisition resets progress. Higher-star search-circle decay is retained.
+- Pursuers with less than 2 m progress for 3 s reverse and replan; after another 3 s without progress they recycle when outside the frustum. Visible stuck cars wait to recycle until off-screen. Contact arms a four-second per-unit cooldown and a 1.5 s back-off; rammers at five stars are capped at five. Arrest requires a nearby able foot cop and 2.5 s stopped, with progress draining on movement.
 
-- `src/systems/wanted.js`: witnessed crime heat and 0–5 stars, sightings, last-known position, search radius, escape timer, radio and `wantedChanged`.
-- `src/ai/police.js`: patrols, dispatch, pursuit, search, roadblocks, crew, foot officers, baton and arrest, lifecycle and debug telemetry.
-- `src/ai/policeNav.js`: road-graph routing, lane lookahead, speed planning, obstacle feelers and recovery using only `vehicle.setControls()`.
-- `src/ai/policeFx.js`: fallback light bars, two nearest synthesized siren voices and fallback khaki officer model.
+## Measurements
 
-## Interfaces
+The scripts reuse the driving critic's geometry and harness. `audit.js` compares the sandbox with `game/` police modules routed into the same sandbox; `check.js` asserts the results. Run `node tools/police/audit.js`, `node tools/police/check.js`; use `RUN_TAG=baseline` for the original modules. Raw data: `baseline-audit.json`, `fixed-audit.json`, `physical-speed.json`, `baseline-perf.json`, `final-perf.json`, and before/after chase JSON in `tools/police/`.
 
-`createWanted(game)` provides `level`, `heat`, `seen`, `lastKnown`, `searchRadius`, `flashing`, `escapeProgress`, `addCrime`, `reportSighting`, `setLevel`, `clear`, `update`. It listens to `crime`, `vehicleCollision`, `busted` and `wasted`, emits `wantedChanged`, and uses `hud.notify`. Escape requires continuous time outside the expanding circle: 10/15/22/28/35 seconds at stars 1–5. Cop assault raises the level to at least 2. LOS applies to cop witnesses.
+- Across 12 Marine Drive/Fort viewpoints, car creation in the frustum fell from 57/210 (27.1%) to 0/258; roadblock cars fell from 6/24 to 0/18 and crew from 6/24 to 0/18. Three straight-ahead viewpoints had no eligible roadblock, an intentional placement delay. A separate preload test placed a formation 255 m ahead out of frame and retained its two cars and officers after 5 s.
+- Unobstructed physical steady speeds at 3/4/5 stars changed from 90.0/100.8/108.0 to 100.8/128.6/154.9 km/h. At a 140 m gap the configured cap increases to 118.8/147.6/172.8 km/h, versus 100.8/129.6/158.4 near the player. Road curvature and traffic reduce actual chase speeds.
+- A real building blocked sight at 70 m: one-star wanted cleared at 15 s after setting the level, versus still wanted after 17 s before. A clear 348 m sightline kept wanted active and the seeing unit retained, including off-screen; reacquisition reset escape progress. Higher-star decay still cleared at 15/22/28/35 s after leaving the search area.
+- In a pinned-car test the old controller had no watchdog recovery or removal in 11 s; the new controller reversed/replanned at 3.02 s and recycled off-screen at 6.03 s. This is a controlled obstruction, not a guarantee against every traffic jam.
+- Forced repeated collision events produced a minimum 1.3 s recorded contact interval before and 4.0 s after, with 1.5 s back-off. Car arrest changed from 1.52 s to 2.52 s, foot arrest from 1.0 s to 2.52 s; moving or lacking an officer did not arrest. Scripted chases are sensitive to route, spawning and prior run state; the paired 4-star run recorded 7 to 0 total rams and the 5-star run 12 to 1 (counter deltas), so these are examples rather than a general rate estimate.
+- A live 1280x720 five-star test with traffic, crowds, roadblocks, teleports, siren and effects measured police + wanted CPU per frame: baseline average 0.142 ms, max 3.2 ms; fixed average 0.253 ms, max 3.2 ms, 0/3783 samples over 20 ms. Whole-frame max was 202 ms and 485 frames exceeded 20 ms in the fixed run; instrumentation attributes only the timed police/wanted work, so this does not establish a whole-game frame budget. `__game.errors` was empty. The browser logged a favicon 404.
 
-`createPolice(game)` provides `update`, `frameUpdate`, `units`, `clearAll`, plus `witness`, `roadblocks`, `stats` and tuning. Cars have `ai`, a non-player cop `driver`, and `sirenOn`; police drives exclusively through `setControls`. Arrest calls `player.bust()` and avoids double-emitting `busted`. `game.debug.extra.police`, `wantedDetail`, and `game.debug.police` expose telemetry and scenario helpers.
+Visually inspected `shots/final/preloaded-roadblock-pan.png`, `shots/final/perf-pursuit-1.png`, and `shots/after/chase-5-sedan-close.png`: formation, officers and light bars render. Audio was initialized and sirens active in the perf test, but the mix was not assessed by ear.
 
-When available, `pedSystem.spawnPed({x,z,heading,kind:'cop',controller})` must call `controller(ped,dt)` once per fixed step, with mutable `position`, `heading` and `velocity`; police owns that cop's movement. If absent, a police-owned mesh and a lightweight `game.peds` proxy expose position, state, `isCop` and `knockDown` to player/HUD; it is removed on cleanup. Police uses vehicle `driverDoor`, `getOBB`, `forward`, `right`, `speed`, `velocity`, `destroy`, and the road/collision interfaces from the contract.
+## Open issues and requests
 
-## Evidence
-
-Scripts use the shared `tools/harness.js`, 960×540 screenshots under `tools/police/shots/`. `scenarios.js`, `stress.js`, `verify.js`, and `interactions.js` exercise the system. Results in `results.jsonl` and `verify-results.txt`. Screenshots were visually inspected, including `police-detail.png` showing khaki officers, police jeep, flashing bar and minimap.
-
-- At zero stars two patrols spawned. An unwitnessed hit yielded 0 stars; the same hit witnessed on Marine Drive yielded 1. A real player punch on a fallback cop yielded 2 stars and knocked the cop down; cleanup removed the proxy.
-- One-star escape cleared after 10 seconds outside the circle; re-entry reset progress from 0.60 to 0. Both a foot arrest and a stopped-car door arrest called the player bust flow.
-- In a scripted Marine Drive drive, pursuit closed to 23 m and a roadblock appeared by 10 seconds, with two registered contacts. Escalation reached five stars and the stopped player was arrested. This is a single deterministic scenario, not a broad balance study.
-- Five-star 600-second stress: player teleported among six locations every five seconds to prevent an early arrest, with damage disabled. Sampled police cars remained 5–7, total vehicles 7–9, 516 units spawned and 509 recycled by the end; all sampled `game.errors` were empty. This stresses dispatch/recycling, not sustained close combat or roadblocks. The separate drive scenario exercised roadblocks and foot units.
-- `__game.errors` remained empty in these tests. Browser console had a missing favicon 404. The required `tools/mapview.mjs` failed under the installed Node because `game/src/world/roads.js` was treated as CommonJS; no files outside ownership were changed to work around it.
-
-## Known issues and requests
-
-- Real peds and traffic were unavailable in this sandbox. Integration should verify the ped controller cadence, `remove()` behavior, cop knockdowns, civilian witnesses, siren yielding and crowded-road avoidance. Fallback cops are intentionally simple low-poly models.
-- Siren synthesis and bar flashes run without errors, but the audio mix has not been evaluated by ear. Roadblock placement requires a moving suspect and suitable graph segment; placement can be delayed in short or obstructed stretches.
-- The long soak uses teleports and does not establish 10 minutes of continuous close-range pursuit, audio quality, or frame-rate performance under fully integrated crowds and traffic. Balancing pursuit/escape against human driving remains advisable.
-- Player/HUD: requested `bust()`, search fields and police vehicle markers are used. Vehicles: no additional interface changes requested. City: no additional changes requested.
+- Frustum-safe spawning can postpone roadblocks on long open roads and recycling of visible stuck units; human playtesting in Fort and across camera modes remains useful. Roadblock route prediction selects the straightest next edge, so a player turning elsewhere can miss it.
+- Sandbox non-owned files differ from current `game/`; integration owner should copy only police-owned files and rerun the tests against the current integrated player/vehicles/HUD. No other-owner code change is requested. Whole-frame spikes need separate profiling by the integration/performance owner.

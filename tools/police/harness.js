@@ -17,21 +17,32 @@ const { chromium } = require('playwright-core');
 const fs = require('fs');
 const path = require('path');
 
-const BASE = process.env.GAME_URL || 'http://localhost:8765/game/';
+const BASE = process.env.GAME_URL || 'http://localhost:8765/work/police/';
+// Browser per OS: Chrome + Metal on macOS; Edge (always present) + D3D11 on Windows. Override with PW_CHANNEL / PW_ANGLE.
+const WIN = process.platform === 'win32';
+const CHANNEL = process.env.PW_CHANNEL || (WIN ? 'msedge' : 'chrome');
+const ANGLE = process.env.PW_ANGLE || (WIN ? 'd3d11' : 'metal');
 
 async function launch(opts = {}) {
   const { width = 1280, height = 720, out = path.join(__dirname, 'shots'), query = 'test=1', headless = true, timeout = 60000 } = opts;
   fs.mkdirSync(out, { recursive: true });
   const browser = await chromium.launch({
-    channel: 'chrome', headless,
-    args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'],
+    channel: CHANNEL, headless,
+    args: [`--use-angle=${ANGLE}`, '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required',
+      '--disable-background-timer-throttling', '--disable-renderer-backgrounding', '--disable-backgrounding-occluded-windows'],
   });
   const page = await browser.newPage({ viewport: { width, height } });
   const logs = [];
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(`[${m.type()}] ${m.text()}`); });
   page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
   await page.goto(BASE + '?' + query, { waitUntil: 'load', timeout });
-  await page.waitForFunction(() => window.__game && window.__game.player && !document.getElementById('loading'), null, { timeout });
+  await page.bringToFront();
+  try {
+    await page.waitForFunction(() => window.__game && window.__game.player && !document.getElementById('loading'), null, { timeout, polling: 100 });
+  } catch (e) {
+    console.error('Boot diagnostics:', logs, await page.evaluate(() => ({player:!!window.__game?.player,errors:window.__game?.errors,loading:document.getElementById('loading')?.textContent})).catch(()=>null));
+    await browser.close();throw e;
+  }
   await page.mouse.click(width / 2, height / 2).catch(() => {}); // focus + unlock audio
   const g = {
     page, browser, logs, out,
@@ -66,4 +77,4 @@ async function launch(opts = {}) {
   return g;
 }
 
-module.exports = { launch, BASE };
+module.exports = { CHANNEL, ANGLE, launch, BASE };

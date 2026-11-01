@@ -1,0 +1,100 @@
+{
+  "arrest": {
+    "bustAt": 2.5166666666666666,
+    "errors": []
+  },
+  "escapeHiddenInsideCircle": {
+    "level": 0,
+    "progress": 0
+  },
+  "escapeWithSight": {
+    "level": 1,
+    "progress": 0
+  },
+  "sight120m": {
+    "clearLOS": true,
+    "seen": true
+  },
+  "pinned": {
+    "firstReverse": 0.016666666666666666,
+    "removed": 6.016666666666667,
+    "trace": [
+      {
+        "t": 0,
+        "mode": "respond",
+        "reverse": 1.4,
+        "stuck": 0,
+        "progress": 0.016666666666666666
+      },
+      {
+        "t": 1,
+        "mode": "respond",
+        "reverse": 1.4,
+        "stuck": 0,
+        "progress": 1.016666666666668
+      },
+      {
+        "t": 2,
+        "mode": "respond",
+        "reverse": 1.4,
+        "stuck": 0,
+        "progress": 2.0166666666666644
+      },
+      {
+        "t": 3,
+        "mode": "respond",
+        "reverse": 0.2,
+        "stuck": 0,
+        "progress": 3.016666666666661
+      },
+      {
+        "t": 4,
+        "mode": "respond",
+        "reverse": 0.2,
+        "stuck": 0,
+        "progress": 4.016666666666658
+      },
+      {
+        "t": 5,
+        "mode": "respond",
+        "reverse": 0.2,
+        "stuck": 0,
+        "progress": 5.016666666666654
+      }
+    ]
+  },
+  "forcedContact": {
+    "contacts": [
+      0.05
+    ],
+    "minGap": null
+  },
+  "controller": [
+    {
+      "level": 1,
+      "configured": 75.60000000000001,
+      "steadyKmh": 75.6027741354815
+    },
+    {
+      "level": 2,
+      "configured": 90,
+      "steadyKmh": 90.03604438761333
+    },
+    {
+      "level": 3,
+      "configured": 100.8,
+      "steadyKmh": 100.86137602134892
+    },
+    {
+      "level": 4,
+      "configured": 129.6,
+      "steadyKmh": 129.65277153312485
+    },
+    {
+      "level": 5,
+      "configured": 158.4,
+      "steadyKmh": 158.44413365120118
+    }
+  ],
+  "errors": []
+}

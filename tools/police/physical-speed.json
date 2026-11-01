@@ -1,0 +1,66 @@
+{
+  "before": [
+    {
+      "stars": 1,
+      "capKmh": 61.2,
+      "physicalSteadyKmh": 61.21379952883383,
+      "maxKmh": 61.272774704374456
+    },
+    {
+      "stars": 2,
+      "capKmh": 75.60000000000001,
+      "physicalSteadyKmh": 75.59528252411525,
+      "maxKmh": 75.64091643493222
+    },
+    {
+      "stars": 3,
+      "capKmh": 90,
+      "physicalSteadyKmh": 89.98256292906241,
+      "maxKmh": 90.02880743849208
+    },
+    {
+      "stars": 4,
+      "capKmh": 100.8,
+      "physicalSteadyKmh": 100.77556176149515,
+      "maxKmh": 100.80801055517135
+    },
+    {
+      "stars": 5,
+      "capKmh": 111.60000000000001,
+      "physicalSteadyKmh": 107.96698665338536,
+      "maxKmh": 108.00283976510167
+    }
+  ],
+  "after": [
+    {
+      "stars": 1,
+      "capKmh": 75.60000000000001,
+      "physicalSteadyKmh": 75.59528252411525,
+      "maxKmh": 75.64091643493222
+    },
+    {
+      "stars": 2,
+      "capKmh": 90,
+      "physicalSteadyKmh": 89.98256292906241,
+      "maxKmh": 90.02880743849208
+    },
+    {
+      "stars": 3,
+      "capKmh": 100.8,
+      "physicalSteadyKmh": 100.77556176149515,
+      "maxKmh": 100.80801055517135
+    },
+    {
+      "stars": 4,
+      "capKmh": 129.6,
+      "physicalSteadyKmh": 128.55894993510293,
+      "maxKmh": 128.55894993510128
+    },
+    {
+      "stars": 5,
+      "capKmh": 158.4,
+      "physicalSteadyKmh": 154.88855620669568,
+      "maxKmh": 154.88855620669403
+    }
+  ]
+}
