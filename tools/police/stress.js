@@ -1,0 +1,11 @@
+const H=require('../harness');
+(async()=>{const g=await H.launch({width:960,height:540,out:__dirname+'/shots'});
+console.log('escape',JSON.stringify(await g.eval(()=>{let G=__game;G.police.clearAll();G.debug.setWanted(1);G.debug.step(5.5);G.police.clearAll();G.debug.teleport(250,105,0);G.debug.step(11);return G.debug.state()})));
+await g.eval(()=>{location.reload()}); await g.page.waitForFunction(()=>__game?.player && !document.getElementById('loading'));
+console.log('car arrest',JSON.stringify(await g.eval(()=>{let G=__game;G.debug.spawnCar('sedan');G.debug.setWanted(2);let d=G.player.vehicle.driverDoor();G.debug.police.spawnFootAt(d.x,d.z);G.debug.step(2);return G.debug.state()})));
+await g.eval(()=>{location.reload()}); await g.page.waitForFunction(()=>__game?.player && !document.getElementById('loading'));
+console.log('chase',JSON.stringify(await g.eval(()=>{let G=__game;G.debug.teleport(-405,250,Math.PI);let v=G.debug.spawnCar('sedan');G.debug.setWanted(3);G.input.setKey('KeyW',true);let samples=[];for(let i=0;i<12;i++){G.debug.step(5);samples.push({time:G.time,player:[v.position.x,v.position.z,v.speed],police:G.debug.state().police});}G.input.setKey('KeyW',false);return {samples,errors:G.errors}})));
+await g.shot('chase');
+await g.eval(()=>{location.reload()}); await g.page.waitForFunction(()=>__game?.player && !document.getElementById('loading'));
+console.log('soak',JSON.stringify(await g.eval(()=>{let G=__game;G.debug.spawnCar('police');G.debug.setWanted(5);let a=[];for(let i=0;i<10;i++){G.debug.step(60);a.push({t:G.time,police:G.debug.state().police,counts:G.debug.state().counts,errors:G.errors.slice()});if(G.player.state!=='normal'){G.player.state='normal';G.wanted.setLevel(5)}}return a})));
+await g.close()})().catch(e=>{console.error(e);process.exit(1)});
