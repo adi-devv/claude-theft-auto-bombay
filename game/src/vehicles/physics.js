@@ -8,6 +8,7 @@ import { G, torqueAt } from './tuning.js';
 
 const clamp = (x, a, b) => (x < a ? a : x > b ? b : x);
 const sgn = (x) => (x > 0 ? 1 : x < 0 ? -1 : 0);
+const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 const _contacts = [];
 
 /** Physics state stored on the vehicle (v.ph). */
@@ -16,6 +17,7 @@ export function makePhysState() {
     steer: 0, steerAngle: 0, gear: 0, rpm: 850, rpmTarget: 850, shiftT: 0, driveF: 0, brakeIn: 0, drive: 0,
     axF: 0, ayF: 0, slipF: 0, slipR: 0, beta: 0, spin: 0, wheelRot: 0, frontLoad: 0.5, reversing: false,
     sleeping: false, sleepT: 0, lod: false, skid: 0, hb: false, lastHit: 0, scrape: 0, scrapeX: 0, scrapeZ: 0,
+    impactT: 0, betaDot: 0, betaPrev: 0, slideT: 0, hbT: 99,
   };
 }
 
@@ -23,7 +25,8 @@ export function makePhysState() {
 export function steerLimit(s, u) {
   const v = Math.abs(u);
   if (v < 1) return s.maxSteer;
-  const lim = s.wheelbase * s.mu * G / (v * v) + s.peakSlip * s.steerSlack;
+  // front slip we let the wheels use: ~0.68 of the (soft, progressive) peak slip already gives ~99% of the grip; a bit more at speed
+  const lim = s.wheelbase * s.mu * G / (v * v) + s.peakSlip * 0.68 * s.steerSlack * (1 + 0.3 * smooth(18, 42, v));
   return Math.min(s.maxSteer, lim);
 }
 
@@ -38,6 +41,8 @@ export function controlStep(v, dt) {
   const target = dead ? 0 : clamp(+c.steer || 0, -1, 1);
   ph.hb = dead ? true : !!c.handbrake;
   ph.hbT = ph.hb ? 0 : (ph.hbT || 0) + dt;
+  if (ph.hb && u > 3) ph.slideT = 2;
+  else ph.slideT = Math.max(0, ph.slideT - dt);
 
   // --- steering: keyboard-friendly ramp, quicker return to centre, calmer at speed
   const sp = Math.abs(u);
@@ -54,17 +59,21 @@ export function controlStep(v, dt) {
     ph.steer = cur + clamp(target - cur, -r, r);
   }
   let angle = ph.steer * steerLimit(s, u);
+  // body slip: + = velocity to the RIGHT of the nose (nose pointing left of travel). Valid over the full circle when moving.
+  const vsp = Math.hypot(v.velocity.x, v.velocity.z);
+  ph.beta = vsp > 3 ? Math.atan2(v.velocity.x * -fz + v.velocity.z * fx, u) : 0;
+  const bd = (ph.beta - ph.betaPrev); ph.betaPrev = ph.beta;
+  ph.betaDot += (clamp((Math.abs(bd) > Math.PI ? 0 : bd) / dt, -8, 8) - ph.betaDot) * Math.min(1, dt * 12);
   // counter-steer assist: front wheels drift towards the direction of travel when the rear slides
   if (u > 2) {
-    const beta = Math.atan2(v.velocity.x * -fz + v.velocity.z * fx, u); // lateral-right vs forward
-    ph.beta = beta;
+    const beta = ph.beta;
     // drift mode: after a handbrake flick, holding throttle keeps the slide alive (assists back off)
     const ab = Math.abs(beta);
     if (ph.drift) { if (ab < 0.06 || thr < 0.25 || ph.hb) ph.drift = ph.hb && ab > 0.1; }
     else if ((ph.hbT < 1.2 || ph.hb) && thr > 0.3 && ab > 0.12) ph.drift = true;
     const assist = s.counterSteer * beta * clamp((u - 2) / 4, 0, 1) * (ph.hb ? 0.3 : ph.drift ? 0.6 : 1);
     angle = clamp(angle + assist, -s.maxSteer, s.maxSteer);
-  } else { ph.beta = 0; ph.drift = false; }
+  } else { ph.drift = false; }
   ph.steerAngle = angle;
 
   // --- pedals (GTA style): brake brakes when rolling forward, reverses when (nearly) stopped
@@ -147,7 +156,9 @@ export function integrate(v, h, env) {
 
   // --- longitudinal forces
   const split = s.drive === 'fwd' ? 1 : s.drive === 'awd' ? 0.4 : 0;
-  let FxF = ph.driveF * split, FxR = ph.driveF * (1 - split);
+  // arcade traction control: deep in a slide the engine backs off (power-oversteer spirals are not fun); a held drift is exempt
+  const tc = ph.drive > 0 && !ph.drift && !ph.hb ? 1 - 0.8 * smooth(0.3, 0.62, Math.abs(ph.beta)) : 1;
+  let FxF = ph.driveF * tc * split, FxR = ph.driveF * tc * (1 - split);
   if (ph.hb) FxR = 0;
   // brakes + rolling resistance: "force needed to stop this substep", capped
   const Bmax = ph.brakeIn * s.brakeG * mg;
@@ -169,7 +180,10 @@ export function integrate(v, h, env) {
   const capF = s.mu * Nf, capR = s.mu * Nr * s.rearGrip * (ph.drift ? s.driftGrip : 1);
   const vref = Math.max(Math.abs(lonF), 1.0);
   const alphaF = Math.atan2(latF, vref);
-  let FyF = -capF * curve(alphaF, s.B_f, s.frontC);
+  // tyres get softer with speed (longer, more progressive slides and a visible tail after the wheel is released)
+  const soft = 1 - s.hiSpeedSoft * smooth(14, 40, Math.hypot(vx, vz));
+  const Bf = s.B_f * soft, Br = s.B_r * soft;
+  let FyF = -capF * curve(alphaF, Bf, s.frontC);
   const availF = Math.sqrt(Math.max(0, capF * capF - FxF * FxF * (capF * capF) / (capFl * capFl)));
   FyF = clamp(FyF, -availF, availF);
   FyF = clamp(FyF, -meF * Math.abs(latF) / h * 0.5, meF * Math.abs(latF) / h * 0.5);
@@ -183,7 +197,7 @@ export function integrate(v, h, env) {
     const mag = Math.min(fk, meR * spd / h * 0.5);
     if (spd > 1e-4) { FxR = -lonR / spd * mag; FyR = -latR / spd * mag; } else { FxR = 0; FyR = 0; }
   } else {
-    FyR = -capR * curve(alphaR, s.B_r, s.rearC);
+    FyR = -capR * curve(alphaR, Br, s.rearC);
     const availR = Math.sqrt(Math.max(0, capR * capR - FxR * FxR * (capR * capR) / (capRl * capRl)));
     FyR = clamp(FyR, -availR, availR);
     FyR = clamp(FyR, -meR * Math.abs(latR) / h * 0.5, meR * Math.abs(latR) / h * 0.5);
@@ -202,23 +216,42 @@ export function integrate(v, h, env) {
   let Fz = Ffwd * fz + Fright * rz - s.dragK * spd * vz;
 
   // --- assists
-  if (u > 3) {
-    const omKin = u * Math.tan(d) / L * -1; // steering right (d>0) => negative yaw
-    if (ph.hb) {
-      // handbrake: arcade yaw kick in the steering direction so 180s are reliable
-      const st = ph.steer;
-      tau += -st * s.hbYaw * I * clamp(u / 12, 0, 1) * s.hbKick;
-    } else if (!ph.drift) {
+  const bt = ph.beta, abt = Math.abs(bt), sgb = sgn(bt);
+  const steerIn = ph.steer;
+  if (ph.hb) {
+    // handbrake slide: steering sets a target yaw rate (bounded, fades with speed) so the slide is controllable, not a donut.
+    if (spd > 4) {
+      const wMax = clamp(s.hbYawMax - s.hbYawSpd * spd, s.hbYawMin, s.hbYawMax) * s.hbYaw;
+      const wT = -steerIn * wMax * smooth(2, 9, spd);
+      tau += I * clamp((wT - om) * 6, -s.hbKick, s.hbKick);
+      // soft slip limiter: never swing the tail past ~80 deg (that would turn the car round and reverse it)
+      const over = clamp((abt - s.hbBeta0) / (s.hbBeta1 - s.hbBeta0), 0, 1);
+      if (over > 0 && bt * om < 0) tau += -om * I * 16 * over;
+      if (abt > s.hbBeta1) tau += sgb * I * 24 * (abt - s.hbBeta1);
+    }
+  } else if (ph.drift && u > 4) {
+    // held drift: steering picks the slip angle (counter-steer shrinks it, steering into it grows it), PD-controlled
+    const k = steerIn * sgb;
+    const target = sgb * clamp(s.driftBeta * (1 - 0.75 * k), 0.08, 0.95);
+    tau += I * clamp(s.driftK * (bt - target) + s.driftC * ph.betaDot, -9, 9);
+  } else if (spd > 3) {
+    if (u > 3) {
+      // yaw stability toward the kinematic yaw rate; backs off at speed so slides get longer and more progressive
+      const omKin = u * Math.tan(d) / L * -1; // steering right (d>0) => negative yaw
       const excess = om - omKin;
       const thr = 0.25;
-      if (Math.abs(excess) > thr) tau += -sgn(excess) * (Math.abs(excess) - thr) * I * s.stability * 6;
+      const stab = s.stability * (1 - s.hiSpeedStab * smooth(10, 36, u));
+      if (Math.abs(excess) > thr) tau += -sgn(excess) * (Math.abs(excess) - thr) * I * stab * 6;
     }
+    // self-aligning torque / rear-grip recovery: when the driver is not steering into a slide, swing the nose back along the
+    // direction of travel (always the short way: forward, never round to reverse)
+    const rec = Math.min(1, (1 - Math.min(1, Math.abs(steerIn) * 1.5)) * smooth(0.2, 0.55, abt) + 0.6 * smooth(0.4, 0.8, abt));
+    if (rec > 0) tau += I * rec * s.alignK * Math.sin(bt) * (Math.cos(bt) > 0 ? 1 : 0.4);
   }
 
   // anti-spin: deep in a slide (and not on the handbrake) bleed yaw so slides stay catchable
-  if (!ph.hb && u > 2) {
-    const ab = Math.abs(ph.beta);
-    if (ab > s.spinBeta) tau += -om * I * s.antiSpin * Math.min(1, (ab - s.spinBeta) * 4);
+  if (!ph.hb && !ph.drift && spd > 2) {
+    if (abt > s.spinBeta) tau += -om * I * s.antiSpin * Math.min(1, (abt - s.spinBeta) * 4);
   }
 
   // integrate (semi-implicit Euler)
@@ -227,9 +260,20 @@ export function integrate(v, h, env) {
   v.yawRate += tau / I * h;
   // tiny angular damping, stronger when crawling (kills jitter)
   v.yawRate *= Math.abs(u) < 1 ? Math.exp(-6 * h) : Math.exp(-0.3 * h);
+  if (ph.impactT > 0) { ph.impactT -= h; v.yawRate *= Math.exp(-5 * h); } // short post-impact yaw damping (no camera whip)
   v.position.x += v.velocity.x * h;
   v.position.z += v.velocity.z * h;
   v.heading += v.yawRate * h;
+  // A forward handbrake slide cannot rotate the nose past perpendicular to travel.
+  if (ph.slideT > 0 && Math.hypot(v.velocity.x, v.velocity.z) > 3) {
+    const travel = Math.atan2(v.velocity.x, v.velocity.z);
+    const delta = Math.atan2(Math.sin(v.heading - travel), Math.cos(v.heading - travel));
+    const limit = 1.45;
+    if (Math.abs(delta) > limit) {
+      v.heading -= delta - clamp(delta, -limit, limit);
+      if (v.yawRate * delta > 0) v.yawRate = 0;
+    }
+  }
 
   // filtered accelerations (weight transfer + visual pitch/roll)
   const axNow = Ffwd / m, ayNow = Fright / m;
@@ -248,9 +292,15 @@ export function bodyBox(v, out = {}) {
 }
 
 const _box = {};
-/** Static world contact: positional correction + impulse with restitution, friction and spin. */
+/**
+ * Static world contact. Arcade-sim: the linear response treats the body as a point mass at the CG, so a graze only removes the
+ * velocity component INTO the surface (tangential speed is kept, light wall friction) and a head-on stops dead. Spin is added
+ * separately and bounded: glancing hits swing the nose parallel to the surface, near-perpendicular hits barely twist.
+ * Damage is driven by the closing (normal) speed only; one impulse per contact per iteration (no re-hit from induced spin).
+ */
 export function resolveStatic(v, env) {
-  const s = v.spec, m = s.mass, I = s.inertia;
+  const s = v.spec, m = s.mass, I = s.inertia, ph = v.ph;
+  const massK = clamp(Math.sqrt(1300 / m), 0.3, 1.2);
   for (let iter = 0; iter < 3; iter++) {
     bodyBox(v, _box);
     _contacts.length = 0;
@@ -260,27 +310,31 @@ export function resolveStatic(v, env) {
     for (const c of cs) if (c.depth > deep.depth) deep = c;
     v.position.x += deep.nx * (deep.depth + 0.002);
     v.position.z += deep.nz * (deep.depth + 0.002);
+    const sh = Math.sin(v.heading), ch = Math.cos(v.heading);
     for (const c of cs) {
-      const rx = c.px - v.position.x, rz = c.pz - v.position.z;
-      const om = v.yawRate;
-      const vpx = v.velocity.x + om * rz, vpz = v.velocity.z - om * rx;
-      const vn = vpx * c.nx + vpz * c.nz;
-      if (vn >= 0) continue;
-      const rn = c.nx * rz - c.nz * rx;
-      const kn = 1 / m + rn * rn / I;
-      const e = Math.max(0.08, 0.3 - Math.abs(vn) * 0.02);
-      const jn = -(1 + e) * vn / kn;
+      const vn = v.velocity.x * c.nx + v.velocity.z * c.nz;
+      if (vn >= -0.02) continue;
+      const closing = -vn;
+      const e = Math.max(0.06, 0.28 - closing * 0.02);
+      const jn = (1 + e) * closing * m;
       const tx = -c.nz, tz = c.nx;
-      const vt = vpx * tx + vpz * tz;
-      const rt = tx * rz - tz * rx;
-      const kt = 1 / m + rt * rt / I;
-      const mu = 0.32;
-      const jt = clamp(-vt / kt, -mu * jn, mu * jn);
+      const vt = v.velocity.x * tx + v.velocity.z * tz;
+      const jt = clamp(-vt * m, -0.12 * jn, 0.12 * jn);
       const Jx = jn * c.nx + jt * tx, Jz = jn * c.nz + jt * tz;
       v.velocity.x += Jx / m; v.velocity.z += Jz / m;
-      v.yawRate += (Jx * rz - Jz * rx) / I * 0.75;
-      v.yawRate = clamp(v.yawRate, -6, 6);
-      if (env.onContact) env.onContact(v, { jn, vn: -vn, vt: Math.abs(vt), px: c.px, pz: c.pz, nx: c.nx, nz: c.nz, shape: c.shape });
+      // --- spin
+      const rx = c.px - v.position.x, rz = c.pz - v.position.z;
+      const dwLever = (Jx * rz - Jz * rx) / I;                  // what a rigid body would do (can be huge for corner hits)
+      const fn = Math.abs(c.nx * sh + c.nz * ch);               // 1 = head-on / rear-end, 0 = side swipe
+      const glance = 1 - smooth(0.5, 0.85, fn);
+      let dx = tx, dz = tz; if (dx * sh + dz * ch < 0) { dx = -tx; dz = -tz; }
+      const ang = Math.atan2(dx * ch - dz * sh, dx * sh + dz * ch); // heading -> surface direction, + = left
+      const dwAlign = clamp(ang * 5, -1.6, 1.6) * massK;
+      const dwHead = clamp(dwLever * 0.3, -0.9, 0.9) * massK;
+      const dw = glance * dwAlign + (1 - glance) * dwHead;
+      v.yawRate = clamp(v.yawRate + dw, -2.5, 2.5);
+      if (closing > 1.2) ph.impactT = 0.6;
+      if (env.onContact) env.onContact(v, { jn, vn: closing, dv: closing, vt: Math.abs(vt), px: c.px, pz: c.pz, nx: c.nx, nz: c.nz, shape: c.shape });
     }
   }
 }
@@ -332,3 +386,6 @@ export function stepVehicle(v, dt, env, lod = false) {
     if (ph.sleepT > 0.4) { ph.sleeping = true; v.velocity.x = v.velocity.z = 0; v.yawRate = 0; ph.axF = ph.ayF = 0; }
   } else ph.sleepT = 0;
 }
+
+
+

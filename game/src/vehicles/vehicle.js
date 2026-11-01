@@ -145,8 +145,8 @@ export class Vehicle {
 
   /** Static contact callback from physics (several per substep possible). */
   _contact(c) {
-    // corner hits transfer little linear impulse (most goes into spin) -> also count approach speed
-    const dv = Math.max(c.jn / this.spec.mass, c.vn * 0.7);
+    // damage and shake follow the closing speed along the contact normal only (grazes cost almost nothing)
+    const dv = c.dv != null ? c.dv : Math.max(c.jn / this.spec.mass, c.vn * 0.7);
     const h = this._hit;
     if (dv > h.dv) { h.dv = dv; h.x = c.px; h.z = c.pz; h.nx = c.nx; h.nz = c.nz; }
     if (c.vt > 2.5 && dv < 6) { h.scrape = Math.max(h.scrape, c.vt); h.x = c.px; h.z = c.pz; h.nx = c.nx; h.nz = c.nz; }
@@ -175,7 +175,6 @@ export class Vehicle {
     if (h.scrape > 0) {
       this._scrapeT = 0.12;
       this.fxScrape = Math.min(1, h.scrape / 14);
-      if (!fromVehicle) this.damage(h.scrape * 0.02);
       if (Math.random() < 0.8) this.fx.sparkBurst(h.x, 0.45, h.z, h.nx * 0.3, h.nz * 0.3, this.velocity.x, this.velocity.z, 2);
       this.shake = Math.min(1, this.shake + 0.02);
       h.scrape = 0;

@@ -1,0 +1,288 @@
+{
+ "wall-sedan60": {
+  "kmh0": 60,
+  "hitKmh": 60,
+  "afterHit": [
+   -4,
+   -2,
+   -1,
+   -1,
+   0,
+   1
+  ],
+  "reboundKmh": -3.6,
+  "yawPeak": 0.24,
+  "hpLoss": 254,
+  "hp0": 1000,
+  "hpEnd": 746,
+  "tToRest": 0.08,
+  "staticEvents": 1,
+  "staticImp": [
+   21742
+  ],
+  "camInsideSolidFrames": 0,
+  "camDistMinPost": 6.5,
+  "camDistMax": 7.6
+ },
+ "wall-sedan95": {
+  "kmh0": 94,
+  "hitKmh": 95,
+  "afterHit": [
+   -6,
+   -4,
+   -3,
+   -2,
+   -1,
+   0
+  ],
+  "reboundKmh": -5.5,
+  "yawPeak": 0.81,
+  "hpLoss": 444,
+  "hp0": 1000,
+  "hpEnd": 556,
+  "tToRest": 0.15,
+  "staticEvents": 1,
+  "staticImp": [
+   34073
+  ],
+  "camInsideSolidFrames": 0,
+  "camDistMinPost": 6.7,
+  "camDistMax": 7.8
+ },
+ "wall-suv70": {
+  "kmh0": 69,
+  "hitKmh": 70,
+  "afterHit": [
+   -4,
+   -3,
+   -2,
+   -1,
+   0,
+   1
+  ],
+  "reboundKmh": -4.1,
+  "yawPeak": 0.75,
+  "hpLoss": 245,
+  "hp0": 1000,
+  "hpEnd": 755,
+  "tToRest": 0.1,
+  "staticEvents": 1,
+  "staticImp": [
+   35778
+  ],
+  "camInsideSolidFrames": 0,
+  "camDistMinPost": 6.6,
+  "camDistMax": 7.5
+ },
+ "wall-taxi55": {
+  "kmh0": 54,
+  "hitKmh": 55,
+  "afterHit": [
+   -3,
+   -2,
+   -2,
+   -1,
+   0,
+   0
+  ],
+  "reboundKmh": -3.3,
+  "yawPeak": 1.05,
+  "hpLoss": 224,
+  "hp0": 1000,
+  "hpEnd": 776,
+  "tToRest": 0.1,
+  "staticEvents": 1,
+  "staticImp": [
+   14426
+  ],
+  "camInsideSolidFrames": 0,
+  "camDistMinPost": 6.2,
+  "camDistMax": 6.9
+ },
+ "wall-bus40": {
+  "kmh0": 39,
+  "hitKmh": 40,
+  "afterHit": [
+   -2,
+   -2,
+   -2,
+   -2,
+   -2,
+   -2
+  ],
+  "reboundKmh": -2.4,
+  "yawPeak": 0.13,
+  "hpLoss": 35,
+  "hp0": 1000,
+  "hpEnd": 965,
+  "tToRest": 0.5,
+  "staticEvents": 1,
+  "staticImp": [
+   121350
+  ],
+  "camInsideSolidFrames": 0,
+  "camDistMinPost": 10.2,
+  "camDistMax": 10.8
+ },
+ "glance-sedan-0.2": {
+  "bias": -0.2,
+  "maxKmh": 88,
+  "endKmh": 0,
+  "endHeadingVsStreetDeg": 7,
+  "staticEvents": 2,
+  "impSamples": [
+   8843,
+   31804
+  ],
+  "hpLoss": 465,
+  "endPos": [
+   -326.2,
+   415.7
+  ]
+ },
+ "glance-sedan-0.35": {
+  "bias": -0.35,
+  "maxKmh": 70,
+  "endKmh": 0,
+  "endHeadingVsStreetDeg": 4,
+  "staticEvents": 2,
+  "impSamples": [
+   6190,
+   25157
+  ],
+  "hpLoss": 322,
+  "endPos": [
+   -325.9,
+   375.3
+  ]
+ },
+ "glance-taxi-0.25": {
+  "bias": -0.25,
+  "maxKmh": 68,
+  "endKmh": 0,
+  "endHeadingVsStreetDeg": 7,
+  "staticEvents": 3,
+  "impSamples": [
+   2982,
+   3317,
+   17993
+  ],
+  "hpLoss": 299,
+  "endPos": [
+   -325.5,
+   415.9
+  ]
+ },
+ "car-sedan-taxi": {
+  "player": "sedan",
+  "other": "taxi",
+  "hitKmh": 60,
+  "afterKmh": [
+   32,
+   33,
+   34,
+   34,
+   35,
+   36,
+   36
+  ],
+  "yawPeak": 0,
+  "targetMovedM": 85.5,
+  "targetSideM": -1.5,
+  "targetHp": 868,
+  "playerHpLoss": 75,
+  "collEvents": 2,
+  "imp": [
+   10072,
+   1171
+  ],
+  "relSpd": [
+   16.7,
+   1.6
+  ]
+ },
+ "car-sedan-bus": {
+  "player": "sedan",
+  "other": "bus",
+  "hitKmh": 60,
+  "afterKmh": [
+   1,
+   1,
+   1,
+   1,
+   2,
+   3,
+   4
+  ],
+  "yawPeak": 0,
+  "targetMovedM": 4.7,
+  "targetSideM": -1.7,
+  "targetHp": 1000,
+  "playerHpLoss": 250,
+  "collEvents": 2,
+  "imp": [
+   21424,
+   3338
+  ],
+  "relSpd": [
+   16.8,
+   2.2
+  ]
+ },
+ "car-suv-sedan": {
+  "player": "suv",
+  "other": "sedan",
+  "hitKmh": 63,
+  "afterKmh": [
+   35,
+   35,
+   35,
+   35,
+   35,
+   36,
+   37
+  ],
+  "yawPeak": 0,
+  "targetMovedM": 76.1,
+  "targetSideM": -1.7,
+  "targetHp": 852,
+  "playerHpLoss": 64,
+  "collEvents": 2,
+  "imp": [
+   14822,
+   2113
+  ],
+  "relSpd": [
+   17.6,
+   2.1
+  ]
+ },
+ "car-taxi-hatch": {
+  "player": "taxi",
+  "other": "hatch",
+  "hitKmh": 50,
+  "afterKmh": [
+   25,
+   26,
+   26,
+   26,
+   26,
+   27,
+   27
+  ],
+  "yawPeak": 0,
+  "targetMovedM": 51.9,
+  "targetSideM": -1.6,
+  "targetHp": 899,
+  "playerHpLoss": 57,
+  "collEvents": 2,
+  "imp": [
+   6507,
+   1214
+  ],
+  "relSpd": [
+   13.9,
+   2.3
+  ]
+ }
+}

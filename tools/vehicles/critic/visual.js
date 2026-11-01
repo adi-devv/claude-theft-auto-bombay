@@ -1,0 +1,1 @@
+const H=require('../../harness'); (async()=>{const g=await H.launch({width:960,height:540,out:__dirname+'/shots'}); await g.shot('street'); await g.eval(()=>{__game.debug.step(2)}); await g.shot('street-after'); console.log('errors',JSON.stringify(await g.eval(()=>__game.errors))); await g.close()})().catch(e=>{console.error(e);process.exit(1)});

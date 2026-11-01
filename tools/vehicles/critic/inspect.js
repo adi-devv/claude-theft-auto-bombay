@@ -1,0 +1,2 @@
+const H=require('../harness');
+(async()=>{const g=await H.launch({width:960,height:540,out:__dirname+'/shots'}); console.log(JSON.stringify(await g.state(),null,2)); console.log(JSON.stringify(await g.eval(()=>({fps:__game.fps, roads:__game.roads.edges.filter(e=>e.name==='Marine Drive').map(e=>({name:e.name,pts:e.pts.slice(0,3)}))})),null,2)); await g.shot('initial');await g.close()})().catch(console.error);
